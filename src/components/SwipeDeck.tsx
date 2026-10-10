@@ -22,7 +22,9 @@ export function SwipeDeck({ profiles }: Props) {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const frameWidth = Math.min(windowWidth, 440);
   const cardWidth = frameWidth - spacing.lg * 2;
-  const cardHeight = Math.min(560, Math.max(380, windowHeight - 230));
+  const [stageHeight, setStageHeight] = useState(0);
+  const cardHeight =
+    stageHeight > 180 ? stageHeight - spacing.lg : Math.min(520, Math.max(280, windowHeight - 250));
   const exitDistance = Math.max(windowWidth, frameWidth) + 80;
 
   const [index, setIndex] = useState(0);
@@ -84,7 +86,13 @@ export function SwipeDeck({ profiles }: Props) {
         ) : null}
       </View>
 
-      <View style={[styles.stage, { minHeight: cardHeight + spacing.xl }]}>
+      <View
+        style={styles.stage}
+        onLayout={(event) => {
+          const next = Math.floor(event.nativeEvent.layout.height);
+          setStageHeight((currentHeight) => (currentHeight === next ? currentHeight : next));
+        }}
+      >
         {current ? (
           <View style={{ width: cardWidth, height: cardHeight }}>
             {upcoming
@@ -206,6 +214,7 @@ const styles = StyleSheet.create({
   },
   stage: {
     flex: 1,
+    minHeight: 0,
     alignItems: 'center',
     justifyContent: 'center',
   },
