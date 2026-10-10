@@ -42,7 +42,7 @@ export function SwipeDeck({ profiles }: Props) {
     if (!notice) {
       return;
     }
-    const timer = setTimeout(() => setNotice(null), 1500);
+    const timer = setTimeout(() => setNotice(null), 2200);
     return () => clearTimeout(timer);
   }, [notice]);
 
@@ -77,7 +77,11 @@ export function SwipeDeck({ profiles }: Props) {
       </View>
 
       <View style={styles.noticeSlot}>
-        {notice ? <Text style={styles.notice}>{notice}</Text> : null}
+        {notice ? (
+          <View accessibilityLiveRegion="polite" style={styles.notice}>
+            <Text style={styles.noticeText}>{notice}</Text>
+          </View>
+        ) : null}
       </View>
 
       <View style={[styles.stage, { minHeight: cardHeight + spacing.xl }]}>
@@ -96,8 +100,8 @@ export function SwipeDeck({ profiles }: Props) {
                       styles.stacked,
                       {
                         transform: [
-                          { scale: depth === 1 ? 0.96 : 0.92 },
-                          { translateY: depth * 12 },
+                          { scale: depth === 1 ? 0.94 : 0.88 },
+                          { translateY: depth === 1 ? 22 : 40 },
                         ],
                       },
                     ]}
@@ -190,12 +194,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   notice: {
-    overflow: 'hidden',
     backgroundColor: colors.ink,
-    color: colors.white,
     borderRadius: radii.chip,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs + 2,
+  },
+  noticeText: {
+    color: colors.white,
     fontSize: 13,
     fontWeight: '600',
   },

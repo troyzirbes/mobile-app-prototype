@@ -20,5 +20,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.background,
+    userSelect: 'none',
   },
 });
