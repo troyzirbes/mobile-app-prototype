@@ -1,0 +1,32 @@
+# Spark conventions
+
+Spark is an Expo React Native prototype written in TypeScript.
+
+## TypeScript
+
+- Keep strict mode on. Do not use `any`, non-null assertions, or ts-ignore.
+- Type component props, exported functions, and the profile model explicitly.
+- Prefer `type` for props and data. Use string unions for closed sets such as swipe decisions.
+
+## Components
+
+- Use function components. One component per file, named the same as the file.
+- Prefer named exports. `App.tsx` stays the default export that Expo registers.
+- Keep drag handling inside `SwipeCard`. The Pass and Like buttons must call that same swipe path.
+- Put like / pass / cancel rules in `src/swipe.ts`. Change thresholds there, not in the gesture code.
+
+## Style
+
+- Use `StyleSheet.create`. Take colors, spacing, and radii from `src/theme.ts`.
+- Do not add a new hex color when a token already fits.
+- Size the deck from the window so the phone-width column stays centered on web.
+
+## Data
+
+- Sample profiles live in `src/data/profiles.ts` and ship with the app. Do not fetch profiles over the network.
+- Every sample profile is an adult, age 21 or older.
+
+## Checks
+
+- Run `npm run typecheck` and `npm test` before considering a change done.
+- Update the `decideSwipe` tests when distance or velocity maps to a different decision.
