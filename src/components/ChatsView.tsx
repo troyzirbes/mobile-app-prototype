@@ -15,7 +15,9 @@ export function ChatsView() {
   if (!open) {
     return (
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.lead}>Chats exist only after you tap Allow in the Learning Stage.</Text>
+        <Text style={styles.lead}>
+          A chat opens when you tap Allow in the Learning Stage. The demo gate can also fill this list.
+        </Text>
         {chats.length === 0 ? <Text style={styles.empty}>No active chats.</Text> : null}
         {chats.map((chat) => (
           <Pressable
