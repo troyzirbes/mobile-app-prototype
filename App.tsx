@@ -21,6 +21,9 @@ export default function App() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    height: '100%',
+    minHeight: 0,
+    overflow: 'hidden',
     backgroundColor: colors.background,
     userSelect: 'none',
   },

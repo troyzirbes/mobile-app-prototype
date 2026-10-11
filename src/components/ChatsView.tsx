@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
   },
   thread: {
     flex: 1,
+    minHeight: 0,
   },
   threadHeader: {
     flexDirection: 'row',
