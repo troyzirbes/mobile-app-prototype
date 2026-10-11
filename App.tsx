@@ -1,18 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { SwipeDeck } from './src/components/SwipeDeck';
-import { profiles } from './src/data/profiles';
+import { DiscoveryScreen } from './src/components/DiscoveryScreen';
 import { colors } from './src/theme';
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.screen} edges={['top', 'bottom']}>
-        <SwipeDeck profiles={profiles} />
-        <StatusBar style="dark" />
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={styles.screen}>
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.screen} edges={['top', 'bottom']}>
+          <DiscoveryScreen />
+          <StatusBar style="dark" />
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 

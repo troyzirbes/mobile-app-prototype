@@ -12,8 +12,10 @@ Spark is an Expo React Native prototype written in TypeScript.
 
 - Use function components. One component per file, named the same as the file.
 - Prefer named exports. `App.tsx` stays the default export that Expo registers.
-- Keep drag handling inside `SwipeCard`. The Pass and Like buttons must call that same swipe path.
+- Keep dating-profile drag handling inside `SwipeCard`. The Pass and Like buttons must call that same swipe path.
 - Put like / pass / cancel rules in `src/swipe.ts`. Change thresholds there, not in the gesture code.
+- Discovery swipes live in `CardDeck`. Release past 120px. A tap opens `CardDetailSheet` and must not change the deck index.
+- Read discovery cards through `getCardById` and `filterCardsByTag`.
 
 ## Style
 

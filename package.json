@@ -9,6 +9,8 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.3",
+    "react-native-gesture-handler": "~2.32.0",
+    "react-native-reanimated": "4.5.1",
     "react-native-safe-area-context": "~5.7.0",
     "react-native-web": "^0.21.2"
   },
@@ -22,7 +24,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-transform-types --test src/swipe.test.ts"
+    "test": "node --experimental-transform-types --test src/swipe.test.ts src/data/mockDiscoveryData.test.ts"
   },
   "private": true
 }
