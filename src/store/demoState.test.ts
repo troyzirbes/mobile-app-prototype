@@ -13,6 +13,31 @@ import { DAY_MS, ENERGY_LIKE, ENERGY_NOTE } from './energy.ts';
 
 const now = 1_700_000_000_000;
 
+describe('first download', () => {
+  it('lands on a paid demo with two likes and no chats', () => {
+    const initial = createInitialDemo(now);
+    assert.equal(initial.showFirstDownload, true);
+    assert.equal(initial.energyTokens, 80);
+    assert.equal(initial.isPaidMember, true);
+    assert.equal(initial.isIncognito, false);
+    assert.equal(initial.blindAudition, false);
+    assert.equal(initial.activeTrack, 'Commonalities');
+    assert.deepEqual(initial.attentionGate, {
+      enabled: true,
+      maxActiveChats: 2,
+      autoToggleOnThreshold: true,
+    });
+    assert.deepEqual(
+      initial.incomingLikes.map((profile) => profile.id),
+      ['jordan-hale', 'andre-brooks'],
+    );
+    assert.equal(initial.learningStageQueue.length, 0);
+    assert.equal(initial.activeChats.length, 0);
+    assert.equal(initial.lastChallengeIssuedTimestamp, null);
+    assert.equal(initial.vibe, null);
+  });
+});
+
 describe('learning stage', () => {
   it('moves a reciprocated like into learning and keeps messaging closed', () => {
     const initial = createInitialDemo(now);

@@ -23,7 +23,7 @@ import {
   type DemoData,
 } from './demoState';
 
-const STORAGE_KEY = 'spark-local-demo';
+const STORAGE_KEY = 'spark-local-demo-v2';
 
 type Actions = {
   refreshEnergy: () => void;
@@ -54,6 +54,7 @@ type Actions = {
   simulateIncomingLike: () => void;
   fillAttentionGate: () => void;
   resetDemo: () => void;
+  dismissFirstDownload: () => void;
 };
 
 export type AppState = DemoData & Actions;
@@ -134,6 +135,7 @@ export const useAppStore = create<AppState>()(
       addEnergy: (delta) => set(adjustEnergy(get(), delta, Date.now())),
       simulateIncomingLike: () => set(apply(simulateIncomingLike(get()))),
       fillAttentionGate: () => set(apply(fillAttentionGate(get(), Date.now()))),
+      dismissFirstDownload: () => set({ showFirstDownload: false }),
       resetDemo: () => {
         set({ ...createInitialDemo(), statusMessage: 'Demo state restored.' });
         void useAppStore.persist.clearStorage();
@@ -162,6 +164,7 @@ export const useAppStore = create<AppState>()(
         voiceHeardIds: state.voiceHeardIds,
         coOpCompletedIds: state.coOpCompletedIds,
         vibe: state.vibe,
+        showFirstDownload: state.showFirstDownload,
       }),
       onRehydrateStorage: () => (state) => {
         if (state) {

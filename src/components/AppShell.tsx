@@ -6,6 +6,7 @@ import { colors, spacing } from '../theme';
 import { ChatsView } from './ChatsView';
 import { DemoControlPanel } from './DemoControlPanel';
 import { DiscoverView } from './DiscoverView';
+import { FirstDownloadCard } from './FirstDownloadCard';
 import { LearningView } from './LearningView';
 import { LikesView } from './LikesView';
 import { YouView } from './YouView';
@@ -68,6 +69,7 @@ export function AppShell() {
           <Text style={styles.noticeText}>{statusMessage}</Text>
         </View>
       ) : null}
+      <FirstDownloadCard />
       <View style={styles.body}>
         {tab === 'discover' ? <DiscoverView /> : null}
         {tab === 'likes' ? <LikesView /> : null}

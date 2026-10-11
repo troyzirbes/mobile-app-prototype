@@ -24,6 +24,7 @@ export type DemoData = {
   coOpCompletedIds: string[];
   vibe: VibeStatus | null;
   statusMessage: string | null;
+  showFirstDownload: boolean;
 };
 
 export type Step = {
@@ -65,6 +66,7 @@ export function createInitialDemo(now = Date.now()): DemoData {
     coOpCompletedIds: [],
     vibe: null,
     statusMessage: null,
+    showFirstDownload: true,
   };
 }
 
