@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, PanResponder, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -143,8 +143,15 @@ function SwipeableCard({
 }: SwipeableCardProps) {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
+  const settled = useRef(false);
+  const [shownX, setShownX] = useState(0);
+  const [shownY, setShownY] = useState(0);
 
   const release = (direction: 'right' | 'left') => {
+    if (settled.current) {
+      return;
+    }
+    settled.current = true;
     onCommit(card, direction);
   };
 
@@ -152,32 +159,69 @@ function SwipeableCard({
     onPress(card);
   };
 
+  const flyOff = (direction: 'right' | 'left', velocity: number) => {
+    const destination = direction === 'right' ? exitDistance : -exitDistance;
+    setShownX(destination);
+    setShownY(0);
+    translateX.value = withSpring(
+      destination,
+      { ...EXIT_SPRING, velocity },
+      (finished) => {
+        if (finished) {
+          runOnJS(release)(direction);
+        }
+      },
+    );
+  };
+
+  const snapBack = () => {
+    setShownX(0);
+    setShownY(0);
+    translateX.value = withSpring(0, RETURN_SPRING);
+    translateY.value = withSpring(0, RETURN_SPRING);
+  };
+
+  const settleDrag = (dx: number, velocity: number) => {
+    const position = Math.abs(translateX.value) > Math.abs(dx) ? translateX.value : dx;
+    if (position > SWIPE_THRESHOLD) {
+      flyOff('right', velocity);
+      return;
+    }
+    if (position < -SWIPE_THRESHOLD) {
+      flyOff('left', velocity);
+      return;
+    }
+    snapBack();
+  };
+
+  // Pointer events and the responder system can both report one drag.
+  // `settled` makes sure that drag only advances the deck once.
+  const responder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: (_, gesture) =>
+        Math.abs(gesture.dx) > 6 && Math.abs(gesture.dx) > Math.abs(gesture.dy) * 0.6,
+      onPanResponderTerminationRequest: () => false,
+      onPanResponderMove: (_, gesture) => {
+        translateX.value = gesture.dx;
+        translateY.value = gesture.dy * 0.15;
+      },
+      onPanResponderRelease: (_, gesture) => {
+        settleDrag(gesture.dx, gesture.vx * 1000);
+      },
+      onPanResponderTerminate: () => {
+        snapBack();
+      },
+    }),
+  ).current;
+
   const pan = Gesture.Pan()
-    .activeOffsetX([-12, 12])
-    .failOffsetY([-28, 28])
+    .activeOffsetX([-8, 8])
     .onUpdate((event) => {
       translateX.value = event.translationX;
       translateY.value = event.translationY * 0.15;
     })
     .onEnd((event) => {
-      const pastRight = event.translationX > SWIPE_THRESHOLD;
-      const pastLeft = event.translationX < -SWIPE_THRESHOLD;
-      if (pastRight || pastLeft) {
-        const direction = pastRight ? 'right' : 'left';
-        const destination = pastRight ? exitDistance : -exitDistance;
-        translateX.value = withSpring(
-          destination,
-          { ...EXIT_SPRING, velocity: event.velocityX },
-          (finished) => {
-            if (finished) {
-              runOnJS(release)(direction);
-            }
-          },
-        );
-        return;
-      }
-      translateX.value = withSpring(0, RETURN_SPRING);
-      translateY.value = withSpring(0, RETURN_SPRING);
+      settleDrag(event.translationX, event.velocityX);
     });
 
   const tap = Gesture.Tap()
@@ -189,6 +233,81 @@ function SwipeableCard({
     });
 
   const gesture = Gesture.Exclusive(pan, tap);
+  const handlersRef = useRef({ open, settleDrag, translateX, translateY });
+  handlersRef.current = { open, settleDrag, translateX, translateY };
+
+  // Web drags are followed on window so the card still tracks when the
+  // pointer leaves it. Gesture Handler remains the native path.
+  useEffect(() => {
+    if (Platform.OS !== 'web') {
+      return;
+    }
+    const node = document.getElementById('discovery-top-card');
+    if (!node) {
+      return;
+    }
+
+    let tracking = false;
+    let startX = 0;
+    let startY = 0;
+
+    const inside = (target: EventTarget | null) =>
+      target instanceof Node && node.contains(target);
+
+    const publish = (dx: number, dy: number) => {
+      const handlers = handlersRef.current;
+      handlers.translateX.value = dx;
+      handlers.translateY.value = dy;
+      setShownX(dx);
+      setShownY(dy);
+    };
+
+    const down = (event: PointerEvent | MouseEvent) => {
+      if (!inside(event.target) || ('button' in event && event.button !== 0)) {
+        return;
+      }
+      tracking = true;
+      startX = event.clientX;
+      startY = event.clientY;
+    };
+
+    const move = (event: PointerEvent | MouseEvent) => {
+      if (!tracking || (event.type === 'mousemove' && event.buttons === 0)) {
+        return;
+      }
+      publish(event.clientX - startX, (event.clientY - startY) * 0.15);
+    };
+
+    const up = (event: PointerEvent | MouseEvent) => {
+      if (!tracking) {
+        return;
+      }
+      tracking = false;
+      const dx = event.clientX - startX;
+      publish(dx, (event.clientY - startY) * 0.15);
+      if (Math.abs(dx) < 14) {
+        handlersRef.current.settleDrag(0, 0);
+        handlersRef.current.open();
+        return;
+      }
+      handlersRef.current.settleDrag(dx, 0);
+    };
+
+    window.addEventListener('pointerdown', down);
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+    window.addEventListener('mousedown', down);
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+    return () => {
+      window.removeEventListener('pointerdown', down);
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+      window.removeEventListener('mousedown', down);
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+  }, []);
 
   const cardStyle = useAnimatedStyle(() => ({
     transform: [
@@ -206,13 +325,30 @@ function SwipeableCard({
   }));
 
   return (
-    <GestureDetector gesture={gesture}>
-      <Animated.View style={[styles.front, cardStyle]}>
+    <GestureDetector gesture={gesture} touchAction="none">
+      <Animated.View
+        nativeID="discovery-top-card"
+        {...(Platform.OS === 'web' ? responder.panHandlers : undefined)}
+        style={[
+          styles.front,
+          cardStyle,
+          Platform.OS === 'web'
+            ? {
+                transform: [
+                  { translateX: shownX },
+                  { translateY: shownY },
+                  { rotate: `${Math.max(-12, Math.min(12, shownX / 20))}deg` },
+                ],
+              }
+            : null,
+        ]}
+      >
         <CardFace
           card={card}
           width={width}
           height={height}
           translateX={translateX}
+          dragX={Platform.OS === 'web' ? shownX : undefined}
         />
       </Animated.View>
     </GestureDetector>
@@ -224,29 +360,41 @@ type CardFaceProps = {
   width: number;
   height: number;
   translateX?: SharedValue<number>;
+  dragX?: number;
 };
 
-function CardFace({ card, width, height, translateX }: CardFaceProps) {
+function badgeOpacity(distance: number, toward: 'save' | 'skip') {
+  if (toward === 'save') {
+    return Math.max(0, Math.min(1, (distance - 20) / (SWIPE_THRESHOLD - 20)));
+  }
+  return Math.max(0, Math.min(1, (-distance - 20) / (SWIPE_THRESHOLD - 20)));
+}
+
+function CardFace({ card, width, height, translateX, dragX }: CardFaceProps) {
   const saveStyle = useAnimatedStyle(() => ({
-    opacity: translateX
-      ? interpolate(
-          translateX.value,
-          [20, SWIPE_THRESHOLD],
-          [0, 1],
-          Extrapolation.CLAMP,
-        )
-      : 0,
+    opacity:
+      dragX === undefined && translateX
+        ? interpolate(
+            translateX.value,
+            [20, SWIPE_THRESHOLD],
+            [0, 1],
+            Extrapolation.CLAMP,
+          )
+        : 0,
   }));
   const skipStyle = useAnimatedStyle(() => ({
-    opacity: translateX
-      ? interpolate(
-          translateX.value,
-          [-SWIPE_THRESHOLD, -20],
-          [1, 0],
-          Extrapolation.CLAMP,
-        )
-      : 0,
+    opacity:
+      dragX === undefined && translateX
+        ? interpolate(
+            translateX.value,
+            [-SWIPE_THRESHOLD, -20],
+            [1, 0],
+            Extrapolation.CLAMP,
+          )
+        : 0,
   }));
+  const saveOpacity = dragX === undefined ? undefined : badgeOpacity(dragX, 'save');
+  const skipOpacity = dragX === undefined ? undefined : badgeOpacity(dragX, 'skip');
 
   return (
     <View
@@ -274,10 +422,16 @@ function CardFace({ card, width, height, translateX }: CardFaceProps) {
           </View>
         ))}
       </View>
-      <Animated.View pointerEvents="none" style={[styles.badge, styles.saveBadge, saveStyle]}>
+      <Animated.View
+        pointerEvents="none"
+        style={[styles.badge, styles.saveBadge, saveStyle, saveOpacity === undefined ? null : { opacity: saveOpacity }]}
+      >
         <Text style={styles.saveBadgeText}>SAVE</Text>
       </Animated.View>
-      <Animated.View pointerEvents="none" style={[styles.badge, styles.skipBadge, skipStyle]}>
+      <Animated.View
+        pointerEvents="none"
+        style={[styles.badge, styles.skipBadge, skipStyle, skipOpacity === undefined ? null : { opacity: skipOpacity }]}
+      >
         <Text style={styles.skipBadgeText}>SKIP</Text>
       </Animated.View>
       <View pointerEvents="none" style={styles.identity}>
