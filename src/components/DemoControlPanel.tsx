@@ -1,0 +1,63 @@
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useAppStore } from '../store/useAppStore';
+import { colors, radii, spacing } from '../theme';
+
+const controls = [
+  { label: '+20 Energy', run: (store: ReturnType<typeof useAppStore.getState>) => store.addEnergy(20) },
+  { label: '−20 Energy', run: (store: ReturnType<typeof useAppStore.getState>) => store.addEnergy(-20) },
+  { label: 'Simulate Incoming Like', run: (store: ReturnType<typeof useAppStore.getState>) => store.simulateIncomingLike() },
+  { label: 'Fill Attention Gate', run: (store: ReturnType<typeof useAppStore.getState>) => store.fillAttentionGate() },
+  { label: 'Reset Demo State', run: (store: ReturnType<typeof useAppStore.getState>) => store.resetDemo() },
+] as const;
+
+export function DemoControlPanel() {
+  const energyTokens = useAppStore((state) => state.energyTokens);
+  return (
+    <View style={styles.panel}>
+      <Text style={styles.title}>Demo controls · {energyTokens} energy</Text>
+      <View style={styles.row}>
+        {controls.map((control) => (
+          <Pressable
+            key={control.label}
+            accessibilityRole="button"
+            accessibilityLabel={control.label}
+            onPress={() => control.run(useAppStore.getState())}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>{control.label}</Text>
+          </Pressable>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  panel: {
+    backgroundColor: colors.ink,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    gap: spacing.sm,
+  },
+  title: {
+    color: colors.white,
+    fontSize: 12,
+    fontWeight: '800',
+  },
+  row: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+  },
+  button: {
+    backgroundColor: colors.white,
+    borderRadius: radii.chip,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  buttonText: {
+    color: colors.ink,
+    fontSize: 12,
+    fontWeight: '800',
+  },
+});

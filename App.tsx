@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { DiscoveryScreen } from './src/components/DiscoveryScreen';
+import { AppShell } from './src/components/AppShell';
 import { colors } from './src/theme';
 
 export default function App() {
@@ -10,7 +10,7 @@ export default function App() {
     <GestureHandlerRootView style={styles.screen}>
       <SafeAreaProvider>
         <SafeAreaView style={styles.screen} edges={['top', 'bottom']}>
-          <DiscoveryScreen />
+          <AppShell />
           <StatusBar style="dark" />
         </SafeAreaView>
       </SafeAreaProvider>
@@ -21,6 +21,9 @@ export default function App() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    height: '100%',
+    minHeight: 0,
+    overflow: 'hidden',
     backgroundColor: colors.background,
     userSelect: 'none',
   },
