@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
+    "@dicebear/collection": "^9.4.2",
+    "@dicebear/core": "^9.4.3",
     "@react-native-async-storage/async-storage": "^3.1.1",
     "expo": "~57.0.27",
     "expo-linear-gradient": "~57.0.2",
@@ -13,6 +15,7 @@
     "react-native-gesture-handler": "~2.32.0",
     "react-native-reanimated": "4.5.1",
     "react-native-safe-area-context": "~5.7.0",
+    "react-native-svg": "15.15.4",
     "react-native-web": "^0.21.2",
     "zustand": "^5.0.15"
   },
@@ -26,7 +29,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-transform-types --import ./scripts/register-ts.mjs --test src/swipe.test.ts src/data/mockDiscoveryData.test.ts src/store/energy.test.ts src/store/matching.test.ts src/store/demoState.test.ts"
+    "test": "node --experimental-transform-types --import ./scripts/register-ts.mjs --test src/swipe.test.ts src/data/mockDiscoveryData.test.ts src/store/energy.test.ts src/store/matching.test.ts src/store/demoState.test.ts src/navigation/contextualNav.test.ts"
   },
   "private": true
 }

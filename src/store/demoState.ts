@@ -1,5 +1,16 @@
 import { demoUser, getProfileById, mockProfiles, seededIncomingIds } from '../data/mockData';
-import type { ActiveChat, AttentionGate, DateRange, MockProfile, SearchTrack, StyleCategory, VibeStatus } from '../types/demo';
+import type {
+  ActiveChat,
+  AppScreen,
+  AttentionGate,
+  ConnectIntent,
+  DateRange,
+  LikesTab,
+  MockProfile,
+  SearchTrack,
+  StyleCategory,
+  VibeStatus,
+} from '../types/demo';
 import { applyRegen, DAY_MS, ENERGY_LIKE, ENERGY_NOTE, maxEnergy } from './energy';
 import { filterProfilesForTrack, isMutualMatch } from './matching';
 
@@ -24,7 +35,24 @@ export type DemoData = {
   coOpCompletedIds: string[];
   vibe: VibeStatus | null;
   statusMessage: string | null;
-  showFirstDownload: boolean;
+  activeScreen: AppScreen;
+  activeLikesTab: LikesTab;
+  viewingProfileId: string | null;
+  blockedIds: string[];
+  skippedUntil: Record<string, number>;
+  likesSentDay: string;
+  likesSentCount: number;
+  maxDailyLikes: number;
+  adventureEnabled: boolean;
+  locationEnabled: boolean;
+  likePlusExploration: boolean;
+  directContact: boolean;
+  accountPaused: boolean;
+  profileBio: string;
+  voiceIntroSaved: boolean;
+  locationStatus: string;
+  locationLocalOnly: boolean;
+  connectionIntents: Record<string, ConnectIntent>;
 };
 
 export type Step = {
@@ -66,7 +94,24 @@ export function createInitialDemo(now = Date.now()): DemoData {
     coOpCompletedIds: [],
     vibe: null,
     statusMessage: null,
-    showFirstDownload: true,
+    activeScreen: 'Intro',
+    activeLikesTab: 'Interested',
+    viewingProfileId: null,
+    blockedIds: [],
+    skippedUntil: {},
+    likesSentDay: '',
+    likesSentCount: 0,
+    maxDailyLikes: 18,
+    adventureEnabled: true,
+    locationEnabled: true,
+    likePlusExploration: true,
+    directContact: true,
+    accountPaused: false,
+    profileBio: 'Alex keeps weeknights open and would rather walk somewhere than book a room.',
+    voiceIntroSaved: false,
+    locationStatus: '',
+    locationLocalOnly: false,
+    connectionIntents: {},
   };
 }
 
@@ -115,7 +160,21 @@ function withoutProfile(data: DemoData, profileId: string): Pick<
   };
 }
 
+function dayKey(now: number): string {
+  return new Date(now).toISOString().slice(0, 10);
+}
+
+function likesSentOnDay(data: DemoData, now: number): number {
+  return data.likesSentDay === dayKey(now) ? data.likesSentCount : 0;
+}
+
 export function sendLike(data: DemoData, profileId: string, note: string | null, now: number): Step {
+  if (data.accountPaused) {
+    return { data, ok: false, message: 'Discovery is paused on this device.' };
+  }
+  if (likesSentOnDay(data, now) >= data.maxDailyLikes) {
+    return { data, ok: false, message: `The daily like cap is ${data.maxDailyLikes}.` };
+  }
   const spent = spendEnergy(data, note ? ENERGY_NOTE : ENERGY_LIKE, now);
   if (!spent.ok) {
     return spent;
@@ -124,19 +183,24 @@ export function sendLike(data: DemoData, profileId: string, note: string | null,
   if (!profile) {
     return { data: spent.data, ok: false, message: 'That profile is not in the local deck.' };
   }
-  const alreadyLearning = spent.data.learningStageQueue.some((item) => item.id === profileId);
+  const cleared = withoutProfile(spent.data, profileId);
+  const learningStageQueue = spent.data.likePlusExploration
+    ? [...cleared.learningStageQueue, profile]
+    : cleared.learningStageQueue;
   return {
     data: {
       ...spent.data,
-      ...withoutProfile(spent.data, profileId),
-      learningStageQueue: alreadyLearning
-        ? spent.data.learningStageQueue
-        : [...spent.data.learningStageQueue.filter((item) => item.id !== profileId), profile],
+      ...cleared,
+      learningStageQueue,
+      likesSentDay: dayKey(now),
+      likesSentCount: likesSentOnDay(spent.data, now) + 1,
     },
     ok: true,
-    message: note
-      ? `Note sent to ${profile.name}. They liked you back into the Learning Stage, not a chat.`
-      : `${profile.name} liked you back. Messaging stays closed until you allow it.`,
+    message: spent.data.likePlusExploration
+      ? note
+        ? `Note sent to ${profile.name}. They are in Exploring, not a chat.`
+        : `${profile.name} is in Exploring. Messaging stays closed until you allow it.`
+      : `Like sent to ${profile.name}. Exploring is off, so no learning stage opened.`,
   };
 }
 
@@ -145,30 +209,45 @@ export function reciprocateLike(data: DemoData, profileId: string, now: number):
   if (!profile) {
     return { data, ok: false, message: 'That like is no longer waiting.' };
   }
-  const spent = spendEnergy(data, ENERGY_LIKE, now);
-  if (!spent.ok) {
-    return spent;
+  const refreshed = withRegen(data, now);
+  return {
+    data: {
+      ...refreshed,
+      incomingLikes: refreshed.incomingLikes.filter((item) => item.id !== profileId),
+      learningStageQueue: [...refreshed.learningStageQueue, profile],
+    },
+    ok: true,
+    message: `${profile.name} is in Exploring. Direct messaging is still closed, and this cost 0 energy.`,
+  };
+}
+
+export function passIncoming(data: DemoData, profileId: string): Step {
+  const profile = data.incomingLikes.find((item) => item.id === profileId);
+  if (!profile) {
+    return { data, ok: false, message: 'That like is no longer waiting.' };
   }
   return {
     data: {
-      ...spent.data,
-      incomingLikes: spent.data.incomingLikes.filter((item) => item.id !== profileId),
-      learningStageQueue: [...spent.data.learningStageQueue, profile],
+      ...data,
+      incomingLikes: data.incomingLikes.filter((item) => item.id !== profileId),
     },
     ok: true,
-    message: `${profile.name} is in the Learning Stage. Direct messaging is still closed.`,
+    message: `${profile.name} is off the Interested list.`,
   };
 }
 
 export function disallowDM(data: DemoData, profileId: string): Step {
   const profile = data.learningStageQueue.find((item) => item.id === profileId);
   if (!profile) {
-    return { data, ok: false, message: 'They are not in the Learning Stage.' };
+    return { data, ok: false, message: 'They are not in Exploring.' };
   }
   return {
     data: {
       ...data,
       learningStageQueue: data.learningStageQueue.filter((item) => item.id !== profileId),
+      connectionIntents: Object.fromEntries(
+        Object.entries(data.connectionIntents).filter(([id]) => id !== profileId),
+      ),
     },
     ok: true,
     message: `You and ${profile.name} are strangers again.`,
@@ -191,9 +270,12 @@ function openChat(profile: MockProfile, now: number): ActiveChat {
 }
 
 export function allowDM(data: DemoData, profileId: string, now: number): Step {
+  if (!data.directContact) {
+    return { data, ok: false, message: 'Direct contact is off in Comfort Mode.' };
+  }
   const profile = data.learningStageQueue.find((item) => item.id === profileId);
   if (!profile) {
-    return { data, ok: false, message: 'They are not in the Learning Stage.' };
+    return { data, ok: false, message: 'They are not in Exploring.' };
   }
   const full =
     data.attentionGate.enabled &&
@@ -307,11 +389,12 @@ export function photosRevealed(data: DemoData, profileId: string): boolean {
   );
 }
 
-export function discoverProfiles(data: DemoData): MockProfile[] {
+export function discoverProfiles(data: DemoData, now = Date.now()): MockProfile[] {
   const busy = [
     ...data.incomingLikes.map((profile) => profile.id),
     ...data.learningStageQueue.map((profile) => profile.id),
     ...data.activeChats.map((chat) => chat.profile.id),
+    ...data.blockedIds,
   ];
   return filterProfilesForTrack(
     mockProfiles,
@@ -321,7 +404,59 @@ export function discoverProfiles(data: DemoData): MockProfile[] {
     data.explorerDateRange,
     data.randomSalt,
     busy,
-  );
+  ).filter((profile) => (data.skippedUntil[profile.id] ?? 0) <= now);
+}
+
+export function skipProfile(data: DemoData, profileId: string, now: number): Step {
+  const profile = getProfileById(profileId);
+  return {
+    data: {
+      ...data,
+      skippedUntil: { ...data.skippedUntil, [profileId]: now + 30 * DAY_MS },
+      viewingProfileId: null,
+    },
+    ok: true,
+    message: `${profile?.name ?? 'This profile'} is skipped for 30 days.`,
+  };
+}
+
+export function blockProfile(data: DemoData, profileId: string): Step {
+  const profile = getProfileById(profileId);
+  return {
+    data: {
+      ...data,
+      blockedIds: data.blockedIds.includes(profileId) ? data.blockedIds : [...data.blockedIds, profileId],
+      incomingLikes: data.incomingLikes.filter((item) => item.id !== profileId),
+      learningStageQueue: data.learningStageQueue.filter((item) => item.id !== profileId),
+      activeChats: data.activeChats.filter((chat) => chat.profile.id !== profileId),
+      viewingProfileId: null,
+    },
+    ok: true,
+    message: `${profile?.name ?? 'This profile'} is blocked on this device.`,
+  };
+}
+
+export function connectWithIntent(data: DemoData, profileId: string, intent: ConnectIntent): Step {
+  const profile = getProfileById(profileId);
+  if (!profile) {
+    return { data, ok: false, message: 'That profile is not in the local deck.' };
+  }
+  const already = data.learningStageQueue.some((item) => item.id === profileId);
+  return {
+    data: {
+      ...data,
+      ...withoutProfile(data, profileId),
+      learningStageQueue: already
+        ? data.learningStageQueue
+        : [...data.learningStageQueue.filter((item) => item.id !== profileId), profile],
+      connectionIntents: { ...data.connectionIntents, [profileId]: intent },
+      activeScreen: 'LikesHub',
+      activeLikesTab: 'Exploring',
+      viewingProfileId: null,
+    },
+    ok: true,
+    message: `${profile.name} is in Exploring as ${intent}. Allow DMs when you want a chat.`,
+  };
 }
 
 export function simulateIncomingLike(data: DemoData): Step {

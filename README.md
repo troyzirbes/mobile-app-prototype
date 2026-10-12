@@ -1,8 +1,8 @@
 # mobile-app-prototype
 
-Local dating demo for a product case study. The first open lands on Alex, a paid profile already on the device. Two likes are waiting, the Learning Stage is empty, and there are no chats. Likes, voice notes, co-op scenarios, and chats are generated on the device. Nothing is sent to a server.
+Local dating demo for a product case study. The first screen is a demo intro. Let's go opens Home as Alex, with paid features unlocked, 80 of 100 energy, and two likes waiting. Search tracks, Exploring, and chats are generated on the device. Nothing is sent to a server.
 
-Registration, login, SMS, and account recovery are out of scope. States, actions, and when each action is available are written in [docs/product-states.md](docs/product-states.md). Reset Demo State returns to that first download.
+Registration, login, and SMS are out of scope. States, actions, and the contextual bottom bar are written in [docs/product-states.md](docs/product-states.md). Reset State returns to the intro.
 
 Energy regenerates once a minute. A like costs 10. A like with a note costs 30. Liking someone back puts them in the Learning Stage. Allow opens a chat. Disallow sets you both back to strangers.
 

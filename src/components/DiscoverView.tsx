@@ -12,7 +12,7 @@ import { CoOpModal } from './CoOpModal';
 import { NoteModal } from './NoteModal';
 import { ProfileSummary } from './ProfileSummary';
 
-const tracks: SearchTrack[] = ['Aesthetic', 'Commonalities', 'Activities', 'Random', 'Exploration'];
+const tracks: SearchTrack[] = ['Aesthetic', 'Commonalities', 'Activities', 'Adventure', 'Location'];
 const stylesCategories: Array<StyleCategory | 'All'> = [
   'All',
   'Athletic',
@@ -37,7 +37,7 @@ export function DiscoverView() {
   const [coOpFor, setCoOpFor] = useState<MockProfile | null>(null);
   const [challengeFor, setChallengeFor] = useState<MockProfile | null>(null);
   const profile = profiles[cursor] ?? profiles[0] ?? null;
-  const mystery = data.activeTrack === 'Random' && !mysteryOpen;
+  const mystery = data.activeTrack === 'Adventure' && !mysteryOpen;
   const now = Date.now();
 
   return (
@@ -81,7 +81,7 @@ export function DiscoverView() {
           ))}
         </View>
       ) : null}
-      {data.activeTrack === 'Exploration' ? (
+      {data.activeTrack === 'Location' ? (
         <View style={styles.block}>
           <Text style={styles.help}>
             Travel dates stay separate from people who live here. Pick a window.
@@ -128,7 +128,7 @@ export function DiscoverView() {
           </View>
         </View>
       ) : null}
-      {data.activeTrack === 'Random' ? (
+      {data.activeTrack === 'Adventure' ? (
         <Pressable accessibilityRole="button" onPress={() => data.reshuffleRandom()} style={styles.link}>
           <Text style={styles.linkText}>Shuffle wildcards</Text>
         </Pressable>

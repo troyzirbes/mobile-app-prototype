@@ -1,8 +1,8 @@
 export const ENERGY_LIKE = 10;
 export const ENERGY_NOTE = 30;
 export const FREE_ENERGY_MAX = 100;
-export const PAID_ENERGY_MAX = 150;
-export const REGEN_INTERVAL_MS = 60_000;
+export const PAID_ENERGY_MAX = 100;
+export const REGEN_INTERVAL_MS = 30 * 60 * 1000;
 export const DAY_MS = 24 * 60 * 60 * 1000;
 
 export function maxEnergy(isPaidMember: boolean): number {
@@ -26,4 +26,18 @@ export function applyRegen(
   const next = Math.min(cap, energyTokens + gained);
   const used = (next - energyTokens) * REGEN_INTERVAL_MS;
   return { energyTokens: next, lastRegenTimestamp: lastRegenTimestamp + used };
+}
+
+export function nextRegenLabel(
+  energyTokens: number,
+  lastRegenTimestamp: number,
+  now: number,
+  isPaidMember: boolean,
+): string {
+  if (energyTokens >= maxEnergy(isPaidMember)) {
+    return 'Full';
+  }
+  const remain = Math.max(0, REGEN_INTERVAL_MS - (now - lastRegenTimestamp));
+  const minutes = Math.max(1, Math.ceil(remain / 60_000));
+  return `+1 in ${minutes} min`;
 }

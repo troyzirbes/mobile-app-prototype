@@ -1,29 +1,35 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import type { DateRange, SearchTrack, StyleCategory, VibeStatus } from '../types/demo';
+import type { AppScreen, ConnectIntent, DateRange, LikesTab, SearchTrack, StyleCategory, VibeStatus } from '../types/demo';
 import {
   adjustEnergy,
   allowDM,
   appendMessage,
   beginChallenge,
+  blockProfile,
   closeChat,
+  connectWithIntent,
   createInitialDemo,
   disallowDM,
   fillAttentionGate,
   grantVerified,
   markCoOpComplete,
   markVoiceHeard,
+  passIncoming,
   reciprocateLike,
   sendLike,
   setPaidMember,
   simulateIncomingLike,
+  skipProfile,
   spendEnergy,
   withRegen,
   type DemoData,
 } from './demoState';
 
-const STORAGE_KEY = 'spark-local-demo-v2';
+const STORAGE_KEY = 'spark-local-demo-v3';
+
+const searchTracks = new Set<AppScreen>(['Aesthetic', 'Commonalities', 'Activities', 'Adventure', 'Location']);
 
 type Actions = {
   refreshEnergy: () => void;
@@ -54,7 +60,18 @@ type Actions = {
   simulateIncomingLike: () => void;
   fillAttentionGate: () => void;
   resetDemo: () => void;
-  dismissFirstDownload: () => void;
+  goTo: (screen: AppScreen, likesTab?: LikesTab) => void;
+  openPerson: (profileId: string) => void;
+  closePerson: () => void;
+  passIncoming: (profileId: string) => void;
+  skipProfile: (profileId: string) => void;
+  blockProfile: (profileId: string) => void;
+  connectWithIntent: (profileId: string, intent: ConnectIntent) => void;
+  setSafety: (patch: Partial<Pick<DemoData, 'adventureEnabled' | 'locationEnabled' | 'likePlusExploration' | 'directContact' | 'accountPaused' | 'maxDailyLikes' | 'blindAudition' | 'isIncognito'>>) => void;
+  setProfileBio: (profileBio: string) => void;
+  saveVoiceIntro: () => void;
+  setLocationStatus: (locationStatus: string) => void;
+  setLocationLocalOnly: (locationLocalOnly: boolean) => void;
 };
 
 export type AppState = DemoData & Actions;
@@ -135,7 +152,24 @@ export const useAppStore = create<AppState>()(
       addEnergy: (delta) => set(adjustEnergy(get(), delta, Date.now())),
       simulateIncomingLike: () => set(apply(simulateIncomingLike(get()))),
       fillAttentionGate: () => set(apply(fillAttentionGate(get(), Date.now()))),
-      dismissFirstDownload: () => set({ showFirstDownload: false }),
+      goTo: (screen, likesTab) =>
+        set({
+          activeScreen: screen,
+          viewingProfileId: null,
+          ...(likesTab ? { activeLikesTab: likesTab } : {}),
+          ...(searchTracks.has(screen) ? { activeTrack: screen as SearchTrack } : {}),
+        }),
+      openPerson: (viewingProfileId) => set({ viewingProfileId }),
+      closePerson: () => set({ viewingProfileId: null }),
+      passIncoming: (profileId) => set(apply(passIncoming(get(), profileId))),
+      skipProfile: (profileId) => set(apply(skipProfile(get(), profileId, Date.now()))),
+      blockProfile: (profileId) => set(apply(blockProfile(get(), profileId))),
+      connectWithIntent: (profileId, intent) => set(apply(connectWithIntent(get(), profileId, intent))),
+      setSafety: (patch) => set(patch),
+      setProfileBio: (profileBio) => set({ profileBio }),
+      saveVoiceIntro: () => set({ voiceIntroSaved: true, statusMessage: 'Voice intro saved on this device.' }),
+      setLocationStatus: (locationStatus) => set({ locationStatus, statusMessage: locationStatus ? 'Status saved on this device.' : 'Status cleared.' }),
+      setLocationLocalOnly: (locationLocalOnly) => set({ locationLocalOnly }),
       resetDemo: () => {
         set({ ...createInitialDemo(), statusMessage: 'Demo state restored.' });
         void useAppStore.persist.clearStorage();
@@ -164,7 +198,24 @@ export const useAppStore = create<AppState>()(
         voiceHeardIds: state.voiceHeardIds,
         coOpCompletedIds: state.coOpCompletedIds,
         vibe: state.vibe,
-        showFirstDownload: state.showFirstDownload,
+        activeScreen: state.activeScreen,
+        activeLikesTab: state.activeLikesTab,
+        viewingProfileId: state.viewingProfileId,
+        blockedIds: state.blockedIds,
+        skippedUntil: state.skippedUntil,
+        likesSentDay: state.likesSentDay,
+        likesSentCount: state.likesSentCount,
+        maxDailyLikes: state.maxDailyLikes,
+        adventureEnabled: state.adventureEnabled,
+        locationEnabled: state.locationEnabled,
+        likePlusExploration: state.likePlusExploration,
+        directContact: state.directContact,
+        accountPaused: state.accountPaused,
+        profileBio: state.profileBio,
+        voiceIntroSaved: state.voiceIntroSaved,
+        locationStatus: state.locationStatus,
+        locationLocalOnly: state.locationLocalOnly,
+        connectionIntents: state.connectionIntents,
       }),
       onRehydrateStorage: () => (state) => {
         if (state) {
