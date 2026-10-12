@@ -122,7 +122,7 @@ export function TrackScreen() {
                   shape="card"
                   color={profile.photos[0] ?? colors.pass}
                   hidden={!photosRevealed(data, profile.id)}
-                  size={148}
+                  size={128}
                 />
                 <Text style={styles.name}>{profile.name.split(' ')[0]}</Text>
                 <Text style={styles.meta}>
