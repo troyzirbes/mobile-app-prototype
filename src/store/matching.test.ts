@@ -29,7 +29,7 @@ describe('filterProfilesForTrack', () => {
     const away = filterProfilesForTrack(
       mockProfiles,
       demoUser,
-      'Exploration',
+      'Location',
       'All',
       { startDate: '2026-10-18', endDate: '2026-10-20' },
       1,
@@ -39,7 +39,7 @@ describe('filterProfilesForTrack', () => {
     const unset = filterProfilesForTrack(
       mockProfiles,
       demoUser,
-      'Exploration',
+      'Location',
       'All',
       null,
       1,

@@ -69,7 +69,7 @@ export function filterProfilesForTrack(
   let pool = profiles.filter(
     (profile) => isMutualMatch(user, profile) && !busy.has(profile.id),
   );
-  if (track === 'Exploration') {
+  if (track === 'Location') {
     pool = pool.filter(
       (profile) => profile.isExplorer && rangesOverlap(explorerDateRange, profile),
     );
@@ -79,7 +79,7 @@ export function filterProfilesForTrack(
   if (track === 'Aesthetic' && aestheticStyle !== 'All') {
     pool = pool.filter((profile) => profile.styleCategory === aestheticStyle);
   }
-  if (track === 'Random') {
+  if (track === 'Adventure') {
     return seededOrder(pool, randomSalt);
   }
   if (track === 'Commonalities') {

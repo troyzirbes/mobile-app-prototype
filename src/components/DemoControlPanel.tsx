@@ -5,9 +5,8 @@ import { colors, radii, spacing } from '../theme';
 const controls = [
   { label: '+20 Energy', run: (store: ReturnType<typeof useAppStore.getState>) => store.addEnergy(20) },
   { label: '−20 Energy', run: (store: ReturnType<typeof useAppStore.getState>) => store.addEnergy(-20) },
-  { label: 'Simulate Incoming Like', run: (store: ReturnType<typeof useAppStore.getState>) => store.simulateIncomingLike() },
-  { label: 'Fill Attention Gate', run: (store: ReturnType<typeof useAppStore.getState>) => store.fillAttentionGate() },
-  { label: 'Reset Demo State', run: (store: ReturnType<typeof useAppStore.getState>) => store.resetDemo() },
+  { label: 'Simulate Like', run: (store: ReturnType<typeof useAppStore.getState>) => store.simulateIncomingLike() },
+  { label: 'Reset State', run: (store: ReturnType<typeof useAppStore.getState>) => store.resetDemo() },
 ] as const;
 
 export function DemoControlPanel() {

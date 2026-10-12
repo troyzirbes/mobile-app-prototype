@@ -28,6 +28,7 @@ Spark is an Expo React Native prototype written in TypeScript.
 - Sample profiles live in `src/data/profiles.ts` and `src/data/mockData.ts` and ship with the app. Do not fetch profiles over the network.
 - Every sample profile is an adult, age 21 or older.
 - The demo store in `src/store/useAppStore.ts` is local only. Do not add a database, auth, or a network call for likes, voice notes, or chats.
+- The first screen is the demo intro from `createInitialDemo` in `src/store/demoState.ts`. Contextual bottom-bar items live in `src/navigation/contextualNav.ts`. Relationship states live in `docs/product-states.md`. Do not add registration or login.
 
 ## Checks
 

@@ -27,7 +27,7 @@ export function YouView() {
           onPress={() => data.setPaidMember(!data.isPaidMember)}
           style={styles.secondary}
         >
-          <Text style={styles.secondaryText}>{data.isPaidMember ? 'Switch to free cap (100)' : 'Switch to paid cap (150)'}</Text>
+          <Text style={styles.secondaryText}>{data.isPaidMember ? 'Switch to free cap (100)' : 'Switch to paid cap (100)'}</Text>
         </Pressable>
       </View>
       <View style={styles.card}>

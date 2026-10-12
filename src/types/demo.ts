@@ -11,8 +11,14 @@ export type SearchTrack =
   | 'Aesthetic'
   | 'Commonalities'
   | 'Activities'
-  | 'Random'
-  | 'Exploration';
+  | 'Adventure'
+  | 'Location';
+
+export type AppScreen = 'Intro' | 'Home' | SearchTrack | 'Profile' | 'LikesHub' | 'AppInfo';
+
+export type LikesTab = 'Interested' | 'Exploring' | 'Connections';
+
+export type ConnectIntent = 'Chat' | 'Dates' | 'IRL Friends';
 
 export type AudioPrompt = {
   promptText: string;
