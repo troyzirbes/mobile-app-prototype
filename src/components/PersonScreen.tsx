@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { demoUser, getProfileById } from '../data/mockData';
 import { ENERGY_LIKE, ENERGY_NOTE } from '../store/energy';
 import { photosRevealed } from '../store/demoState';
 import { overlapScore } from '../store/matching';
 import { useAppStore } from '../store/useAppStore';
 import type { MockProfile } from '../types/demo';
-import { colors, radii, spacing } from '../theme';
+import { portraits } from '../data/portraits';
+import { colors, fonts, radii, shadow, spacing } from '../theme';
 import { Avatar } from './Avatar';
 import { ChallengeModal } from './ChallengeModal';
 import { CoOpModal } from './CoOpModal';
@@ -34,7 +35,11 @@ export function PersonScreen() {
         <EnergyPill />
       </View>
       <View style={styles.hero}>
-        <Avatar name={profile.name} color={profile.photos[0] ?? colors.pass} hidden={hidden} size={220} />
+        {hidden || portraits[profile.id] === undefined ? (
+          <Avatar name={profile.name} profileId={profile.id} color={profile.photos[0] ?? colors.pass} hidden={hidden} size={220} />
+        ) : (
+          <Image source={portraits[profile.id]} style={styles.heroImage} resizeMode="cover" />
+        )}
       </View>
       <Text style={styles.name}>
         {profile.name}, {profile.age}
@@ -129,23 +134,33 @@ const styles = StyleSheet.create({
   },
   close: {
     color: colors.ink,
-    fontWeight: '800',
+    fontFamily: fonts.bodyBold,
+    fontSize: 16,
   },
   hero: {
     alignItems: 'center',
   },
+  heroImage: {
+    width: '100%',
+    height: 420,
+    borderRadius: radii.card,
+    ...shadow,
+  },
   name: {
     color: colors.ink,
-    fontSize: 24,
-    fontWeight: '800',
+    fontFamily: fonts.display,
+    fontSize: 34,
   },
   rate: {
     color: colors.coralDeep,
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
+    fontSize: 15,
   },
   body: {
     color: colors.ink,
-    lineHeight: 20,
+    fontFamily: fonts.body,
+    fontSize: 16,
+    lineHeight: 24,
   },
   verified: {
     color: colors.likeStamp,
@@ -157,17 +172,16 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   action: {
-    borderWidth: 1,
-    borderColor: colors.line,
     backgroundColor: colors.card,
     borderRadius: radii.button,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
+    ...shadow,
   },
   actionText: {
     color: colors.ink,
-    fontWeight: '800',
-    fontSize: 12,
+    fontFamily: fonts.bodyBold,
+    fontSize: 13,
   },
   secondary: {
     borderWidth: 1,

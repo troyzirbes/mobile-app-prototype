@@ -3,7 +3,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import { demoUser } from '../data/mockData';
 import { matchTrack, searchTrackMeta } from '../navigation/tracks';
 import { useAppStore } from '../store/useAppStore';
-import { colors, radii, spacing } from '../theme';
+import { colors, fonts, radii, shadow, spacing } from '../theme';
 import { EnergyPill } from './EnergyPill';
 
 export function HomeScreen() {
@@ -95,9 +95,9 @@ const styles = StyleSheet.create({
   prompt: {
     flex: 1,
     color: colors.ink,
-    fontSize: 22,
-    fontWeight: '800',
-    lineHeight: 28,
+    fontFamily: fonts.display,
+    fontSize: 32,
+    lineHeight: 36,
   },
   info: {
     width: 22,
@@ -112,7 +112,9 @@ const styles = StyleSheet.create({
   },
   help: {
     color: colors.muted,
-    lineHeight: 20,
+    fontFamily: fonts.body,
+    fontSize: 15,
+    lineHeight: 22,
   },
   carousel: {
     flexDirection: 'row',
@@ -122,64 +124,67 @@ const styles = StyleSheet.create({
     minHeight: 180,
   },
   side: {
-    width: 84,
-    height: 84,
-    borderRadius: 42,
-    backgroundColor: colors.chip,
+    width: 92,
+    height: 92,
+    borderRadius: 46,
+    backgroundColor: colors.card,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: colors.line,
+    ...shadow,
   },
   sideIcon: {
     fontSize: 22,
   },
   sideLabel: {
     color: colors.muted,
-    fontSize: 10,
-    fontWeight: '700',
+    fontFamily: fonts.body,
+    fontSize: 11,
   },
   front: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
+    width: 156,
+    height: 156,
+    borderRadius: 78,
     backgroundColor: colors.card,
-    borderWidth: 2,
-    borderColor: colors.ink,
     alignItems: 'center',
     justifyContent: 'center',
+    ...shadow,
   },
   frontIcon: {
     fontSize: 36,
   },
   frontLabel: {
     color: colors.ink,
-    fontWeight: '800',
-    fontSize: 16,
+    fontFamily: fonts.display,
+    fontSize: 22,
   },
   or: {
     textAlign: 'center',
     color: colors.muted,
-    fontWeight: '700',
+    fontFamily: fonts.body,
+    fontSize: 15,
   },
   input: {
-    borderWidth: 1,
-    borderColor: colors.line,
+    borderWidth: 0,
     backgroundColor: colors.card,
     borderRadius: radii.stamp,
     padding: spacing.md,
     color: colors.ink,
+    fontFamily: fonts.body,
+    fontSize: 16,
     userSelect: 'text',
+    ...shadow,
   },
   button: {
     alignSelf: 'center',
-    backgroundColor: colors.likeStamp,
+    backgroundColor: colors.coral,
     borderRadius: radii.button,
     paddingHorizontal: spacing.xl,
     paddingVertical: spacing.md,
+    ...shadow,
   },
   buttonText: {
-    color: colors.white,
-    fontWeight: '800',
+    color: colors.card,
+    fontFamily: fonts.bodyBold,
+    fontSize: 16,
   },
 });

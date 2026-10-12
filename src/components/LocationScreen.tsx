@@ -100,9 +100,10 @@ export function LocationScreen() {
             >
               <Avatar
                 name={profile.name}
+                profileId={profile.id}
                 color={profile.photos[0] ?? colors.pass}
                 hidden={!photosRevealed(data, profile.id)}
-                size={44}
+                size={64}
               />
               <Text style={styles.pinName}>{profile.name.split(' ')[0]}</Text>
             </Pressable>
@@ -123,9 +124,11 @@ export function LocationScreen() {
                 <Pressable key={profile.id} accessibilityRole="button" onPress={() => data.openPerson(profile.id)} style={styles.explorer}>
                   <Avatar
                     name={profile.name}
+                    profileId={profile.id}
+                    shape="card"
                     color={profile.photos[0] ?? colors.pass}
                     hidden={!photosRevealed(data, profile.id)}
-                    size={52}
+                    size={88}
                   />
                   <Text style={styles.pinName}>{profile.name.split(' ')[0]}</Text>
                   <Text style={styles.help}>{profile.explorerDates}</Text>

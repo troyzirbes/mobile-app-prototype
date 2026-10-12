@@ -1,32 +1,49 @@
 export const colors = {
-  background: '#F4EFE8',
-  ink: '#1C1917',
-  muted: '#78716C',
-  card: '#FFFFFF',
-  line: '#E7E0D6',
-  coral: '#E25B45',
-  coralDeep: '#C44734',
-  pass: '#3F4A50',
-  likeStamp: '#1F8A4C',
-  passStamp: '#E24B4B',
-  chip: '#F6F1EA',
-  white: '#FFFFFF',
-  scrim: 'rgba(28, 25, 23, 0.78)',
-  scrimClear: 'rgba(28, 25, 23, 0)',
+  background: '#F6E6D4',
+  backgroundDeep: '#F0D4BE',
+  ink: '#2C2118',
+  muted: '#8A6E5C',
+  card: '#FFF8F1',
+  line: '#E7D2BE',
+  coral: '#E15A32',
+  coralDeep: '#B83E22',
+  pass: '#3E5348',
+  likeStamp: '#2F6B4A',
+  passStamp: '#C44734',
+  chip: '#F8E2CC',
+  white: '#FFF8F1',
+  gold: '#C6922E',
+  night: '#241C16',
+  scrim: 'rgba(36, 28, 22, 0.72)',
+  scrimClear: 'rgba(36, 28, 22, 0)',
+} as const;
+
+export const fonts = {
+  display: 'Fraunces_600SemiBold',
+  body: 'Nunito_600SemiBold',
+  bodyBold: 'Nunito_800ExtraBold',
 } as const;
 
 export const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 24,
-  xxl: 32,
+  xs: 6,
+  sm: 10,
+  md: 14,
+  lg: 20,
+  xl: 28,
+  xxl: 40,
 } as const;
 
 export const radii = {
   card: 28,
   chip: 999,
   button: 999,
-  stamp: 8,
+  stamp: 16,
+} as const;
+
+export const shadow = {
+  shadowColor: '#2C2118',
+  shadowOffset: { width: 0, height: 10 },
+  shadowOpacity: 0.08,
+  shadowRadius: 18,
+  elevation: 3,
 } as const;

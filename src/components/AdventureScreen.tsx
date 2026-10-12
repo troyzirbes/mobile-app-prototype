@@ -77,7 +77,7 @@ export function AdventureScreen() {
               - {rule}
             </Text>
           ))}
-          <Pressable accessibilityRole="button" onPress={start} style={styles.button}>
+          <Pressable accessibilityRole="button" onPress={() => start()} style={styles.button}>
             <Text style={styles.buttonText}>Let's go!</Text>
           </Pressable>
         </View>

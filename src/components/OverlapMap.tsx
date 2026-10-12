@@ -40,7 +40,7 @@ export function OverlapMap({ tags, profiles, matches, hidden, onOpen }: Props) {
             onPress={() => onOpen(profile.id)}
             style={[styles.person, { left: 40 + (index % 4) * 72, top: 70 + Math.floor(index / 4) * 78 }]}
           >
-            <Avatar name={profile.name} color={profile.photos[0] ?? colors.pass} hidden={hidden(profile)} size={48} />
+            <Avatar name={profile.name} profileId={profile.id} color={profile.photos[0] ?? colors.pass} hidden={hidden(profile)} size={56} />
             <Text style={styles.name}>{profile.name.split(' ')[0]}</Text>
             <Text style={styles.meta}>
               {shown.filter((tag) => matches(profile, tag)).join(' · ')}

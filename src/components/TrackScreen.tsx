@@ -6,7 +6,7 @@ import { discoverProfiles, photosRevealed } from '../store/demoState';
 import { overlapScore } from '../store/matching';
 import { useAppStore } from '../store/useAppStore';
 import type { MockProfile, SearchTrack, StyleCategory } from '../types/demo';
-import { colors, radii, spacing } from '../theme';
+import { colors, fonts, radii, shadow, spacing } from '../theme';
 import { Avatar } from './Avatar';
 import { EnergyPill } from './EnergyPill';
 import { OverlapMap } from './OverlapMap';
@@ -118,9 +118,11 @@ export function TrackScreen() {
               >
                 <Avatar
                   name={profile.name}
+                  profileId={profile.id}
+                  shape="card"
                   color={profile.photos[0] ?? colors.pass}
                   hidden={!photosRevealed(data, profile.id)}
-                  size={72}
+                  size={148}
                 />
                 <Text style={styles.name}>{profile.name.split(' ')[0]}</Text>
                 <Text style={styles.meta}>
@@ -156,9 +158,9 @@ const styles = StyleSheet.create({
   prompt: {
     flex: 1,
     color: colors.ink,
-    fontSize: 22,
-    fontWeight: '800',
-    lineHeight: 28,
+    fontFamily: fonts.display,
+    fontSize: 30,
+    lineHeight: 34,
   },
   info: {
     width: 22,
@@ -173,11 +175,14 @@ const styles = StyleSheet.create({
   },
   help: {
     color: colors.muted,
-    lineHeight: 20,
+    fontFamily: fonts.body,
+    fontSize: 15,
+    lineHeight: 22,
   },
   label: {
     color: colors.ink,
-    fontWeight: '800',
+    fontFamily: fonts.display,
+    fontSize: 20,
   },
   chips: {
     flexDirection: 'row',
@@ -185,64 +190,72 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   chip: {
-    backgroundColor: colors.chip,
+    backgroundColor: colors.card,
     borderRadius: radii.chip,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
+    ...shadow,
   },
   chipOn: {
     backgroundColor: colors.ink,
   },
   chipText: {
     color: colors.ink,
-    fontWeight: '700',
-    fontSize: 13,
+    fontFamily: fonts.body,
+    fontSize: 14,
   },
   chipTextOn: {
     color: colors.white,
   },
   or: {
     color: colors.muted,
-    fontWeight: '700',
+    fontFamily: fonts.body,
+    fontSize: 15,
   },
   input: {
-    borderWidth: 1,
-    borderColor: colors.line,
+    borderWidth: 0,
     backgroundColor: colors.card,
     borderRadius: radii.stamp,
     padding: spacing.md,
     color: colors.ink,
+    fontFamily: fonts.body,
+    fontSize: 16,
     userSelect: 'text',
+    ...shadow,
   },
   button: {
     alignSelf: 'center',
-    backgroundColor: colors.likeStamp,
+    backgroundColor: colors.coral,
     borderRadius: radii.button,
     paddingHorizontal: spacing.xl,
     paddingVertical: spacing.md,
+    ...shadow,
   },
   buttonText: {
-    color: colors.white,
-    fontWeight: '800',
+    color: colors.card,
+    fontFamily: fonts.bodyBold,
+    fontSize: 16,
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: spacing.md,
+    justifyContent: 'space-between',
+    gap: spacing.lg,
   },
   cell: {
-    width: '30%',
+    width: '46%',
     alignItems: 'center',
-    gap: spacing.xs,
+    gap: spacing.sm,
   },
   name: {
     color: colors.ink,
-    fontWeight: '800',
-    fontSize: 13,
+    fontFamily: fonts.display,
+    fontSize: 18,
   },
   meta: {
     color: colors.muted,
-    fontSize: 11,
+    fontFamily: fonts.body,
+    fontSize: 12,
     textAlign: 'center',
   },
 });

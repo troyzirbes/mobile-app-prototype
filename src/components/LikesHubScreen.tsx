@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useAppStore } from '../store/useAppStore';
 import type { MockProfile } from '../types/demo';
-import { colors, radii, spacing } from '../theme';
+import { colors, fonts, radii, shadow, spacing } from '../theme';
 import { Avatar } from './Avatar';
 import { ChatsView } from './ChatsView';
 import { CoOpModal } from './CoOpModal';
@@ -45,7 +45,7 @@ export function LikesHubScreen() {
           {tab === 'Interested'
             ? data.incomingLikes.map((profile) => (
                 <View key={profile.id} style={styles.card}>
-                  <Avatar name={profile.name} color={profile.photos[0] ?? colors.pass} hidden={false} size={56} />
+                  <Avatar name={profile.name} profileId={profile.id} color={profile.photos[0] ?? colors.pass} hidden={false} size={72} />
                   <View style={styles.meta}>
                     <Text style={styles.name}>
                       {profile.name}, {profile.age}
@@ -188,7 +188,9 @@ const styles = StyleSheet.create({
   },
   lead: {
     color: colors.muted,
-    lineHeight: 20,
+    fontFamily: fonts.body,
+    fontSize: 15,
+    lineHeight: 22,
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.md,
   },
@@ -205,9 +207,8 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     backgroundColor: colors.card,
     borderRadius: radii.card,
-    borderWidth: 1,
-    borderColor: colors.line,
     padding: spacing.md,
+    ...shadow,
   },
   meta: {
     flex: 1,
@@ -223,16 +224,18 @@ const styles = StyleSheet.create({
   },
   name: {
     color: colors.ink,
-    fontWeight: '800',
-    fontSize: 18,
+    fontFamily: fonts.display,
+    fontSize: 24,
   },
   rate: {
     color: colors.coralDeep,
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
   },
   body: {
     color: colors.ink,
-    lineHeight: 20,
+    fontFamily: fonts.body,
+    fontSize: 15,
+    lineHeight: 22,
   },
   row: {
     flexDirection: 'row',
@@ -246,8 +249,8 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   primaryText: {
-    color: colors.white,
-    fontWeight: '800',
+    color: colors.card,
+    fontFamily: fonts.bodyBold,
   },
   secondary: {
     borderWidth: 1,
@@ -258,7 +261,7 @@ const styles = StyleSheet.create({
   },
   secondaryText: {
     color: colors.ink,
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
   },
   panel: {
     gap: spacing.sm,
