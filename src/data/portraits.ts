@@ -7,4 +7,5 @@ export const portraits: Record<string, number> = {
   'theo-park': require('../../assets/portraits/theo.jpg'),
   'miles-grant': require('../../assets/portraits/miles.jpg'),
   'ben-okonkwo': require('../../assets/portraits/ben.jpg'),
+  'noa-kealoha': require('../../assets/portraits/noa.jpg'),
 };
