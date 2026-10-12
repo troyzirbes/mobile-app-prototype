@@ -53,7 +53,7 @@ export function TrackScreen() {
   });
 
   return (
-    <ScrollView contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <View style={styles.top}>
         <Text style={styles.prompt}>
           {meta?.icon} {meta?.line}, {demoUser.name}?
@@ -140,6 +140,9 @@ export function TrackScreen() {
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   content: {
     padding: spacing.lg,
     gap: spacing.md,

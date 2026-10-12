@@ -53,7 +53,7 @@ export function AdventureScreen() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <View style={styles.top}>
         <Text style={styles.prompt}>🍀 Looking for low-stakes excitement, {demoUser.name}?</Text>
         <Pressable accessibilityRole="button" onPress={() => setInfo((value) => !value)}>
@@ -153,6 +153,9 @@ export function AdventureScreen() {
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   content: {
     padding: spacing.lg,
     gap: spacing.md,

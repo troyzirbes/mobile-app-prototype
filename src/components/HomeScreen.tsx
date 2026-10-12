@@ -22,7 +22,7 @@ export function HomeScreen() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <View style={styles.top}>
         <Text style={styles.prompt}>
           How do you want to explore today, {demoUser.name}?
@@ -79,6 +79,9 @@ export function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   content: {
     padding: spacing.lg,
     gap: spacing.md,

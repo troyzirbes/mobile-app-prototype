@@ -26,7 +26,7 @@ export function PersonScreen() {
   const shared = profile.interests.filter((interest) => demoUser.interests.includes(interest));
   const hidden = !photosRevealed(data, profile.id);
   return (
-    <ScrollView contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <View style={styles.top}>
         <Pressable accessibilityRole="button" onPress={() => data.closePerson()}>
           <Text style={styles.close}>Close</Text>
@@ -114,6 +114,9 @@ export function PersonScreen() {
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   content: {
     padding: spacing.lg,
     gap: spacing.sm,

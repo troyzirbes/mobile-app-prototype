@@ -38,7 +38,7 @@ export function LikesHubScreen() {
       {tab === 'Connections' ? (
         <ChatsView />
       ) : (
-        <ScrollView contentContainerStyle={styles.content}>
+        <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
           {tab === 'Interested' && data.incomingLikes.length === 0 ? (
             <Text style={styles.empty}>Nobody is waiting. Simulate Like can add a local profile.</Text>
           ) : null}
@@ -182,6 +182,9 @@ const styles = StyleSheet.create({
   frame: {
     flex: 1,
     minHeight: 0,
+  },
+  screen: {
+    flex: 1,
   },
   lead: {
     color: colors.muted,

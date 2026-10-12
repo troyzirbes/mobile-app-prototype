@@ -7,7 +7,7 @@ import { Avatar } from './Avatar';
 export function MyProfileScreen() {
   const data = useAppStore();
   return (
-    <ScrollView contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <Text style={styles.title}>My Profile</Text>
       <Text style={styles.lead}>
         {demoUser.name}, {demoUser.age}. Edits stay on this device.
@@ -80,6 +80,9 @@ function Toggle({ label, onPress }: { label: string; onPress: () => void }) {
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   content: {
     padding: spacing.lg,
     gap: spacing.sm,

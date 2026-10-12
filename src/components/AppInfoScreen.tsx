@@ -5,7 +5,7 @@ import { colors, radii, spacing } from '../theme';
 export function AppInfoScreen() {
   const goTo = useAppStore((state) => state.goTo);
   return (
-    <ScrollView contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <Text style={styles.title}>App info</Text>
       <Text style={styles.body}>
         This demo supports five search styles, energy for likes you send, a free reciprocate into Exploring, and Allow before a chat.
@@ -24,6 +24,9 @@ export function AppInfoScreen() {
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   content: {
     padding: spacing.lg,
     gap: spacing.md,

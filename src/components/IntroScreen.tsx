@@ -20,7 +20,7 @@ const leftOut = [
 export function IntroScreen() {
   const goTo = useAppStore((state) => state.goTo);
   return (
-    <ScrollView contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <Text style={styles.kicker}>Demo Intro</Text>
       <View style={styles.card}>
         <Text style={styles.title}>Demo dating app to compliment case study</Text>
@@ -28,6 +28,9 @@ export function IntroScreen() {
           {demoUser.name} is already on this phone. Paid features are unlocked. There is no account to create.
         </Text>
       </View>
+      <Pressable accessibilityRole="button" onPress={() => goTo('Home')} style={styles.button}>
+        <Text style={styles.buttonText}>Let's go!</Text>
+      </Pressable>
       <View style={styles.card}>
         <Text style={styles.heading}>Here's what it does support:</Text>
         {included.map((item) => (
@@ -42,14 +45,14 @@ export function IntroScreen() {
           </Text>
         ))}
       </View>
-      <Pressable accessibilityRole="button" onPress={() => goTo('Home')} style={styles.button}>
-        <Text style={styles.buttonText}>Let's go!</Text>
-      </Pressable>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   content: {
     padding: spacing.lg,
     gap: spacing.md,
