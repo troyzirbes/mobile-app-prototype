@@ -35,8 +35,11 @@ const styles = StyleSheet.create({
   panel: {
     backgroundColor: colors.night,
     paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.md,
     gap: spacing.sm,
+    borderTopWidth: 3,
+    borderTopColor: colors.gold,
   },
   title: {
     color: colors.chip,

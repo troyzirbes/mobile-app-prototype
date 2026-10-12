@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { MockProfile } from '../types/demo';
-import { colors, spacing } from '../theme';
+import { colors, drawn, fonts, radii, spacing } from '../theme';
 import { Avatar } from './Avatar';
 
 type Props = {
@@ -55,9 +55,10 @@ export function OverlapMap({ tags, profiles, matches, hidden, onOpen }: Props) {
 const styles = StyleSheet.create({
   board: {
     height: 280,
-    borderRadius: 28,
+    borderRadius: radii.card,
     backgroundColor: colors.chip,
     overflow: 'hidden',
+    ...drawn,
   },
   circle: {
     position: 'absolute',
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
   },
   tag: {
     color: colors.ink,
-    fontWeight: '800',
+    fontFamily: fonts.bodyBold,
     fontSize: 12,
   },
   people: {
@@ -85,12 +86,13 @@ const styles = StyleSheet.create({
   },
   name: {
     color: colors.ink,
-    fontSize: 11,
-    fontWeight: '700',
+    fontFamily: fonts.display,
+    fontSize: 13,
   },
   meta: {
     color: colors.muted,
-    fontSize: 9,
+    fontFamily: fonts.body,
+    fontSize: 10,
     textAlign: 'center',
   },
 });

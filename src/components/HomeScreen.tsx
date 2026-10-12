@@ -3,7 +3,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import { demoUser } from '../data/mockData';
 import { matchTrack, searchTrackMeta } from '../navigation/tracks';
 import { useAppStore } from '../store/useAppStore';
-import { colors, fonts, radii, shadow, spacing } from '../theme';
+import { colors, drawn, fonts, radii, shadow, spacing } from '../theme';
 import { EnergyPill } from './EnergyPill';
 
 export function HomeScreen() {
@@ -103,12 +103,13 @@ const styles = StyleSheet.create({
     width: 22,
     height: 22,
     borderRadius: 11,
-    borderWidth: 1,
-    borderColor: colors.muted,
-    color: colors.muted,
+    borderWidth: 2,
+    borderColor: colors.inkLine,
+    color: colors.ink,
+    fontFamily: fonts.bodyBold,
     textAlign: 'center',
-    fontWeight: '800',
     overflow: 'hidden',
+    lineHeight: 20,
   },
   help: {
     color: colors.muted,
@@ -130,6 +131,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
     alignItems: 'center',
     justifyContent: 'center',
+    ...drawn,
     ...shadow,
   },
   sideIcon: {
@@ -144,9 +146,10 @@ const styles = StyleSheet.create({
     width: 156,
     height: 156,
     borderRadius: 78,
-    backgroundColor: colors.card,
+    backgroundColor: colors.chip,
     alignItems: 'center',
     justifyContent: 'center',
+    ...drawn,
     ...shadow,
   },
   frontIcon: {
@@ -164,7 +167,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   input: {
-    borderWidth: 0,
     backgroundColor: colors.card,
     borderRadius: radii.stamp,
     padding: spacing.md,
@@ -172,7 +174,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 16,
     userSelect: 'text',
-    ...shadow,
+    ...drawn,
   },
   button: {
     alignSelf: 'center',

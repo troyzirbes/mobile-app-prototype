@@ -7,7 +7,7 @@ import { overlapScore } from '../store/matching';
 import { useAppStore } from '../store/useAppStore';
 import type { MockProfile } from '../types/demo';
 import { portraits } from '../data/portraits';
-import { colors, fonts, radii, shadow, spacing } from '../theme';
+import { colors, drawn, fonts, radii, shadow, spacing } from '../theme';
 import { Avatar } from './Avatar';
 import { ChallengeModal } from './ChallengeModal';
 import { CoOpModal } from './CoOpModal';
@@ -38,7 +38,9 @@ export function PersonScreen() {
         {hidden || portraits[profile.id] === undefined ? (
           <Avatar name={profile.name} profileId={profile.id} color={profile.photos[0] ?? colors.pass} hidden={hidden} size={220} />
         ) : (
-          <Image source={portraits[profile.id]} style={styles.heroImage} resizeMode="cover" />
+          <View style={styles.heroFrame}>
+            <Image source={portraits[profile.id]} style={styles.heroImage} resizeMode="cover" />
+          </View>
         )}
       </View>
       <Text style={styles.name}>
@@ -140,11 +142,17 @@ const styles = StyleSheet.create({
   hero: {
     alignItems: 'center',
   },
+  heroFrame: {
+    width: '100%',
+    borderRadius: radii.card,
+    overflow: 'hidden',
+    borderWidth: 3,
+    borderColor: colors.inkLine,
+    ...shadow,
+  },
   heroImage: {
     width: '100%',
     height: 420,
-    borderRadius: radii.card,
-    ...shadow,
   },
   name: {
     color: colors.ink,
@@ -164,7 +172,8 @@ const styles = StyleSheet.create({
   },
   verified: {
     color: colors.likeStamp,
-    fontWeight: '800',
+    fontFamily: fonts.bodyBold,
+    fontSize: 15,
   },
   actions: {
     flexDirection: 'row',
@@ -184,14 +193,15 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   secondary: {
-    borderWidth: 1,
-    borderColor: colors.line,
+    ...drawn,
+    backgroundColor: colors.card,
     borderRadius: radii.button,
     alignItems: 'center',
     padding: spacing.md,
   },
   secondaryText: {
     color: colors.ink,
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
+    fontSize: 15,
   },
 });

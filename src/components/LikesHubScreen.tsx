@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useAppStore } from '../store/useAppStore';
 import type { MockProfile } from '../types/demo';
-import { colors, fonts, radii, shadow, spacing } from '../theme';
+import { colors, drawn, fonts, radii, shadow, spacing } from '../theme';
 import { Avatar } from './Avatar';
 import { ChatsView } from './ChatsView';
 import { CoOpModal } from './CoOpModal';
@@ -201,6 +201,9 @@ const styles = StyleSheet.create({
   },
   empty: {
     color: colors.ink,
+    fontFamily: fonts.body,
+    fontSize: 16,
+    lineHeight: 22,
   },
   card: {
     flexDirection: 'row',
@@ -208,6 +211,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
     borderRadius: radii.card,
     padding: spacing.md,
+    ...drawn,
     ...shadow,
   },
   meta: {
@@ -217,10 +221,10 @@ const styles = StyleSheet.create({
   block: {
     backgroundColor: colors.card,
     borderRadius: radii.card,
-    borderWidth: 1,
-    borderColor: colors.line,
     padding: spacing.md,
     gap: spacing.sm,
+    ...drawn,
+    ...shadow,
   },
   name: {
     color: colors.ink,
@@ -253,8 +257,8 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bodyBold,
   },
   secondary: {
-    borderWidth: 1,
-    borderColor: colors.line,
+    ...drawn,
+    backgroundColor: colors.card,
     borderRadius: radii.button,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,

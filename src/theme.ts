@@ -1,21 +1,22 @@
 export const colors = {
-  background: '#F6E6D4',
-  backgroundDeep: '#F0D4BE',
-  ink: '#2C2118',
-  muted: '#8A6E5C',
-  card: '#FFF8F1',
-  line: '#E7D2BE',
-  coral: '#E15A32',
-  coralDeep: '#B83E22',
+  background: '#F4E2CE',
+  backgroundDeep: '#E8C7A6',
+  ink: '#2A1C14',
+  inkLine: '#3A2A22',
+  muted: '#7C5E4C',
+  card: '#FFF8F0',
+  line: '#E4CDB8',
+  coral: '#E25B32',
+  coralDeep: '#B84324',
   pass: '#3E5348',
-  likeStamp: '#2F6B4A',
+  likeStamp: '#2E6B48',
   passStamp: '#C44734',
-  chip: '#F8E2CC',
-  white: '#FFF8F1',
-  gold: '#C6922E',
-  night: '#241C16',
-  scrim: 'rgba(36, 28, 22, 0.72)',
-  scrimClear: 'rgba(36, 28, 22, 0)',
+  chip: '#F6D7B8',
+  white: '#FFF8F0',
+  gold: '#E09A3A',
+  night: '#241910',
+  scrim: 'rgba(36, 25, 16, 0.72)',
+  scrimClear: 'rgba(36, 25, 16, 0)',
 } as const;
 
 export const fonts = {
@@ -41,9 +42,14 @@ export const radii = {
 } as const;
 
 export const shadow = {
-  shadowColor: '#2C2118',
-  shadowOffset: { width: 0, height: 10 },
-  shadowOpacity: 0.08,
-  shadowRadius: 18,
+  shadowColor: '#3A2A22',
+  shadowOffset: { width: 0, height: 8 },
+  shadowOpacity: 0.12,
+  shadowRadius: 16,
   elevation: 3,
+} as const;
+
+export const drawn = {
+  borderWidth: 2,
+  borderColor: colors.inkLine,
 } as const;

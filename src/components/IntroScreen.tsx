@@ -1,7 +1,7 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { demoUser } from '../data/mockData';
 import { useAppStore } from '../store/useAppStore';
-import { colors, fonts, radii, shadow, spacing } from '../theme';
+import { colors, drawn, fonts, radii, shadow, spacing } from '../theme';
 
 const included = [
   'Five ways to look: Aesthetic, Commonalities, Activities, Adventure, and Location.',
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     borderRadius: radii.card,
     padding: spacing.lg,
     gap: spacing.sm,
+    ...drawn,
     ...shadow,
   },
   title: {

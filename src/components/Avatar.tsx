@@ -46,13 +46,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: colors.chip,
     borderWidth: 3,
-    borderColor: colors.card,
+    borderColor: colors.inkLine,
   },
   circle: {
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 3,
-    borderColor: colors.card,
+    borderColor: colors.inkLine,
   },
   letter: {
     color: colors.ink,

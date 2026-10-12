@@ -6,7 +6,7 @@ import { discoverProfiles, photosRevealed } from '../store/demoState';
 import { overlapScore } from '../store/matching';
 import { useAppStore } from '../store/useAppStore';
 import type { MockProfile, SearchTrack, StyleCategory } from '../types/demo';
-import { colors, fonts, radii, shadow, spacing } from '../theme';
+import { colors, drawn, fonts, radii, shadow, spacing } from '../theme';
 import { Avatar } from './Avatar';
 import { EnergyPill } from './EnergyPill';
 import { OverlapMap } from './OverlapMap';
@@ -166,12 +166,13 @@ const styles = StyleSheet.create({
     width: 22,
     height: 22,
     borderRadius: 11,
-    borderWidth: 1,
-    borderColor: colors.muted,
-    color: colors.muted,
+    borderWidth: 2,
+    borderColor: colors.inkLine,
+    color: colors.ink,
+    fontFamily: fonts.bodyBold,
     textAlign: 'center',
-    fontWeight: '800',
     overflow: 'hidden',
+    lineHeight: 20,
   },
   help: {
     color: colors.muted,
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
     borderRadius: radii.chip,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    ...shadow,
+    ...drawn,
   },
   chipOn: {
     backgroundColor: colors.ink,
@@ -213,7 +214,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   input: {
-    borderWidth: 0,
     backgroundColor: colors.card,
     borderRadius: radii.stamp,
     padding: spacing.md,
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 16,
     userSelect: 'text',
-    ...shadow,
+    ...drawn,
   },
   button: {
     alignSelf: 'center',

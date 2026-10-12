@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { contextualNav } from '../navigation/contextualNav';
 import { useAppStore } from '../store/useAppStore';
-import { colors, fonts, spacing } from '../theme';
+import { colors, fonts, radii, spacing } from '../theme';
 
 export function ContextualNav() {
   const screen = useAppStore((state) => state.activeScreen);
@@ -24,7 +24,7 @@ export function ContextualNav() {
             accessibilityRole="button"
             accessibilityState={{ selected }}
             onPress={() => goTo(item.screen, item.likesTab)}
-            style={styles.item}
+            style={[styles.item, selected && styles.itemOn]}
           >
             <Text style={[styles.label, selected && styles.labelOn]}>{item.label}</Text>
           </Pressable>
@@ -38,15 +38,21 @@ const styles = StyleSheet.create({
   bar: {
     flexDirection: 'row',
     backgroundColor: colors.card,
-    paddingVertical: spacing.md,
+    paddingVertical: spacing.sm,
     paddingHorizontal: spacing.sm,
-    borderTopWidth: 0,
+    borderTopWidth: 2,
+    borderTopColor: colors.inkLine,
+    gap: spacing.xs,
   },
   item: {
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 2,
-    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.xs,
+    paddingVertical: spacing.sm,
+    borderRadius: radii.chip,
+  },
+  itemOn: {
+    backgroundColor: colors.chip,
   },
   label: {
     color: colors.muted,
