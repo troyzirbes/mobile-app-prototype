@@ -14,7 +14,7 @@ export function ChatsView() {
 
   if (!open) {
     return (
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView style={styles.thread} contentContainerStyle={styles.content}>
         <Text style={styles.lead}>
           A chat opens when you tap Allow in the Learning Stage. The demo gate can also fill this list.
         </Text>

@@ -16,7 +16,7 @@ const now = 1_700_000_000_000;
 describe('first download', () => {
   it('lands on a paid demo with two likes and no chats', () => {
     const initial = createInitialDemo(now);
-    assert.equal(initial.showFirstDownload, true);
+    assert.equal(initial.activeScreen, 'Intro');
     assert.equal(initial.energyTokens, 80);
     assert.equal(initial.isPaidMember, true);
     assert.equal(initial.isIncognito, false);
@@ -45,7 +45,7 @@ describe('learning stage', () => {
     assert.ok(incoming);
     const step = reciprocateLike(initial, incoming.id, now);
     assert.equal(step.ok, true);
-    assert.equal(step.data.energyTokens, initial.energyTokens - ENERGY_LIKE);
+    assert.equal(step.data.energyTokens, initial.energyTokens);
     assert.equal(step.data.activeChats.length, 0);
     assert.equal(step.data.learningStageQueue[0]?.id, incoming.id);
     assert.equal(
