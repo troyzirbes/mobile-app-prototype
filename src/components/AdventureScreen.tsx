@@ -4,7 +4,7 @@ import { demoUser } from '../data/mockData';
 import { discoverProfiles } from '../store/demoState';
 import { useAppStore } from '../store/useAppStore';
 import type { ConnectIntent, MockProfile } from '../types/demo';
-import { colors, radii, spacing } from '../theme';
+import { colors, drawn, fonts, radii, shadow, spacing } from '../theme';
 import { EnergyPill } from './EnergyPill';
 
 const prompts = [
@@ -77,7 +77,7 @@ export function AdventureScreen() {
               - {rule}
             </Text>
           ))}
-          <Pressable accessibilityRole="button" onPress={start} style={styles.button}>
+          <Pressable accessibilityRole="button" onPress={() => start()} style={styles.button}>
             <Text style={styles.buttonText}>Let's go!</Text>
           </Pressable>
         </View>
@@ -169,57 +169,67 @@ const styles = StyleSheet.create({
   prompt: {
     flex: 1,
     color: colors.ink,
-    fontSize: 22,
-    fontWeight: '800',
-    lineHeight: 28,
+    fontFamily: fonts.display,
+    fontSize: 30,
+    lineHeight: 34,
   },
   info: {
     width: 22,
     height: 22,
     borderRadius: 11,
-    borderWidth: 1,
-    borderColor: colors.muted,
-    color: colors.muted,
+    borderWidth: 2,
+    borderColor: colors.inkLine,
+    color: colors.ink,
+    fontFamily: fonts.bodyBold,
     textAlign: 'center',
-    fontWeight: '800',
     overflow: 'hidden',
+    lineHeight: 20,
   },
   help: {
     color: colors.muted,
-    lineHeight: 20,
+    fontFamily: fonts.body,
+    fontSize: 15,
+    lineHeight: 22,
   },
   card: {
     backgroundColor: colors.card,
     borderRadius: radii.card,
-    borderWidth: 1,
-    borderColor: colors.line,
     padding: spacing.lg,
     gap: spacing.sm,
+    ...drawn,
+    ...shadow,
   },
   heading: {
     color: colors.ink,
-    fontWeight: '800',
-    fontSize: 16,
+    fontFamily: fonts.display,
+    fontSize: 22,
   },
   body: {
     color: colors.ink,
-    lineHeight: 20,
+    fontFamily: fonts.body,
+    fontSize: 16,
+    lineHeight: 22,
   },
   item: {
     color: colors.ink,
-    lineHeight: 20,
+    fontFamily: fonts.body,
+    fontSize: 16,
+    lineHeight: 22,
   },
   timer: {
     color: colors.coralDeep,
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
+    fontSize: 16,
   },
   input: {
-    borderWidth: 1,
-    borderColor: colors.line,
+    backgroundColor: colors.card,
     borderRadius: radii.stamp,
     padding: spacing.md,
     color: colors.ink,
+    fontFamily: fonts.body,
+    fontSize: 16,
     userSelect: 'text',
+    ...drawn,
   },
   row: {
     flexDirection: 'row',
@@ -228,18 +238,18 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: 'flex-start',
-    backgroundColor: colors.likeStamp,
+    backgroundColor: colors.coral,
     borderRadius: radii.button,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
   },
   buttonText: {
     color: colors.white,
-    fontWeight: '800',
+    fontFamily: fonts.bodyBold,
+    fontSize: 16,
   },
   secondary: {
-    borderWidth: 1,
-    borderColor: colors.line,
+    ...drawn,
     borderRadius: radii.button,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
@@ -247,7 +257,8 @@ const styles = StyleSheet.create({
   },
   secondaryText: {
     color: colors.ink,
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
+    fontSize: 15,
   },
   danger: {
     backgroundColor: colors.passStamp,
@@ -257,6 +268,7 @@ const styles = StyleSheet.create({
   },
   dangerText: {
     color: colors.white,
-    fontWeight: '800',
+    fontFamily: fonts.bodyBold,
+    fontSize: 16,
   },
 });

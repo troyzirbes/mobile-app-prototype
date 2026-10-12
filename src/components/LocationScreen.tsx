@@ -3,7 +3,7 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import { demoUser } from '../data/mockData';
 import { discoverProfiles, photosRevealed } from '../store/demoState';
 import { useAppStore } from '../store/useAppStore';
-import { colors, radii, spacing } from '../theme';
+import { colors, drawn, fonts, radii, shadow, spacing } from '../theme';
 import { Avatar } from './Avatar';
 import { EnergyPill } from './EnergyPill';
 
@@ -100,9 +100,10 @@ export function LocationScreen() {
             >
               <Avatar
                 name={profile.name}
+                profileId={profile.id}
                 color={profile.photos[0] ?? colors.pass}
                 hidden={!photosRevealed(data, profile.id)}
-                size={44}
+                size={64}
               />
               <Text style={styles.pinName}>{profile.name.split(' ')[0]}</Text>
             </Pressable>
@@ -123,9 +124,11 @@ export function LocationScreen() {
                 <Pressable key={profile.id} accessibilityRole="button" onPress={() => data.openPerson(profile.id)} style={styles.explorer}>
                   <Avatar
                     name={profile.name}
+                    profileId={profile.id}
+                    shape="card"
                     color={profile.photos[0] ?? colors.pass}
                     hidden={!photosRevealed(data, profile.id)}
-                    size={52}
+                    size={88}
                   />
                   <Text style={styles.pinName}>{profile.name.split(' ')[0]}</Text>
                   <Text style={styles.help}>{profile.explorerDates}</Text>
@@ -156,28 +159,32 @@ const styles = StyleSheet.create({
   prompt: {
     flex: 1,
     color: colors.ink,
-    fontSize: 22,
-    fontWeight: '800',
-    lineHeight: 28,
+    fontFamily: fonts.display,
+    fontSize: 30,
+    lineHeight: 34,
   },
   info: {
     width: 22,
     height: 22,
     borderRadius: 11,
-    borderWidth: 1,
-    borderColor: colors.muted,
-    color: colors.muted,
+    borderWidth: 2,
+    borderColor: colors.inkLine,
+    color: colors.ink,
+    fontFamily: fonts.bodyBold,
     textAlign: 'center',
-    fontWeight: '800',
     overflow: 'hidden',
+    lineHeight: 20,
   },
   help: {
     color: colors.muted,
-    lineHeight: 20,
+    fontFamily: fonts.body,
+    fontSize: 15,
+    lineHeight: 22,
   },
   status: {
     color: colors.ink,
-    fontWeight: '800',
+    fontFamily: fonts.bodyBold,
+    fontSize: 16,
   },
   actions: {
     flexDirection: 'row',
@@ -185,38 +192,42 @@ const styles = StyleSheet.create({
   },
   link: {
     color: colors.coralDeep,
-    fontWeight: '800',
+    fontFamily: fonts.bodyBold,
+    fontSize: 16,
   },
   card: {
     backgroundColor: colors.card,
     borderRadius: radii.card,
-    borderWidth: 1,
-    borderColor: colors.line,
     padding: spacing.md,
     gap: spacing.sm,
+    ...drawn,
+    ...shadow,
   },
   item: {
     color: colors.ink,
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
+    fontSize: 16,
   },
   input: {
-    borderWidth: 1,
-    borderColor: colors.line,
+    backgroundColor: colors.chip,
     borderRadius: radii.stamp,
     padding: spacing.md,
     color: colors.ink,
+    fontFamily: fonts.body,
+    fontSize: 16,
     userSelect: 'text',
   },
   button: {
     alignSelf: 'flex-start',
-    backgroundColor: colors.likeStamp,
+    backgroundColor: colors.coral,
     borderRadius: radii.button,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
   },
   buttonText: {
     color: colors.white,
-    fontWeight: '800',
+    fontFamily: fonts.bodyBold,
+    fontSize: 16,
   },
   row: {
     flexDirection: 'row',
@@ -224,23 +235,23 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   chip: {
-    borderWidth: 1,
-    borderColor: colors.line,
+    ...drawn,
+    backgroundColor: colors.card,
     borderRadius: radii.chip,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
   chipText: {
     color: colors.ink,
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
+    fontSize: 14,
   },
   map: {
-    height: 220,
+    height: 240,
     borderRadius: radii.card,
     backgroundColor: colors.chip,
-    borderWidth: 1,
-    borderColor: colors.line,
     overflow: 'hidden',
+    ...drawn,
   },
   pin: {
     position: 'absolute',
@@ -249,12 +260,13 @@ const styles = StyleSheet.create({
   },
   pinName: {
     color: colors.ink,
-    fontSize: 12,
-    fontWeight: '700',
+    fontFamily: fonts.display,
+    fontSize: 14,
   },
   heading: {
     color: colors.ink,
-    fontWeight: '800',
+    fontFamily: fonts.display,
+    fontSize: 22,
   },
   explorer: {
     width: 88,

@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useAppStore } from '../store/useAppStore';
-import { colors, radii, spacing } from '../theme';
+import { colors, fonts, radii, spacing } from '../theme';
 
 const controls = [
   { label: '+20 Energy', run: (store: ReturnType<typeof useAppStore.getState>) => store.addEnergy(20) },
@@ -33,15 +33,18 @@ export function DemoControlPanel() {
 
 const styles = StyleSheet.create({
   panel: {
-    backgroundColor: colors.ink,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    backgroundColor: colors.night,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.md,
     gap: spacing.sm,
+    borderTopWidth: 3,
+    borderTopColor: colors.gold,
   },
   title: {
-    color: colors.white,
-    fontSize: 12,
-    fontWeight: '800',
+    color: colors.chip,
+    fontFamily: fonts.body,
+    fontSize: 13,
   },
   row: {
     flexDirection: 'row',
@@ -49,14 +52,14 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   button: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.coral,
     borderRadius: radii.chip,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
   buttonText: {
-    color: colors.ink,
-    fontSize: 12,
-    fontWeight: '800',
+    color: colors.card,
+    fontFamily: fonts.bodyBold,
+    fontSize: 13,
   },
 });

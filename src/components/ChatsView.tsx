@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useAppStore } from '../store/useAppStore';
-import { colors, radii, spacing } from '../theme';
+import { colors, drawn, fonts, radii, spacing } from '../theme';
 
 export function ChatsView() {
   const chats = useAppStore((state) => state.activeChats);
@@ -92,26 +92,31 @@ const styles = StyleSheet.create({
   },
   lead: {
     color: colors.muted,
-    lineHeight: 20,
+    fontFamily: fonts.body,
+    fontSize: 15,
+    lineHeight: 22,
   },
   empty: {
     color: colors.ink,
+    fontFamily: fonts.body,
+    fontSize: 16,
   },
   card: {
     backgroundColor: colors.card,
     borderRadius: radii.card,
-    borderWidth: 1,
-    borderColor: colors.line,
     padding: spacing.md,
     gap: spacing.xs,
+    ...drawn,
   },
   name: {
     color: colors.ink,
-    fontWeight: '800',
-    fontSize: 18,
+    fontFamily: fonts.display,
+    fontSize: 22,
   },
   preview: {
     color: colors.muted,
+    fontFamily: fonts.body,
+    fontSize: 14,
   },
   thread: {
     flex: 1,
@@ -125,7 +130,8 @@ const styles = StyleSheet.create({
   },
   back: {
     color: colors.coralDeep,
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
+    fontSize: 15,
   },
   messages: {
     padding: spacing.lg,
@@ -143,14 +149,17 @@ const styles = StyleSheet.create({
   theirs: {
     alignSelf: 'flex-start',
     backgroundColor: colors.card,
-    borderWidth: 1,
-    borderColor: colors.line,
+    ...drawn,
   },
   mineText: {
     color: colors.white,
+    fontFamily: fonts.body,
+    fontSize: 15,
   },
   theirsText: {
     color: colors.ink,
+    fontFamily: fonts.body,
+    fontSize: 15,
   },
   composer: {
     flexDirection: 'row',
@@ -159,13 +168,14 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: colors.line,
     backgroundColor: colors.card,
     borderRadius: radii.button,
     paddingHorizontal: spacing.md,
     color: colors.ink,
+    fontFamily: fonts.body,
+    fontSize: 15,
     userSelect: 'text',
+    ...drawn,
   },
   send: {
     backgroundColor: colors.ink,
@@ -175,6 +185,7 @@ const styles = StyleSheet.create({
   },
   sendText: {
     color: colors.white,
-    fontWeight: '800',
+    fontFamily: fonts.bodyBold,
+    fontSize: 15,
   },
 });

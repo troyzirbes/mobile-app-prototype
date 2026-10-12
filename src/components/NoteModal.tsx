@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { ENERGY_NOTE } from '../store/energy';
-import { colors, radii, spacing } from '../theme';
+import { colors, drawn, fonts, radii, spacing } from '../theme';
 
 type Props = {
   name: string | null;
@@ -67,19 +67,22 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.ink,
-    fontSize: 22,
-    fontWeight: '800',
+    fontFamily: fonts.display,
+    fontSize: 26,
   },
   body: {
     color: colors.muted,
-    lineHeight: 20,
+    fontFamily: fonts.body,
+    fontSize: 15,
+    lineHeight: 22,
   },
   input: {
-    borderWidth: 1,
-    borderColor: colors.line,
+    ...drawn,
     borderRadius: radii.stamp,
     padding: spacing.md,
     color: colors.ink,
+    fontFamily: fonts.body,
+    fontSize: 16,
     userSelect: 'text',
   },
   row: {
@@ -91,11 +94,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: spacing.md,
     borderRadius: radii.button,
-    borderWidth: 1,
-    borderColor: colors.line,
+    backgroundColor: colors.card,
+    ...drawn,
   },
   secondaryText: {
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
+    fontSize: 15,
     color: colors.ink,
   },
   primary: {
@@ -106,7 +110,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.coral,
   },
   primaryText: {
-    fontWeight: '800',
+    fontFamily: fonts.bodyBold,
+    fontSize: 15,
     color: colors.white,
   },
 });
