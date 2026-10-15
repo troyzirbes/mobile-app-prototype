@@ -217,8 +217,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.line,
     borderRadius: radii.stamp,
-    padding: spacing.md,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
     color: colors.ink,
+    fontSize: 16,
+    lineHeight: 22,
     userSelect: 'text',
   },
   row: {

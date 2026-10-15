@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useAppStore } from '../store/useAppStore';
 import { colors, spacing } from '../theme';
+import { DrawerToggle } from './DrawerToggle';
 import { SketchButton } from './SketchButton';
 
 const controls = [
@@ -24,16 +25,7 @@ export function DemoControlPanel() {
 
   return (
     <View style={styles.panel}>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="Demo Controls"
-        accessibilityState={{ expanded: open }}
-        onPress={() => setOpen((value) => !value)}
-        style={styles.toggle}
-      >
-        <Text style={styles.title}>Demo Controls</Text>
-        <Text style={styles.title}>{open ? '–' : '+'}</Text>
-      </Pressable>
+      <DrawerToggle label="Demo Controls" open={open} onPress={() => setOpen((value) => !value)} />
       {open ? (
         <View style={styles.body}>
           <Text style={styles.energy}>{energyTokens} energy</Text>
@@ -62,16 +54,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-  },
-  toggle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  title: {
-    color: colors.ink,
-    fontSize: 13,
-    fontWeight: '800',
   },
   body: {
     gap: spacing.sm,

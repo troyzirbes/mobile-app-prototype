@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   content: {
-    padding: 12,
+    padding: 18,
   },
 });

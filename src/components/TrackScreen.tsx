@@ -6,8 +6,10 @@ import { discoverProfiles, photosRevealed } from '../store/demoState';
 import { overlapScore } from '../store/matching';
 import { useAppStore } from '../store/useAppStore';
 import type { MockProfile, SearchTrack, StyleCategory } from '../types/demo';
-import { colors, radii, spacing } from '../theme';
+import { colors, spacing } from '../theme';
 import { Avatar } from './Avatar';
+import { ChoiceSquares } from './ChoiceSquares';
+import { DrawerToggle } from './DrawerToggle';
 import { OverlapMap } from './OverlapMap';
 import { ScreenHeading } from './ScreenHeading';
 import { SketchField } from './SketchField';
@@ -34,6 +36,7 @@ export function TrackScreen() {
   const [selected, setSelected] = useState<string[]>([]);
   const [typed, setTyped] = useState('');
   const [showResults, setShowResults] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(true);
   const track = data.activeScreen;
   if (track !== 'Aesthetic' && track !== 'Commonalities' && track !== 'Activities') {
     return null;
@@ -55,27 +58,22 @@ export function TrackScreen() {
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <ScreenHeading title={`${meta?.line ?? track}, ${demoUser.name}?`} detail={meta?.detail ?? ''} />
-      <Text style={styles.label}>{showResults ? 'Filters' : track === 'Aesthetic' ? 'Aesthetics' : 'Filters'}</Text>
-      <View style={styles.chips}>
-        {chipsFor(track).map((chip) => {
-          const on = selected.includes(chip);
-          return (
-            <Pressable
-              key={chip}
-              accessibilityRole="button"
-              accessibilityState={{ selected: on }}
-              onPress={() =>
-                setSelected((current) =>
-                  current.includes(chip) ? current.filter((item) => item !== chip) : [...current, chip],
-                )
-              }
-              style={[styles.chip, on && styles.chipOn]}
-            >
-              <Text style={[styles.chipText, on && styles.chipTextOn]}>{chip}</Text>
-            </Pressable>
-          );
-        })}
-      </View>
+      <DrawerToggle
+        label={track === 'Aesthetic' ? 'Aesthetics' : 'Filters'}
+        open={filtersOpen}
+        onPress={() => setFiltersOpen((value) => !value)}
+      />
+      {filtersOpen ? (
+        <ChoiceSquares
+          options={chipsFor(track)}
+          selected={selected}
+          onToggle={(chip) =>
+            setSelected((current) =>
+              current.includes(chip) ? current.filter((item) => item !== chip) : [...current, chip],
+            )
+          }
+        />
+      ) : null}
       <SketchField
         value={typed}
         onChangeText={setTyped}
@@ -164,54 +162,6 @@ const styles = StyleSheet.create({
   },
   label: {
     color: colors.ink,
-    fontWeight: '800',
-  },
-  chips: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.sm,
-  },
-  chip: {
-    backgroundColor: colors.chip,
-    borderRadius: radii.chip,
-    borderWidth: 2,
-    borderColor: colors.ink,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-  },
-  chipOn: {
-    backgroundColor: colors.ink,
-  },
-  chipText: {
-    color: colors.ink,
-    fontWeight: '700',
-    fontSize: 13,
-  },
-  chipTextOn: {
-    color: colors.white,
-  },
-  or: {
-    color: colors.muted,
-    fontWeight: '700',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: colors.line,
-    backgroundColor: colors.card,
-    borderRadius: radii.stamp,
-    padding: spacing.md,
-    color: colors.ink,
-    userSelect: 'text',
-  },
-  button: {
-    alignSelf: 'center',
-    backgroundColor: colors.likeStamp,
-    borderRadius: radii.button,
-    paddingHorizontal: spacing.xl,
-    paddingVertical: spacing.md,
-  },
-  buttonText: {
-    color: colors.white,
     fontWeight: '800',
   },
   grid: {

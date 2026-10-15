@@ -1,5 +1,5 @@
 export const colors = {
-  background: '#F4EFE8',
+  background: '#FFFFFF',
   ink: '#1C1917',
   muted: '#78716C',
   card: '#FFFFFF',
@@ -9,9 +9,10 @@ export const colors = {
   pass: '#3F4A50',
   likeStamp: '#1F8A4C',
   passStamp: '#E24B4B',
-  chip: '#F6F1EA',
+  chip: '#FFFFFF',
   olive: '#5C4A28',
   info: '#2F6FE4',
+  infoDeep: '#1E4EBE',
   white: '#FFFFFF',
   scrim: 'rgba(28, 25, 23, 0.78)',
   scrimClear: 'rgba(28, 25, 23, 0)',

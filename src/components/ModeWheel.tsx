@@ -143,8 +143,8 @@ export function ModeWheel({ index, onChange, onOpen }: Props) {
               <Path
                 d={sketchCirclePath(DISC, itemIndex + 3)}
                 fill={colors.olive}
-                stroke={colors.background}
-                strokeWidth={2.5}
+                stroke={colors.ink}
+                strokeWidth={1.75}
               />
             </Svg>
             <Text style={styles.icon}>{item.icon}</Text>

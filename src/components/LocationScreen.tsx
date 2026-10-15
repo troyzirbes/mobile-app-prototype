@@ -5,6 +5,7 @@ import { discoverProfiles, photosRevealed } from '../store/demoState';
 import { useAppStore } from '../store/useAppStore';
 import { colors, radii, spacing } from '../theme';
 import { Avatar } from './Avatar';
+import { DrawerToggle } from './DrawerToggle';
 import { ScreenHeading } from './ScreenHeading';
 
 const datePresets = [
@@ -28,12 +29,16 @@ export function LocationScreen() {
       />
       {data.locationStatus ? <Text style={styles.status}>{data.locationStatus}</Text> : null}
       <View style={styles.actions}>
-        <Pressable accessibilityRole="button" onPress={() => setPanel(panel === 'status' ? 'none' : 'status')}>
-          <Text style={styles.link}>Add a status</Text>
-        </Pressable>
-        <Pressable accessibilityRole="button" onPress={() => setPanel(panel === 'filters' ? 'none' : 'filters')}>
-          <Text style={styles.link}>Filters</Text>
-        </Pressable>
+        <DrawerToggle
+          label="Add a status"
+          open={panel === 'status'}
+          onPress={() => setPanel(panel === 'status' ? 'none' : 'status')}
+        />
+        <DrawerToggle
+          label="Filters"
+          open={panel === 'filters'}
+          onPress={() => setPanel(panel === 'filters' ? 'none' : 'filters')}
+        />
       </View>
       {panel === 'status' ? (
         <View style={styles.card}>
@@ -187,7 +192,7 @@ const styles = StyleSheet.create({
     borderRadius: radii.card,
     borderWidth: 1,
     borderColor: colors.line,
-    padding: spacing.md,
+    padding: spacing.lg,
     gap: spacing.sm,
   },
   item: {
@@ -198,8 +203,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.line,
     borderRadius: radii.stamp,
-    padding: spacing.md,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
     color: colors.ink,
+    fontSize: 16,
+    lineHeight: 22,
     userSelect: 'text',
   },
   button: {

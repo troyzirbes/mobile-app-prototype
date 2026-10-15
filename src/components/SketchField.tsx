@@ -13,7 +13,7 @@ type Props = {
 export function SketchField({ value, onChangeText, onSubmit, placeholder, hint }: Props) {
   return (
     <View style={styles.wrap}>
-      <Text style={styles.or}>or type it out</Text>
+      <Text style={styles.or}>illustrative AI prompt for display only</Text>
       <SketchFrame fill={colors.card} seed={6} style={styles.stretch} contentStyle={styles.inputPad}>
         <TextInput
           value={value}
@@ -39,18 +39,25 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   or: {
-    color: colors.muted,
+    alignSelf: 'stretch',
+    color: colors.ink,
     fontWeight: '700',
+    fontSize: 15,
+    lineHeight: 22,
+    paddingHorizontal: spacing.sm,
+    textAlign: 'center',
   },
   stretch: {
     alignSelf: 'stretch',
   },
   inputPad: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.lg,
   },
   input: {
     color: colors.ink,
+    fontSize: 16,
+    lineHeight: 22,
     padding: 0,
     userSelect: 'text',
   },
