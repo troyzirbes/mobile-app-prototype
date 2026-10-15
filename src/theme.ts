@@ -10,6 +10,8 @@ export const colors = {
   likeStamp: '#1F8A4C',
   passStamp: '#E24B4B',
   chip: '#F6F1EA',
+  olive: '#5C4A28',
+  info: '#2F6FE4',
   white: '#FFFFFF',
   scrim: 'rgba(28, 25, 23, 0.78)',
   scrimClear: 'rgba(28, 25, 23, 0)',

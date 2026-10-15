@@ -1,7 +1,9 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { View, ScrollView, StyleSheet, Text } from 'react-native';
 import { demoUser } from '../data/mockData';
 import { useAppStore } from '../store/useAppStore';
-import { colors, radii, spacing } from '../theme';
+import { colors, spacing } from '../theme';
+import { SketchButton } from './SketchButton';
+import { SketchFrame } from './SketchFrame';
 
 const included = [
   'Five ways to look: Aesthetic, Commonalities, Activities, Adventure, and Location.',
@@ -22,29 +24,29 @@ export function IntroScreen() {
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <Text style={styles.kicker}>Demo Intro</Text>
-      <View style={styles.card}>
+      <SketchFrame fill={colors.card} seed={2} style={styles.stretch}>
         <Text style={styles.title}>Demo dating app to compliment case study</Text>
         <Text style={styles.body}>
           {demoUser.name} is already on this phone. Paid features are unlocked. There is no account to create.
         </Text>
-      </View>
-      <Pressable accessibilityRole="button" onPress={() => goTo('Home')} style={styles.button}>
-        <Text style={styles.buttonText}>Let's go!</Text>
-      </Pressable>
-      <View style={styles.card}>
-        <Text style={styles.heading}>Here's what it does support:</Text>
-        {included.map((item) => (
-          <Text key={item} style={styles.item}>
-            - {item}
-          </Text>
-        ))}
-        <Text style={styles.heading}>Left out of this demo:</Text>
-        {leftOut.map((item) => (
-          <Text key={item} style={styles.item}>
-            - {item}
-          </Text>
-        ))}
-      </View>
+      </SketchFrame>
+      <SketchFrame fill={colors.card} seed={4} style={styles.stretch}>
+        <View style={styles.stack}>
+          <Text style={styles.heading}>Here's what it does support:</Text>
+          {included.map((item) => (
+            <Text key={item} style={styles.item}>
+              - {item}
+            </Text>
+          ))}
+          <Text style={styles.heading}>Left out of this demo:</Text>
+          {leftOut.map((item) => (
+            <Text key={item} style={styles.item}>
+              - {item}
+            </Text>
+          ))}
+        </View>
+      </SketchFrame>
+      <SketchButton label="Let's go!" seed={7} onPress={() => goTo('Home')} />
     </ScrollView>
   );
 }
@@ -57,20 +59,19 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     gap: spacing.md,
     paddingBottom: spacing.xxl,
+    alignItems: 'center',
+  },
+  stretch: {
+    alignSelf: 'stretch',
+  },
+  stack: {
+    gap: spacing.sm,
   },
   kicker: {
     color: colors.ink,
     fontSize: 28,
     fontWeight: '800',
     textAlign: 'center',
-  },
-  card: {
-    backgroundColor: colors.card,
-    borderRadius: radii.card,
-    borderWidth: 1,
-    borderColor: colors.line,
-    padding: spacing.lg,
-    gap: spacing.sm,
   },
   title: {
     color: colors.ink,
@@ -86,21 +87,10 @@ const styles = StyleSheet.create({
   body: {
     color: colors.muted,
     lineHeight: 20,
+    marginTop: spacing.sm,
   },
   item: {
     color: colors.ink,
     lineHeight: 20,
-  },
-  button: {
-    alignSelf: 'center',
-    backgroundColor: colors.likeStamp,
-    borderRadius: radii.button,
-    paddingHorizontal: spacing.xl,
-    paddingVertical: spacing.md,
-  },
-  buttonText: {
-    color: colors.white,
-    fontWeight: '800',
-    fontSize: 18,
   },
 });

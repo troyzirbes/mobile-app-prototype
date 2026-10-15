@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { demoUser } from '../data/mockData';
 import { searchTrackMeta } from '../navigation/tracks';
 import { discoverProfiles, photosRevealed } from '../store/demoState';
@@ -8,8 +8,9 @@ import { useAppStore } from '../store/useAppStore';
 import type { MockProfile, SearchTrack, StyleCategory } from '../types/demo';
 import { colors, radii, spacing } from '../theme';
 import { Avatar } from './Avatar';
-import { EnergyPill } from './EnergyPill';
 import { OverlapMap } from './OverlapMap';
+import { ScreenHeading } from './ScreenHeading';
+import { SketchField } from './SketchField';
 
 const styleChips: StyleCategory[] = ['Athletic', 'Alternative', 'Minimalist', 'High-Fashion', 'Outdoorsy'];
 const interestChips = ['climbing', 'cooking', 'live music', 'night markets', 'museums'];
@@ -33,7 +34,6 @@ export function TrackScreen() {
   const [selected, setSelected] = useState<string[]>([]);
   const [typed, setTyped] = useState('');
   const [showResults, setShowResults] = useState(false);
-  const [info, setInfo] = useState(false);
   const track = data.activeScreen;
   if (track !== 'Aesthetic' && track !== 'Commonalities' && track !== 'Activities') {
     return null;
@@ -54,16 +54,7 @@ export function TrackScreen() {
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
-      <View style={styles.top}>
-        <Text style={styles.prompt}>
-          {meta?.icon} {meta?.line}, {demoUser.name}?
-        </Text>
-        <Pressable accessibilityRole="button" onPress={() => setInfo((value) => !value)}>
-          <Text style={styles.info}>i</Text>
-        </Pressable>
-        <EnergyPill />
-      </View>
-      {info ? <Text style={styles.help}>{meta?.detail}</Text> : null}
+      <ScreenHeading title={`${meta?.line ?? track}, ${demoUser.name}?`} detail={meta?.detail ?? ''} />
       <Text style={styles.label}>{showResults ? 'Filters' : track === 'Aesthetic' ? 'Aesthetics' : 'Filters'}</Text>
       <View style={styles.chips}>
         {chipsFor(track).map((chip) => {
@@ -85,17 +76,12 @@ export function TrackScreen() {
           );
         })}
       </View>
-      <Text style={styles.or}>or type it out</Text>
-      <TextInput
+      <SketchField
         value={typed}
         onChangeText={setTyped}
         placeholder="A style, hobby, or name"
-        placeholderTextColor={colors.muted}
-        style={styles.input}
+        onSubmit={() => setShowResults(true)}
       />
-      <Pressable accessibilityRole="button" onPress={() => setShowResults(true)} style={styles.button}>
-        <Text style={styles.buttonText}>Update</Text>
-      </Pressable>
       {showResults ? (
         pool.length === 0 ? (
           <Text style={styles.help}>Nobody in this track fits those filters and the mutual age and identity rules.</Text>
@@ -188,6 +174,8 @@ const styles = StyleSheet.create({
   chip: {
     backgroundColor: colors.chip,
     borderRadius: radii.chip,
+    borderWidth: 2,
+    borderColor: colors.ink,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },

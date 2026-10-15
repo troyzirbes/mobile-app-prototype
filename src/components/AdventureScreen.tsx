@@ -5,7 +5,9 @@ import { discoverProfiles } from '../store/demoState';
 import { useAppStore } from '../store/useAppStore';
 import type { ConnectIntent, MockProfile } from '../types/demo';
 import { colors, radii, spacing } from '../theme';
-import { EnergyPill } from './EnergyPill';
+import { ScreenHeading } from './ScreenHeading';
+import { SketchButton } from './SketchButton';
+import { SketchFrame } from './SketchFrame';
 
 const prompts = [
   'What is a plan that stays easy to leave?',
@@ -27,8 +29,6 @@ export function AdventureScreen() {
   const [answer, setAnswer] = useState('');
   const [seconds, setSeconds] = useState(20);
   const [person, setPerson] = useState<MockProfile | null>(null);
-  const [info, setInfo] = useState(false);
-
   useEffect(() => {
     if (phase !== 'prompt' || seconds <= 0) {
       return;
@@ -54,33 +54,27 @@ export function AdventureScreen() {
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
-      <View style={styles.top}>
-        <Text style={styles.prompt}>🍀 Looking for low-stakes excitement, {demoUser.name}?</Text>
-        <Pressable accessibilityRole="button" onPress={() => setInfo((value) => !value)}>
-          <Text style={styles.info}>i</Text>
-        </Pressable>
-        <EnergyPill />
-      </View>
-      {info ? (
-        <Text style={styles.help}>Adventure is the wildcard track. It stays opt-in, and it does not open a chat by itself.</Text>
-      ) : null}
+      <ScreenHeading
+        title={`Looking for low-stakes excitement, ${demoUser.name}?`}
+        detail="Adventure is the wildcard track. It stays opt-in, and it does not open a chat by itself."
+      />
       {!data.adventureEnabled ? (
         <Pressable accessibilityRole="button" onPress={() => data.setSafety({ adventureEnabled: true })} style={styles.button}>
           <Text style={styles.buttonText}>Turn Adventure on</Text>
         </Pressable>
       ) : null}
       {data.adventureEnabled && phase === 'rules' ? (
-        <View style={styles.card}>
-          <Text style={styles.heading}>Rules of engagement</Text>
-          {rules.map((rule) => (
-            <Text key={rule} style={styles.item}>
-              - {rule}
-            </Text>
-          ))}
-          <Pressable accessibilityRole="button" onPress={() => start()} style={styles.button}>
-            <Text style={styles.buttonText}>Let's go!</Text>
-          </Pressable>
-        </View>
+        <SketchFrame fill={colors.card} seed={5} style={styles.stretch}>
+          <View style={styles.stack}>
+            <Text style={styles.heading}>Rules of engagement</Text>
+            {rules.map((rule) => (
+              <Text key={rule} style={styles.item}>
+                - {rule}
+              </Text>
+            ))}
+            <SketchButton label="Let's go!" seed={8} onPress={() => start()} />
+          </View>
+        </SketchFrame>
       ) : null}
       {data.adventureEnabled && phase === 'prompt' && person ? (
         <View style={styles.card}>
@@ -160,6 +154,12 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     gap: spacing.md,
     paddingBottom: spacing.xxl,
+  },
+  stretch: {
+    alignSelf: 'stretch',
+  },
+  stack: {
+    gap: spacing.sm,
   },
   top: {
     flexDirection: 'row',

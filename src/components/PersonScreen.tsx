@@ -10,7 +10,6 @@ import { colors, radii, spacing } from '../theme';
 import { Avatar } from './Avatar';
 import { ChallengeModal } from './ChallengeModal';
 import { CoOpModal } from './CoOpModal';
-import { EnergyPill } from './EnergyPill';
 import { NoteModal } from './NoteModal';
 import { VoiceNotes } from './VoiceNotes';
 
@@ -31,7 +30,6 @@ export function PersonScreen() {
         <Pressable accessibilityRole="button" onPress={() => data.closePerson()}>
           <Text style={styles.close}>Close</Text>
         </Pressable>
-        <EnergyPill />
       </View>
       <View style={styles.hero}>
         <Avatar
@@ -163,8 +161,8 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   action: {
-    borderWidth: 1,
-    borderColor: colors.line,
+    borderWidth: 2,
+    borderColor: colors.ink,
     backgroundColor: colors.card,
     borderRadius: radii.button,
     paddingHorizontal: spacing.md,
@@ -176,8 +174,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   secondary: {
-    borderWidth: 1,
-    borderColor: colors.line,
+    borderWidth: 2,
+    borderColor: colors.ink,
     borderRadius: radii.button,
     alignItems: 'center',
     padding: spacing.md,

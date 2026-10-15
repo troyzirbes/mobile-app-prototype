@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useAppStore } from '../store/useAppStore';
-import { colors, radii, spacing } from '../theme';
+import { colors, spacing } from '../theme';
+import { SketchButton } from './SketchButton';
 
 const controls = [
   { label: '+20 Energy', run: (store: ReturnType<typeof useAppStore.getState>) => store.addEnergy(20) },
@@ -11,52 +13,78 @@ const controls = [
 
 export function DemoControlPanel() {
   const energyTokens = useAppStore((state) => state.energyTokens);
+  const screen = useAppStore((state) => state.activeScreen);
+  const likesTab = useAppStore((state) => state.activeLikesTab);
+  const viewingProfileId = useAppStore((state) => state.viewingProfileId);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [screen, likesTab, viewingProfileId]);
+
   return (
     <View style={styles.panel}>
-      <Text style={styles.title}>Demo controls · {energyTokens} energy</Text>
-      <View style={styles.row}>
-        {controls.map((control) => (
-          <Pressable
-            key={control.label}
-            accessibilityRole="button"
-            accessibilityLabel={control.label}
-            onPress={() => control.run(useAppStore.getState())}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>{control.label}</Text>
-          </Pressable>
-        ))}
-      </View>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Demo Controls"
+        accessibilityState={{ expanded: open }}
+        onPress={() => setOpen((value) => !value)}
+        style={styles.toggle}
+      >
+        <Text style={styles.title}>Demo Controls</Text>
+        <Text style={styles.title}>{open ? '–' : '+'}</Text>
+      </Pressable>
+      {open ? (
+        <View style={styles.body}>
+          <Text style={styles.energy}>{energyTokens} energy</Text>
+          <View style={styles.row}>
+            {controls.map((control, index) => (
+              <SketchButton
+                key={control.label}
+                label={control.label}
+                seed={index + 2}
+                fill={colors.card}
+                textColor={colors.ink}
+                onPress={() => control.run(useAppStore.getState())}
+              />
+            ))}
+          </View>
+        </View>
+      ) : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   panel: {
-    backgroundColor: colors.ink,
+    borderTopWidth: 2,
+    borderTopColor: colors.ink,
+    backgroundColor: colors.background,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    gap: spacing.sm,
+  },
+  toggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   title: {
-    color: colors.white,
-    fontSize: 12,
+    color: colors.ink,
+    fontSize: 13,
     fontWeight: '800',
+  },
+  body: {
+    gap: spacing.sm,
+    paddingTop: spacing.sm,
+  },
+  energy: {
+    color: colors.muted,
+    fontWeight: '700',
+    fontSize: 12,
   },
   row: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: spacing.sm,
-  },
-  button: {
-    backgroundColor: colors.white,
-    borderRadius: radii.chip,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-  },
-  buttonText: {
-    color: colors.ink,
-    fontSize: 12,
-    fontWeight: '800',
   },
 });

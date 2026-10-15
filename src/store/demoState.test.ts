@@ -104,9 +104,9 @@ describe('attention gate and challenges', () => {
     const initial = createInitialDemo(now);
     const first = beginChallenge(initial, 'sam-ellis', now);
     assert.equal(first.ok, true);
-    const second = beginChallenge(first.data, 'evan-cho', now + DAY_MS - 1);
+    const second = beginChallenge(first.data, 'noa-kealoha', now + DAY_MS - 1);
     assert.equal(second.ok, false);
-    const later = beginChallenge(first.data, 'evan-cho', now + DAY_MS);
+    const later = beginChallenge(first.data, 'noa-kealoha', now + DAY_MS);
     assert.equal(later.ok, true);
   });
 });
