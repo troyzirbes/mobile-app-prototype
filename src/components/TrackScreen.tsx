@@ -35,7 +35,6 @@ export function TrackScreen() {
   const data = useAppStore();
   const [selected, setSelected] = useState<string[]>([]);
   const [typed, setTyped] = useState('');
-  const [showResults, setShowResults] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(true);
   const track = data.activeScreen;
   if (track !== 'Aesthetic' && track !== 'Commonalities' && track !== 'Activities') {
@@ -74,13 +73,8 @@ export function TrackScreen() {
           }
         />
       ) : null}
-      <SketchField
-        value={typed}
-        onChangeText={setTyped}
-        onSubmit={() => setShowResults(true)}
-      />
-      {showResults ? (
-        pool.length === 0 ? (
+      <SketchField value={typed} onChangeText={setTyped} />
+      {pool.length === 0 ? (
           <Text style={styles.help}>Nobody in this track fits those filters and the mutual age and identity rules.</Text>
         ) : track !== 'Aesthetic' && selected.length >= 2 ? (
           <OverlapMap
@@ -117,8 +111,7 @@ export function TrackScreen() {
               </Pressable>
             ))}
           </View>
-        )
-      ) : null}
+        )}
     </ScrollView>
   );
 }

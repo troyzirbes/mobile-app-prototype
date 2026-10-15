@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { demoUser } from '../data/mockData';
-import { matchTrack, searchTrackMeta } from '../navigation/tracks';
+import { searchTrackMeta } from '../navigation/tracks';
 import { useAppStore } from '../store/useAppStore';
 import { colors, spacing } from '../theme';
 import { ModeWheel } from './ModeWheel';
@@ -13,7 +13,6 @@ export function HomeScreen() {
   const accountPaused = useAppStore((state) => state.accountPaused);
   const [index, setIndex] = useState(0);
   const [typed, setTyped] = useState('');
-  const [hint, setHint] = useState('');
   const current = searchTrackMeta[index] ?? searchTrackMeta[0];
   if (!current) {
     return null;
@@ -27,20 +26,7 @@ export function HomeScreen() {
       />
       {accountPaused ? <Text style={styles.help}>Discovery is paused. Profile can turn it back on.</Text> : null}
       <ModeWheel index={index} onChange={setIndex} onOpen={goTo} />
-      <SketchField
-        value={typed}
-        onChangeText={setTyped}
-        hint={hint}
-        onSubmit={() => {
-          const track = matchTrack(typed);
-          if (!track) {
-            setHint('Type one of the five styles, then Send.');
-            return;
-          }
-          setHint('');
-          goTo(track);
-        }}
-      />
+      <SketchField value={typed} onChangeText={setTyped} />
     </ScrollView>
   );
 }

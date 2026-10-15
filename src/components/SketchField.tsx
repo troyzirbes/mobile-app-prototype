@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { colors, spacing } from '../theme';
 import { SketchArrow } from './SketchArrow';
 import { SketchFrame } from './SketchFrame';
@@ -6,11 +6,9 @@ import { SketchFrame } from './SketchFrame';
 type Props = {
   value: string;
   onChangeText: (value: string) => void;
-  onSubmit: () => void;
-  hint?: string;
 };
 
-export function SketchField({ value, onChangeText, onSubmit, hint }: Props) {
+export function SketchField({ value, onChangeText }: Props) {
   return (
     <View style={styles.wrap}>
       <View style={styles.promptRow}>
@@ -22,17 +20,15 @@ export function SketchField({ value, onChangeText, onSubmit, hint }: Props) {
           <TextInput
             value={value}
             onChangeText={onChangeText}
-            onSubmitEditing={onSubmit}
             placeholder="illustrative AI prompt for display only"
             placeholderTextColor={colors.muted}
             style={styles.input}
           />
-          <Pressable accessibilityRole="button" accessibilityLabel="Send" onPress={onSubmit} style={styles.send}>
+          <View accessible={false} style={styles.send}>
             <SketchArrow direction="right" size={26} />
-          </Pressable>
+          </View>
         </View>
       </SketchFrame>
-      {hint ? <Text style={styles.hint}>{hint}</Text> : null}
     </View>
   );
 }
@@ -84,9 +80,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.likeStamp,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  hint: {
-    color: colors.muted,
-    textAlign: 'center',
   },
 });

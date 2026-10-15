@@ -112,11 +112,13 @@ export function ModeWheel({ index, onChange, onOpen }: Props) {
       </View>
       {placed.map(({ item, itemIndex, depth, x, y, scale }) => {
         const selected = itemIndex === index;
+        const front = selected && drag === 0 && depth > 0.9;
+        const pad = front ? 8 : 0;
         return (
           <Pressable
             key={item.id}
             accessibilityRole="button"
-            accessibilityLabel={item.id}
+            accessibilityLabel={front ? `Open ${item.id}` : item.id}
             accessibilityState={{ selected }}
             onPress={() => {
               if (selected) {
@@ -135,7 +137,21 @@ export function ModeWheel({ index, onChange, onOpen }: Props) {
               },
             ]}
           >
-            <Svg width={DISC} height={DISC} pointerEvents="none">
+            <Svg
+              width={DISC + pad * 2}
+              height={DISC + pad * 2}
+              viewBox={`${-pad} ${-pad} ${DISC + pad * 2} ${DISC + pad * 2}`}
+              pointerEvents="none"
+              style={{ position: 'absolute', left: -pad, top: -pad }}
+            >
+              {front ? (
+                <Path
+                  d={sketchCirclePath(DISC, itemIndex + 3)}
+                  fill="none"
+                  stroke={colors.likeStamp}
+                  strokeWidth={10}
+                />
+              ) : null}
               <Path
                 d={sketchCirclePath(DISC, itemIndex + 3)}
                 fill={colors.wheel}
