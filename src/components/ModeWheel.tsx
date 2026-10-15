@@ -7,13 +7,13 @@ import type { SearchTrack } from '../types/demo';
 import { colors } from '../theme';
 import { SketchFrame } from './SketchFrame';
 
-const STAGE_W = 320;
-const STAGE_H = 272;
-const DISC = 78;
-const RADIUS_X = 104;
-const RADIUS_Y = 56;
+const STAGE_W = 340;
+const STAGE_H = 268;
+const DISC = 136;
+const RADIUS_X = 92;
+const RADIUS_Y = 48;
 const CENTER_X = STAGE_W / 2;
-const CENTER_Y = 162;
+const CENTER_Y = 128;
 const STEP = (Math.PI * 2) / searchTrackMeta.length;
 
 function railPath(x: number, seed: number): string {
@@ -96,7 +96,7 @@ export function ModeWheel({ index, onChange, onOpen }: Props) {
         depth,
         x: CENTER_X + Math.sin(theta) * RADIUS_X,
         y: CENTER_Y + depth * RADIUS_Y,
-        scale: 0.58 + ((depth + 1) / 2) * 0.58,
+        scale: 0.84 + ((depth + 1) / 2) * 0.16,
       };
     })
     .sort((left, right) => left.depth - right.depth);
@@ -108,8 +108,13 @@ export function ModeWheel({ index, onChange, onOpen }: Props) {
         <Path d={railPath(STAGE_W - 16, 4)} stroke={colors.ink} strokeWidth={2} fill="none" />
       </Svg>
       <View style={styles.nameSlot}>
-        <Pressable accessibilityRole="button" accessibilityLabel={`Open ${current.id}`} onPress={() => onOpen(current.id)}>
-          <SketchFrame fill={colors.card} seed={11} contentStyle={styles.namePad}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`Open ${current.id}`}
+          onPress={() => onOpen(current.id)}
+          style={styles.namePress}
+        >
+          <SketchFrame fill={colors.card} seed={11} style={styles.nameFrame} contentStyle={styles.namePad}>
             <Text style={styles.name}>{current.id}</Text>
           </SketchFrame>
         </Pressable>
@@ -142,7 +147,7 @@ export function ModeWheel({ index, onChange, onOpen }: Props) {
             <Svg width={DISC} height={DISC} pointerEvents="none">
               <Path
                 d={sketchCirclePath(DISC, itemIndex + 3)}
-                fill={colors.olive}
+                fill={colors.wheel}
                 stroke={colors.ink}
                 strokeWidth={1.75}
               />
@@ -169,19 +174,25 @@ const styles = StyleSheet.create({
   nameSlot: {
     position: 'absolute',
     top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 40,
-    alignItems: 'center',
+    left: 10,
+    right: 10,
+    zIndex: 30,
+  },
+  namePress: {
+    alignSelf: 'stretch',
+  },
+  nameFrame: {
+    alignSelf: 'stretch',
   },
   namePad: {
     paddingHorizontal: 18,
-    paddingVertical: 8,
+    paddingVertical: 12,
   },
   name: {
     color: colors.ink,
     fontWeight: '800',
-    fontSize: 16,
+    fontSize: 22,
+    textAlign: 'center',
   },
   disc: {
     position: 'absolute',
@@ -192,6 +203,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    fontSize: 26,
+    fontSize: 34,
   },
 });
