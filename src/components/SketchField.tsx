@@ -20,20 +20,23 @@ export function SketchField({ value, onChangeText, onSubmit, hint }: Props) {
         </Svg>
       </View>
       <SketchFrame fill={colors.card} seed={6} style={styles.stretch} contentStyle={styles.inputPad}>
-        <TextInput
-          value={value}
-          onChangeText={onChangeText}
-          placeholder="illustrative AI prompt for display only"
-          placeholderTextColor={colors.muted}
-          style={styles.input}
-        />
+        <View style={styles.fieldRow}>
+          <TextInput
+            value={value}
+            onChangeText={onChangeText}
+            onSubmitEditing={onSubmit}
+            placeholder="illustrative AI prompt for display only"
+            placeholderTextColor={colors.muted}
+            style={styles.input}
+          />
+          <Pressable accessibilityRole="button" accessibilityLabel="Send" onPress={onSubmit} style={styles.send}>
+            <Svg width={18} height={18} viewBox="0 0 18 18">
+              <Path d="M 3 9 L 15 9 M 10 4 L 15 9 L 10 14" stroke={colors.white} strokeWidth={2.2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </Svg>
+          </Pressable>
+        </View>
       </SketchFrame>
       {hint ? <Text style={styles.hint}>{hint}</Text> : null}
-      <Pressable accessibilityRole="button" onPress={onSubmit}>
-        <SketchFrame fill={colors.likeStamp} seed={9} contentStyle={styles.buttonPad}>
-          <Text style={styles.buttonText}>Update</Text>
-        </SketchFrame>
-      </Pressable>
     </View>
   );
 }
@@ -42,6 +45,7 @@ const styles = StyleSheet.create({
   wrap: {
     alignItems: 'center',
     gap: spacing.md,
+    marginTop: spacing.xl,
   },
   promptRow: {
     flexDirection: 'row',
@@ -59,26 +63,34 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   inputPad: {
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.lg,
+    paddingLeft: spacing.lg,
+    paddingRight: spacing.sm,
+    paddingVertical: spacing.sm,
+  },
+  fieldRow: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
   },
   input: {
+    flex: 1,
     color: colors.ink,
     fontSize: 16,
     lineHeight: 22,
-    padding: 0,
+    paddingVertical: spacing.sm,
     userSelect: 'text',
+  },
+  send: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: colors.likeStamp,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   hint: {
     color: colors.muted,
     textAlign: 'center',
-  },
-  buttonPad: {
-    paddingHorizontal: spacing.xl,
-    paddingVertical: spacing.md,
-  },
-  buttonText: {
-    color: colors.white,
-    fontWeight: '800',
   },
 });

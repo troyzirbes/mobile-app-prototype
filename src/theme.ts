@@ -11,7 +11,7 @@ export const colors = {
   passStamp: '#E24B4B',
   chip: '#FFFFFF',
   olive: '#5C4A28',
-  wheel: '#F4E29A',
+  wheel: '#FFF6C4',
   info: '#2F6FE4',
   infoDeep: '#1E4EBE',
   white: '#FFFFFF',

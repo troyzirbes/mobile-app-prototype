@@ -16,11 +16,6 @@ const CENTER_X = STAGE_W / 2;
 const CENTER_Y = 128;
 const STEP = (Math.PI * 2) / searchTrackMeta.length;
 
-function railPath(x: number, seed: number): string {
-  const shift = (y: number, index: number) => x + Math.sin(y * 0.05 + seed + index) * 1.6;
-  return `M ${shift(6, 1)} 6 Q ${shift(90, 2)} 90 ${shift(160, 3)} 160 T ${shift(STAGE_H - 8, 4)} ${STAGE_H - 8}`;
-}
-
 type Props = {
   index: number;
   onChange: (index: number) => void;
@@ -103,10 +98,6 @@ export function ModeWheel({ index, onChange, onOpen }: Props) {
 
   return (
     <View style={styles.stage} {...pan.panHandlers}>
-      <Svg width={STAGE_W} height={STAGE_H} style={styles.rails} pointerEvents="none">
-        <Path d={railPath(16, 1)} stroke={colors.ink} strokeWidth={2} fill="none" />
-        <Path d={railPath(STAGE_W - 16, 4)} stroke={colors.ink} strokeWidth={2} fill="none" />
-      </Svg>
       <View style={styles.nameSlot}>
         <Pressable
           accessibilityRole="button"
@@ -165,11 +156,6 @@ const styles = StyleSheet.create({
     width: STAGE_W,
     height: STAGE_H,
     alignSelf: 'center',
-  },
-  rails: {
-    position: 'absolute',
-    left: 0,
-    top: 0,
   },
   nameSlot: {
     position: 'absolute',

@@ -34,7 +34,7 @@ export function HomeScreen() {
         onSubmit={() => {
           const track = matchTrack(typed);
           if (!track) {
-            setHint('Type one of the five styles, then Update.');
+            setHint('Type one of the five styles, then Send.');
             return;
           }
           setHint('');
