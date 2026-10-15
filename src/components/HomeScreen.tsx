@@ -30,7 +30,6 @@ export function HomeScreen() {
       <SketchField
         value={typed}
         onChangeText={setTyped}
-        placeholder="Aesthetic, Location…"
         hint={hint}
         onSubmit={() => {
           const track = matchTrack(typed);

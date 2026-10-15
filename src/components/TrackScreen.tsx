@@ -77,7 +77,6 @@ export function TrackScreen() {
       <SketchField
         value={typed}
         onChangeText={setTyped}
-        placeholder="A style, hobby, or name"
         onSubmit={() => setShowResults(true)}
       />
       {showResults ? (

@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 import { colors, spacing } from '../theme';
 import { SketchFrame } from './SketchFrame';
 
@@ -6,19 +7,23 @@ type Props = {
   value: string;
   onChangeText: (value: string) => void;
   onSubmit: () => void;
-  placeholder: string;
   hint?: string;
 };
 
-export function SketchField({ value, onChangeText, onSubmit, placeholder, hint }: Props) {
+export function SketchField({ value, onChangeText, onSubmit, hint }: Props) {
   return (
     <View style={styles.wrap}>
-      <Text style={styles.or}>illustrative AI prompt for display only</Text>
+      <View style={styles.promptRow}>
+        <Text style={styles.or}>or type it out</Text>
+        <Svg width={16} height={16} viewBox="0 0 16 16">
+          <Path d="M 3 5 Q 8 12 13 5" stroke={colors.ink} strokeWidth={2.2} fill="none" strokeLinecap="round" />
+        </Svg>
+      </View>
       <SketchFrame fill={colors.card} seed={6} style={styles.stretch} contentStyle={styles.inputPad}>
         <TextInput
           value={value}
           onChangeText={onChangeText}
-          placeholder={placeholder}
+          placeholder="illustrative AI prompt for display only"
           placeholderTextColor={colors.muted}
           style={styles.input}
         />
@@ -38,14 +43,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.md,
   },
+  promptRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xs,
+  },
   or: {
-    alignSelf: 'stretch',
     color: colors.ink,
     fontWeight: '700',
     fontSize: 15,
     lineHeight: 22,
-    paddingHorizontal: spacing.sm,
-    textAlign: 'center',
   },
   stretch: {
     alignSelf: 'stretch',
