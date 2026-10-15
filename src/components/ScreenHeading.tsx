@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors, spacing } from '../theme';
 import { InfoBubble } from './InfoBubble';
@@ -7,18 +7,44 @@ type Props = {
   title: string;
   detail: string;
   mark?: ReactNode;
+  onTitleInset?: (inset: number) => void;
 };
 
-export function ScreenHeading({ title, detail, mark }: Props) {
+export function ScreenHeading({ title, detail, mark, onTitleInset }: Props) {
   const [open, setOpen] = useState(false);
+  const [inset, setInset] = useState(0);
+  const wrapRef = useRef<View>(null);
+  const titleRef = useRef<Text>(null);
+
+  const report = () => {
+    const wrap = wrapRef.current;
+    const titleNode = titleRef.current;
+    if (!mark || !wrap || !titleNode) {
+      return;
+    }
+    titleNode.measureLayout(
+      wrap,
+      (x) => {
+        const next = Math.round(x);
+        setInset((current) => (current === next ? current : next));
+        onTitleInset?.(next);
+      },
+      () => undefined,
+    );
+  };
+
   return (
-    <View style={styles.wrap}>
-      <View style={[styles.row, mark ? styles.rowStart : null]}>
+    <View ref={wrapRef} style={styles.wrap} onLayout={report}>
+      <View style={[styles.row, mark ? styles.rowMarked : null]}>
         {mark}
-        <Text style={[styles.title, mark ? styles.titleStart : null]}>{title}</Text>
+        <Text ref={titleRef} onLayout={report} style={[styles.title, mark ? styles.titleStart : null]}>
+          {title}
+        </Text>
         <InfoBubble open={open} onPress={() => setOpen((value) => !value)} />
       </View>
-      {open ? <Text style={[styles.detail, mark ? styles.titleStart : null]}>{detail}</Text> : null}
+      {open ? (
+        <Text style={[styles.detail, mark ? styles.detailStart : null, mark ? { marginLeft: inset } : null]}>{detail}</Text>
+      ) : null}
     </View>
   );
 }
@@ -33,9 +59,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: spacing.sm,
   },
-  rowStart: {
-    justifyContent: 'flex-start',
+  rowMarked: {
     alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     flexShrink: 1,
@@ -46,11 +72,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   titleStart: {
+    flexShrink: 0,
+    flexGrow: 0,
     textAlign: 'left',
   },
   detail: {
     color: colors.muted,
     lineHeight: 20,
     textAlign: 'center',
+  },
+  detailStart: {
+    textAlign: 'left',
   },
 });

@@ -37,6 +37,7 @@ export function TrackScreen() {
   const [selected, setSelected] = useState<string[]>([]);
   const [typed, setTyped] = useState('');
   const [filtersOpen, setFiltersOpen] = useState(true);
+  const [titleInset, setTitleInset] = useState(0);
   const track = data.activeScreen;
   if (track !== 'Aesthetic' && track !== 'Commonalities' && track !== 'Activities') {
     return null;
@@ -64,11 +65,14 @@ export function TrackScreen() {
         title={`${meta?.line ?? track},\n${demoUser.name}?`}
         detail={meta?.detail ?? ''}
         mark={<WheelIcon track={track} size={32} />}
+        onTitleInset={setTitleInset}
       />
       <DrawerToggle
         label={track === 'Aesthetic' ? 'Aesthetics' : 'Filters'}
         open={filtersOpen}
         onPress={() => setFiltersOpen((value) => !value)}
+        arrowSide="end"
+        inset={titleInset}
       />
       {filtersOpen ? (
         <ChoiceSquares
@@ -81,7 +85,7 @@ export function TrackScreen() {
           }
         />
       ) : null}
-      <SketchField value={typed} onChangeText={setTyped} align="start" />
+      <SketchField value={typed} onChangeText={setTyped} align="start" labelInset={titleInset} />
       {selected.length === 0 ? null : pool.length === 0 ? (
           <Text style={styles.help}>Nobody in this track fits those filters and the mutual age and identity rules.</Text>
         ) : track !== 'Aesthetic' && selected.length >= 2 ? (

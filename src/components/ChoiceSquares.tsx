@@ -4,8 +4,10 @@ import { colors, spacing } from '../theme';
 
 const CHIP_W = 112;
 const CHIP_H = 40;
-const STAGGER = 44;
-const START = 72;
+const STAGGER = 48;
+const OVERHANG = 36;
+const START = STAGGER + OVERHANG;
+const ROW_MIN = 600;
 
 type Props = {
   options: string[];
@@ -22,12 +24,18 @@ export function ChoiceSquares({ options, selected, onToggle, emptySlots = 3 }: P
     ...options.map((label) => ({ key: label, label })),
     ...Array.from({ length: emptySlots }, (_, index) => ({ key: `empty-${index}`, label: null })),
   ];
-  const top = items.filter((_, index) => index % 2 === 0);
-  const bottom = items.filter((_, index) => index % 2 === 1);
+  const top = padRow(
+    items.filter((_, index) => index % 2 === 0),
+    'top',
+  );
+  const bottom = padRow(
+    items.filter((_, index) => index % 2 === 1),
+    'bottom',
+  );
 
   useEffect(() => {
     scroller.current?.scrollTo({ x: START, animated: false });
-  }, [items.length]);
+  }, [top.length, bottom.length]);
 
   return (
     <ScrollView
@@ -40,11 +48,28 @@ export function ChoiceSquares({ options, selected, onToggle, emptySlots = 3 }: P
       contentOffset={{ x: START, y: 0 }}
     >
       <View style={styles.stack}>
-        <View style={[styles.row, { marginLeft: STAGGER }]}>{renderChips(top, selected, onToggle)}</View>
+        <View style={[styles.row, styles.rowTop]}>{renderChips(top, selected, onToggle)}</View>
         <View style={styles.row}>{renderChips(bottom, selected, onToggle)}</View>
       </View>
     </ScrollView>
   );
+}
+
+function padRow(items: Item[], side: 'top' | 'bottom'): Item[] {
+  const next = [...items];
+  let extra = 0;
+  while (rowWidth(next.length) < ROW_MIN) {
+    next.push({ key: `${side}-pad-${extra}`, label: null });
+    extra += 1;
+  }
+  return next;
+}
+
+function rowWidth(count: number): number {
+  if (count <= 0) {
+    return 0;
+  }
+  return count * CHIP_W + (count - 1) * spacing.sm;
 }
 
 function renderChips(items: Item[], selected: string[], onToggle: (value: string) => void) {
@@ -76,7 +101,7 @@ const styles = StyleSheet.create({
     marginHorizontal: -spacing.lg,
   },
   railContent: {
-    paddingRight: spacing.lg,
+    paddingRight: spacing.xxl,
   },
   stack: {
     gap: spacing.sm,
@@ -84,6 +109,9 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     gap: spacing.sm,
+  },
+  rowTop: {
+    marginLeft: STAGGER,
   },
   chip: {
     width: CHIP_W,

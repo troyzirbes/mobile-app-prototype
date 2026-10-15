@@ -7,12 +7,19 @@ type Props = {
   value: string;
   onChangeText: (value: string) => void;
   align?: 'center' | 'start';
+  labelInset?: number;
 };
 
-export function SketchField({ value, onChangeText, align = 'center' }: Props) {
+export function SketchField({ value, onChangeText, align = 'center', labelInset = 0 }: Props) {
   return (
     <View style={styles.wrap}>
-      <View style={[styles.promptRow, align === 'start' ? styles.promptStart : null]}>
+      <View
+        style={[
+          styles.promptRow,
+          align === 'start' ? styles.promptStart : null,
+          align === 'start' ? { marginLeft: labelInset } : null,
+        ]}
+      >
         <Text style={styles.or}>or type it out</Text>
         <SketchArrow direction="down" size={20} />
       </View>
