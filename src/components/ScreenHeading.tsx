@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors, spacing } from '../theme';
 import { InfoBubble } from './InfoBubble';
@@ -6,17 +6,19 @@ import { InfoBubble } from './InfoBubble';
 type Props = {
   title: string;
   detail: string;
+  mark?: ReactNode;
 };
 
-export function ScreenHeading({ title, detail }: Props) {
+export function ScreenHeading({ title, detail, mark }: Props) {
   const [open, setOpen] = useState(false);
   return (
     <View style={styles.wrap}>
-      <View style={styles.row}>
-        <Text style={styles.title}>{title}</Text>
+      <View style={[styles.row, mark ? styles.rowStart : null]}>
+        {mark}
+        <Text style={[styles.title, mark ? styles.titleStart : null]}>{title}</Text>
         <InfoBubble open={open} onPress={() => setOpen((value) => !value)} />
       </View>
-      {open ? <Text style={styles.detail}>{detail}</Text> : null}
+      {open ? <Text style={[styles.detail, mark ? styles.titleStart : null]}>{detail}</Text> : null}
     </View>
   );
 }
@@ -31,6 +33,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: spacing.sm,
   },
+  rowStart: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
   title: {
     flexShrink: 1,
     color: colors.ink,
@@ -38,6 +44,9 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     lineHeight: 28,
     textAlign: 'center',
+  },
+  titleStart: {
+    textAlign: 'left',
   },
   detail: {
     color: colors.muted,

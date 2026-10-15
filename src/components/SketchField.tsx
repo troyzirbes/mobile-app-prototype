@@ -6,12 +6,13 @@ import { SketchFrame } from './SketchFrame';
 type Props = {
   value: string;
   onChangeText: (value: string) => void;
+  align?: 'center' | 'start';
 };
 
-export function SketchField({ value, onChangeText }: Props) {
+export function SketchField({ value, onChangeText, align = 'center' }: Props) {
   return (
     <View style={styles.wrap}>
-      <View style={styles.promptRow}>
+      <View style={[styles.promptRow, align === 'start' ? styles.promptStart : null]}>
         <Text style={styles.or}>or type it out</Text>
         <SketchArrow direction="down" size={20} />
       </View>
@@ -44,6 +45,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.xs,
+  },
+  promptStart: {
+    alignSelf: 'stretch',
+    justifyContent: 'flex-start',
   },
   or: {
     color: colors.ink,

@@ -13,6 +13,7 @@ import { DrawerToggle } from './DrawerToggle';
 import { OverlapMap } from './OverlapMap';
 import { ScreenHeading } from './ScreenHeading';
 import { SketchField } from './SketchField';
+import { WheelIcon } from './WheelIcon';
 
 const styleChips: StyleCategory[] = ['Athletic', 'Alternative', 'Minimalist', 'High-Fashion', 'Outdoorsy'];
 const interestChips = ['climbing', 'cooking', 'live music', 'night markets', 'museums'];
@@ -41,22 +42,29 @@ export function TrackScreen() {
     return null;
   }
   const meta = searchTrackMeta.find((item) => item.id === track);
-  const pool = discoverProfiles(data).filter((profile) => {
-    const tagFit = selected.length === 0 || selected.some((tag) => matchesTag(profile, tag, track));
-    const query = typed.trim().toLowerCase();
-    const textFit =
-      query.length === 0 ||
-      profile.name.toLowerCase().includes(query) ||
-      profile.bio.toLowerCase().includes(query) ||
-      profile.styleCategory.toLowerCase().includes(query) ||
-      profile.interests.some((interest) => interest.includes(query)) ||
-      profile.bounty.toLowerCase().includes(query);
-    return tagFit && textFit;
-  });
+  const pool =
+    selected.length === 0
+      ? []
+      : discoverProfiles(data).filter((profile) => {
+          const tagFit = selected.some((tag) => matchesTag(profile, tag, track));
+          const query = typed.trim().toLowerCase();
+          const textFit =
+            query.length === 0 ||
+            profile.name.toLowerCase().includes(query) ||
+            profile.bio.toLowerCase().includes(query) ||
+            profile.styleCategory.toLowerCase().includes(query) ||
+            profile.interests.some((interest) => interest.includes(query)) ||
+            profile.bounty.toLowerCase().includes(query);
+          return tagFit && textFit;
+        });
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
-      <ScreenHeading title={`${meta?.line ?? track}, ${demoUser.name}?`} detail={meta?.detail ?? ''} />
+      <ScreenHeading
+        title={`${meta?.line ?? track},\n${demoUser.name}?`}
+        detail={meta?.detail ?? ''}
+        mark={<WheelIcon track={track} size={32} />}
+      />
       <DrawerToggle
         label={track === 'Aesthetic' ? 'Aesthetics' : 'Filters'}
         open={filtersOpen}
@@ -73,8 +81,8 @@ export function TrackScreen() {
           }
         />
       ) : null}
-      <SketchField value={typed} onChangeText={setTyped} />
-      {pool.length === 0 ? (
+      <SketchField value={typed} onChangeText={setTyped} align="start" />
+      {selected.length === 0 ? null : pool.length === 0 ? (
           <Text style={styles.help}>Nobody in this track fits those filters and the mutual age and identity rules.</Text>
         ) : track !== 'Aesthetic' && selected.length >= 2 ? (
           <OverlapMap

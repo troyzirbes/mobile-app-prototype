@@ -4,6 +4,7 @@ import { colors } from '../theme';
 
 type Props = {
   track: SearchTrack;
+  size?: number;
 };
 
 const stroke = {
@@ -14,9 +15,9 @@ const stroke = {
   strokeLinejoin: 'round' as const,
 };
 
-export function WheelIcon({ track }: Props) {
+export function WheelIcon({ track, size = 52 }: Props) {
   return (
-    <Svg width={52} height={52} viewBox="0 0 64 64">
+    <Svg width={size} height={size} viewBox="0 0 64 64">
       {track === 'Aesthetic' ? (
         <Path
           d="M 26 16 C 26 8 42 6 36 16 M 8 30 L 32 16 L 56 30 M 12 30 Q 14 48 20 52 M 52 30 Q 50 48 44 52"
