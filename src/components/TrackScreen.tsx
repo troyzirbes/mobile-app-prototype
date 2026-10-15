@@ -1,19 +1,20 @@
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { demoUser } from '../data/mockData';
 import { searchTrackMeta } from '../navigation/tracks';
 import { discoverProfiles, photosRevealed } from '../store/demoState';
-import { overlapScore } from '../store/matching';
 import { useAppStore } from '../store/useAppStore';
 import type { MockProfile, SearchTrack, StyleCategory } from '../types/demo';
 import { colors, spacing } from '../theme';
-import { Avatar } from './Avatar';
 import { ChoiceSquares } from './ChoiceSquares';
 import { DrawerToggle } from './DrawerToggle';
 import { OverlapMap } from './OverlapMap';
 import { ScreenHeading } from './ScreenHeading';
 import { SketchField } from './SketchField';
 import { WheelIcon } from './WheelIcon';
+
+const MAX_CIRCLES = 3;
+const circleTones = [colors.infoDeep, colors.sun, colors.passStamp];
 
 const styleChips: StyleCategory[] = ['Athletic', 'Alternative', 'Minimalist', 'High-Fashion', 'Outdoorsy'];
 const interestChips = ['climbing', 'cooking', 'live music', 'night markets', 'museums'];
@@ -75,55 +76,42 @@ export function TrackScreen() {
         inset={titleInset}
       />
       {filtersOpen ? (
-        <ChoiceSquares
-          options={chipsFor(track)}
-          selected={selected}
-          onToggle={(chip) =>
-            setSelected((current) =>
-              current.includes(chip) ? current.filter((item) => item !== chip) : [...current, chip],
-            )
-          }
-        />
-      ) : null}
-      <SketchField value={typed} onChangeText={setTyped} align="start" labelInset={titleInset} />
-      {selected.length === 0 ? null : pool.length === 0 ? (
-          <Text style={styles.help}>Nobody in this track fits those filters and the mutual age and identity rules.</Text>
-        ) : track !== 'Aesthetic' && selected.length >= 2 ? (
-          <OverlapMap
-            tags={selected}
-            profiles={pool}
-            matches={(profile, tag) => matchesTag(profile, tag, track)}
-            hidden={(profile) => !photosRevealed(data, profile.id)}
-            onOpen={data.openPerson}
+        <>
+          <ChoiceSquares
+            options={chipsFor(track)}
+            selected={selected}
+            tones={circleTones}
+            maxSelected={MAX_CIRCLES}
+            onToggle={(chip) => {
+              if (selected.includes(chip)) {
+                const next = selected.filter((item) => item !== chip);
+                setSelected(next);
+                if (next.length === 0) {
+                  setFiltersOpen(true);
+                }
+                return;
+              }
+              if (selected.length >= MAX_CIRCLES) {
+                return;
+              }
+              setSelected([...selected, chip]);
+              setFiltersOpen(false);
+            }}
           />
-        ) : (
-          <View style={styles.grid}>
-            {pool.map((profile) => (
-              <Pressable
-                key={profile.id}
-                accessibilityRole="button"
-                onPress={() => data.openPerson(profile.id)}
-                style={styles.cell}
-              >
-                <Avatar
-                  name={profile.name}
-                  profileId={profile.id}
-                  color={profile.photos[0] ?? colors.pass}
-                  hidden={!photosRevealed(data, profile.id)}
-                  size={72}
-                />
-                <Text style={styles.name}>{profile.name.split(' ')[0]}</Text>
-                <Text style={styles.meta}>
-                  {track === 'Commonalities'
-                    ? `${overlapScore(demoUser.interests, profile.interests)}% overlap`
-                    : track === 'Activities'
-                      ? profile.bounty
-                      : profile.styleCategory}
-                </Text>
-              </Pressable>
-            ))}
-          </View>
-        )}
+          <SketchField value={typed} onChangeText={setTyped} align="start" labelInset={titleInset} />
+        </>
+      ) : null}
+      {selected.length === 0 ? null : pool.length === 0 ? (
+        <Text style={styles.help}>Nobody in this track fits those filters and the mutual age and identity rules.</Text>
+      ) : (
+        <OverlapMap
+          tags={selected}
+          profiles={pool}
+          matches={(profile, tag) => matchesTag(profile, tag, track)}
+          hidden={(profile) => !photosRevealed(data, profile.id)}
+          onOpen={data.openPerson}
+        />
+      )}
     </ScrollView>
   );
 }
@@ -137,55 +125,8 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     paddingBottom: spacing.xxl,
   },
-  top: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: spacing.sm,
-  },
-  prompt: {
-    flex: 1,
-    color: colors.ink,
-    fontSize: 22,
-    fontWeight: '800',
-    lineHeight: 28,
-  },
-  info: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    borderWidth: 1,
-    borderColor: colors.muted,
-    color: colors.muted,
-    textAlign: 'center',
-    fontWeight: '800',
-    overflow: 'hidden',
-  },
   help: {
     color: colors.muted,
     lineHeight: 20,
-  },
-  label: {
-    color: colors.ink,
-    fontWeight: '800',
-  },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.md,
-  },
-  cell: {
-    width: '30%',
-    alignItems: 'center',
-    gap: spacing.xs,
-  },
-  name: {
-    color: colors.ink,
-    fontWeight: '800',
-    fontSize: 13,
-  },
-  meta: {
-    color: colors.muted,
-    fontSize: 11,
-    textAlign: 'center',
   },
 });

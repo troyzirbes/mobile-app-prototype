@@ -12,6 +12,7 @@ export const colors = {
   chip: '#FFFFFF',
   olive: '#5C4A28',
   wheel: '#FFF6C4',
+  sun: '#F5C542',
   info: '#2F6FE4',
   infoDeep: '#1E4EBE',
   white: '#FFFFFF',

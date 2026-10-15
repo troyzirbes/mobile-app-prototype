@@ -14,11 +14,13 @@ type Props = {
   selected: string[];
   onToggle: (value: string) => void;
   emptySlots?: number;
+  tones?: string[];
+  maxSelected?: number;
 };
 
 type Item = { key: string; label: string | null };
 
-export function ChoiceSquares({ options, selected, onToggle, emptySlots = 3 }: Props) {
+export function ChoiceSquares({ options, selected, onToggle, emptySlots = 3, tones, maxSelected }: Props) {
   const scroller = useRef<ScrollView>(null);
   const items: Item[] = [
     ...options.map((label) => ({ key: label, label })),
@@ -48,8 +50,8 @@ export function ChoiceSquares({ options, selected, onToggle, emptySlots = 3 }: P
       contentOffset={{ x: START, y: 0 }}
     >
       <View style={styles.stack}>
-        <View style={[styles.row, styles.rowTop]}>{renderChips(top, selected, onToggle)}</View>
-        <View style={styles.row}>{renderChips(bottom, selected, onToggle)}</View>
+        <View style={[styles.row, styles.rowTop]}>{renderChips(top, selected, onToggle, tones, maxSelected)}</View>
+        <View style={styles.row}>{renderChips(bottom, selected, onToggle, tones, maxSelected)}</View>
       </View>
     </ScrollView>
   );
@@ -72,22 +74,38 @@ function rowWidth(count: number): number {
   return count * CHIP_W + (count - 1) * spacing.sm;
 }
 
-function renderChips(items: Item[], selected: string[], onToggle: (value: string) => void) {
+function renderChips(
+  items: Item[],
+  selected: string[],
+  onToggle: (value: string) => void,
+  tones: string[] | undefined,
+  maxSelected: number | undefined,
+) {
+  const full = maxSelected !== undefined && selected.length >= maxSelected;
   return items.map((item) => {
     const label = item.label;
     if (!label) {
       return <View key={item.key} accessibilityLabel="Empty choice" style={styles.chip} />;
     }
-    const on = selected.includes(label);
+    const rank = selected.indexOf(label);
+    const on = rank >= 0;
+    const locked = full && !on;
+    const background = on ? (tones?.[rank] ?? colors.infoDeep) : colors.info;
+    const text = background === colors.sun ? colors.ink : colors.white;
     return (
       <Pressable
         key={item.key}
         accessibilityRole="button"
-        accessibilityState={{ selected: on }}
-        onPress={() => onToggle(label)}
-        style={[styles.chip, on && styles.chipOn]}
+        accessibilityState={{ selected: on, disabled: locked }}
+        onPress={() => {
+          if (locked) {
+            return;
+          }
+          onToggle(label);
+        }}
+        style={[styles.chip, { backgroundColor: background }, locked ? styles.locked : null]}
       >
-        <Text style={styles.label} numberOfLines={1}>
+        <Text style={[styles.label, { color: text }]} numberOfLines={1}>
           {label}
         </Text>
       </Pressable>
@@ -122,8 +140,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  chipOn: {
-    backgroundColor: colors.infoDeep,
+  locked: {
+    opacity: 0.4,
   },
   label: {
     color: colors.white,
