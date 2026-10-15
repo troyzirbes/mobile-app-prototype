@@ -1,7 +1,7 @@
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { demoUser } from '../data/mockData';
 import { useAppStore } from '../store/useAppStore';
-import { colors, drawn, fonts, radii, spacing } from '../theme';
+import { colors, radii, spacing } from '../theme';
 import { Avatar } from './Avatar';
 
 export function MyProfileScreen() {
@@ -90,19 +90,16 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 36,
+    fontSize: 28,
+    fontWeight: '800',
   },
   lead: {
     color: colors.muted,
-    fontFamily: fonts.body,
-    fontSize: 16,
-    lineHeight: 22,
+    lineHeight: 20,
   },
   label: {
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 22,
+    fontWeight: '800',
     marginTop: spacing.sm,
   },
   row: {
@@ -111,25 +108,24 @@ const styles = StyleSheet.create({
   },
   input: {
     minHeight: 80,
+    borderWidth: 1,
+    borderColor: colors.line,
     backgroundColor: colors.card,
     borderRadius: radii.stamp,
     padding: spacing.md,
     color: colors.ink,
-    fontFamily: fonts.body,
-    fontSize: 16,
     userSelect: 'text',
-    ...drawn,
   },
   secondary: {
-    ...drawn,
+    borderWidth: 1,
+    borderColor: colors.line,
     backgroundColor: colors.card,
     borderRadius: radii.button,
     padding: spacing.md,
   },
   secondaryText: {
     color: colors.ink,
-    fontFamily: fonts.bodyBold,
-    fontSize: 15,
+    fontWeight: '700',
   },
   stepper: {
     flexDirection: 'row',
@@ -140,10 +136,11 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
+    borderWidth: 1,
+    borderColor: colors.line,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.card,
-    ...drawn,
   },
   danger: {
     backgroundColor: colors.passStamp,
@@ -153,13 +150,10 @@ const styles = StyleSheet.create({
   },
   dangerText: {
     color: colors.white,
-    fontFamily: fonts.bodyBold,
-    fontSize: 16,
+    fontWeight: '800',
   },
   help: {
     color: colors.muted,
-    fontFamily: fonts.body,
-    fontSize: 15,
-    lineHeight: 22,
+    lineHeight: 20,
   },
 });

@@ -4,7 +4,7 @@ import { demoUser } from '../data/mockData';
 import { discoverProfiles } from '../store/demoState';
 import { useAppStore } from '../store/useAppStore';
 import type { ConnectIntent, MockProfile } from '../types/demo';
-import { colors, drawn, fonts, radii, shadow, spacing } from '../theme';
+import { colors, radii, spacing } from '../theme';
 import { EnergyPill } from './EnergyPill';
 
 const prompts = [
@@ -169,67 +169,57 @@ const styles = StyleSheet.create({
   prompt: {
     flex: 1,
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 30,
-    lineHeight: 34,
+    fontSize: 22,
+    fontWeight: '800',
+    lineHeight: 28,
   },
   info: {
     width: 22,
     height: 22,
     borderRadius: 11,
-    borderWidth: 2,
-    borderColor: colors.inkLine,
-    color: colors.ink,
-    fontFamily: fonts.bodyBold,
+    borderWidth: 1,
+    borderColor: colors.muted,
+    color: colors.muted,
     textAlign: 'center',
+    fontWeight: '800',
     overflow: 'hidden',
-    lineHeight: 20,
   },
   help: {
     color: colors.muted,
-    fontFamily: fonts.body,
-    fontSize: 15,
-    lineHeight: 22,
+    lineHeight: 20,
   },
   card: {
     backgroundColor: colors.card,
     borderRadius: radii.card,
+    borderWidth: 1,
+    borderColor: colors.line,
     padding: spacing.lg,
     gap: spacing.sm,
-    ...drawn,
-    ...shadow,
   },
   heading: {
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 22,
+    fontWeight: '800',
+    fontSize: 16,
   },
   body: {
     color: colors.ink,
-    fontFamily: fonts.body,
-    fontSize: 16,
-    lineHeight: 22,
+    lineHeight: 20,
   },
   item: {
     color: colors.ink,
-    fontFamily: fonts.body,
-    fontSize: 16,
-    lineHeight: 22,
+    lineHeight: 20,
   },
   timer: {
     color: colors.coralDeep,
-    fontFamily: fonts.bodyBold,
-    fontSize: 16,
+    fontWeight: '700',
   },
   input: {
-    backgroundColor: colors.card,
+    borderWidth: 1,
+    borderColor: colors.line,
     borderRadius: radii.stamp,
     padding: spacing.md,
     color: colors.ink,
-    fontFamily: fonts.body,
-    fontSize: 16,
     userSelect: 'text',
-    ...drawn,
   },
   row: {
     flexDirection: 'row',
@@ -238,18 +228,18 @@ const styles = StyleSheet.create({
   },
   button: {
     alignSelf: 'flex-start',
-    backgroundColor: colors.coral,
+    backgroundColor: colors.likeStamp,
     borderRadius: radii.button,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
   },
   buttonText: {
     color: colors.white,
-    fontFamily: fonts.bodyBold,
-    fontSize: 16,
+    fontWeight: '800',
   },
   secondary: {
-    ...drawn,
+    borderWidth: 1,
+    borderColor: colors.line,
     borderRadius: radii.button,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
@@ -257,8 +247,7 @@ const styles = StyleSheet.create({
   },
   secondaryText: {
     color: colors.ink,
-    fontFamily: fonts.bodyBold,
-    fontSize: 15,
+    fontWeight: '700',
   },
   danger: {
     backgroundColor: colors.passStamp,
@@ -268,7 +257,6 @@ const styles = StyleSheet.create({
   },
   dangerText: {
     color: colors.white,
-    fontFamily: fonts.bodyBold,
-    fontSize: 16,
+    fontWeight: '800',
   },
 });

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useAppStore } from '../store/useAppStore';
 import type { MockProfile } from '../types/demo';
-import { colors, drawn, fonts, radii, shadow, spacing } from '../theme';
+import { colors, radii, spacing } from '../theme';
 import { Avatar } from './Avatar';
 import { ChatsView } from './ChatsView';
 import { CoOpModal } from './CoOpModal';
@@ -45,7 +45,13 @@ export function LikesHubScreen() {
           {tab === 'Interested'
             ? data.incomingLikes.map((profile) => (
                 <View key={profile.id} style={styles.card}>
-                  <Avatar name={profile.name} profileId={profile.id} color={profile.photos[0] ?? colors.pass} hidden={false} size={72} />
+                  <Avatar
+                    name={profile.name}
+                    profileId={profile.id}
+                    color={profile.photos[0] ?? colors.pass}
+                    hidden={false}
+                    size={56}
+                  />
                   <View style={styles.meta}>
                     <Text style={styles.name}>
                       {profile.name}, {profile.age}
@@ -188,9 +194,7 @@ const styles = StyleSheet.create({
   },
   lead: {
     color: colors.muted,
-    fontFamily: fonts.body,
-    fontSize: 15,
-    lineHeight: 22,
+    lineHeight: 20,
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.md,
   },
@@ -201,18 +205,15 @@ const styles = StyleSheet.create({
   },
   empty: {
     color: colors.ink,
-    fontFamily: fonts.body,
-    fontSize: 16,
-    lineHeight: 22,
   },
   card: {
     flexDirection: 'row',
     gap: spacing.md,
     backgroundColor: colors.card,
     borderRadius: radii.card,
+    borderWidth: 1,
+    borderColor: colors.line,
     padding: spacing.md,
-    ...drawn,
-    ...shadow,
   },
   meta: {
     flex: 1,
@@ -221,25 +222,23 @@ const styles = StyleSheet.create({
   block: {
     backgroundColor: colors.card,
     borderRadius: radii.card,
+    borderWidth: 1,
+    borderColor: colors.line,
     padding: spacing.md,
     gap: spacing.sm,
-    ...drawn,
-    ...shadow,
   },
   name: {
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 24,
+    fontWeight: '800',
+    fontSize: 18,
   },
   rate: {
     color: colors.coralDeep,
-    fontFamily: fonts.bodyBold,
+    fontWeight: '700',
   },
   body: {
     color: colors.ink,
-    fontFamily: fonts.body,
-    fontSize: 15,
-    lineHeight: 22,
+    lineHeight: 20,
   },
   row: {
     flexDirection: 'row',
@@ -253,19 +252,19 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   primaryText: {
-    color: colors.card,
-    fontFamily: fonts.bodyBold,
+    color: colors.white,
+    fontWeight: '800',
   },
   secondary: {
-    ...drawn,
-    backgroundColor: colors.card,
+    borderWidth: 1,
+    borderColor: colors.line,
     borderRadius: radii.button,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
   secondaryText: {
     color: colors.ink,
-    fontFamily: fonts.bodyBold,
+    fontWeight: '700',
   },
   panel: {
     gap: spacing.sm,

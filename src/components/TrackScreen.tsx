@@ -6,7 +6,7 @@ import { discoverProfiles, photosRevealed } from '../store/demoState';
 import { overlapScore } from '../store/matching';
 import { useAppStore } from '../store/useAppStore';
 import type { MockProfile, SearchTrack, StyleCategory } from '../types/demo';
-import { colors, drawn, fonts, radii, shadow, spacing } from '../theme';
+import { colors, radii, spacing } from '../theme';
 import { Avatar } from './Avatar';
 import { EnergyPill } from './EnergyPill';
 import { OverlapMap } from './OverlapMap';
@@ -119,10 +119,9 @@ export function TrackScreen() {
                 <Avatar
                   name={profile.name}
                   profileId={profile.id}
-                  shape="card"
                   color={profile.photos[0] ?? colors.pass}
                   hidden={!photosRevealed(data, profile.id)}
-                  size={128}
+                  size={72}
                 />
                 <Text style={styles.name}>{profile.name.split(' ')[0]}</Text>
                 <Text style={styles.meta}>
@@ -158,32 +157,28 @@ const styles = StyleSheet.create({
   prompt: {
     flex: 1,
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 30,
-    lineHeight: 34,
+    fontSize: 22,
+    fontWeight: '800',
+    lineHeight: 28,
   },
   info: {
     width: 22,
     height: 22,
     borderRadius: 11,
-    borderWidth: 2,
-    borderColor: colors.inkLine,
-    color: colors.ink,
-    fontFamily: fonts.bodyBold,
+    borderWidth: 1,
+    borderColor: colors.muted,
+    color: colors.muted,
     textAlign: 'center',
+    fontWeight: '800',
     overflow: 'hidden',
-    lineHeight: 20,
   },
   help: {
     color: colors.muted,
-    fontFamily: fonts.body,
-    fontSize: 15,
-    lineHeight: 22,
+    lineHeight: 20,
   },
   label: {
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 20,
+    fontWeight: '800',
   },
   chips: {
     flexDirection: 'row',
@@ -191,71 +186,64 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   chip: {
-    backgroundColor: colors.card,
+    backgroundColor: colors.chip,
     borderRadius: radii.chip,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    ...drawn,
   },
   chipOn: {
     backgroundColor: colors.ink,
   },
   chipText: {
     color: colors.ink,
-    fontFamily: fonts.body,
-    fontSize: 14,
+    fontWeight: '700',
+    fontSize: 13,
   },
   chipTextOn: {
     color: colors.white,
   },
   or: {
     color: colors.muted,
-    fontFamily: fonts.body,
-    fontSize: 15,
+    fontWeight: '700',
   },
   input: {
+    borderWidth: 1,
+    borderColor: colors.line,
     backgroundColor: colors.card,
     borderRadius: radii.stamp,
     padding: spacing.md,
     color: colors.ink,
-    fontFamily: fonts.body,
-    fontSize: 16,
     userSelect: 'text',
-    ...drawn,
   },
   button: {
     alignSelf: 'center',
-    backgroundColor: colors.coral,
+    backgroundColor: colors.likeStamp,
     borderRadius: radii.button,
     paddingHorizontal: spacing.xl,
     paddingVertical: spacing.md,
-    ...shadow,
   },
   buttonText: {
-    color: colors.card,
-    fontFamily: fonts.bodyBold,
-    fontSize: 16,
+    color: colors.white,
+    fontWeight: '800',
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    gap: spacing.lg,
+    gap: spacing.md,
   },
   cell: {
-    width: '46%',
+    width: '30%',
     alignItems: 'center',
-    gap: spacing.sm,
+    gap: spacing.xs,
   },
   name: {
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 18,
+    fontWeight: '800',
+    fontSize: 13,
   },
   meta: {
     color: colors.muted,
-    fontFamily: fonts.body,
-    fontSize: 12,
+    fontSize: 11,
     textAlign: 'center',
   },
 });

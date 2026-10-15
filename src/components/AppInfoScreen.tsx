@@ -1,6 +1,6 @@
 import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
 import { useAppStore } from '../store/useAppStore';
-import { colors, fonts, radii, spacing } from '../theme';
+import { colors, radii, spacing } from '../theme';
 
 export function AppInfoScreen() {
   const goTo = useAppStore((state) => state.goTo);
@@ -33,25 +33,22 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 36,
+    fontSize: 28,
+    fontWeight: '800',
   },
   body: {
     color: colors.ink,
-    fontFamily: fonts.body,
-    fontSize: 16,
-    lineHeight: 24,
+    lineHeight: 22,
   },
   button: {
     alignSelf: 'flex-start',
-    backgroundColor: colors.coral,
+    backgroundColor: colors.ink,
     borderRadius: radii.button,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
   },
   buttonText: {
     color: colors.white,
-    fontFamily: fonts.bodyBold,
-    fontSize: 16,
+    fontWeight: '800',
   },
 });
