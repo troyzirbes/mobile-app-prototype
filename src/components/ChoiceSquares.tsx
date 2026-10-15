@@ -1,5 +1,7 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors, spacing } from '../theme';
+
+const SQUARE = 72;
 
 type Props = {
   options: string[];
@@ -10,7 +12,13 @@ type Props = {
 
 export function ChoiceSquares({ options, selected, onToggle, emptySlots = 3 }: Props) {
   return (
-    <View style={styles.grid}>
+    <ScrollView
+      horizontal
+      nestedScrollEnabled
+      showsHorizontalScrollIndicator={false}
+      style={styles.rail}
+      contentContainerStyle={styles.railContent}
+    >
       {options.map((option) => {
         const on = selected.includes(option);
         return (
@@ -28,22 +36,26 @@ export function ChoiceSquares({ options, selected, onToggle, emptySlots = 3 }: P
       {Array.from({ length: emptySlots }, (_, index) => (
         <View key={`empty-${index}`} accessibilityLabel="Empty choice" style={styles.square} />
       ))}
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  rail: {
+    height: SQUARE,
+    marginHorizontal: -spacing.lg,
+  },
+  railContent: {
+    paddingHorizontal: spacing.lg,
     gap: spacing.sm,
+    alignItems: 'center',
   },
   square: {
-    width: '31%',
-    aspectRatio: 1,
+    width: SQUARE,
+    height: SQUARE,
     backgroundColor: colors.info,
     borderRadius: 6,
-    padding: spacing.md,
+    padding: spacing.xs,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -53,8 +65,8 @@ const styles = StyleSheet.create({
   label: {
     color: colors.white,
     fontWeight: '800',
-    fontSize: 13,
-    lineHeight: 18,
+    fontSize: 11,
+    lineHeight: 14,
     textAlign: 'center',
   },
 });
