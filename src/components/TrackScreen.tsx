@@ -38,6 +38,7 @@ export function TrackScreen() {
   const [selected, setSelected] = useState<string[]>([]);
   const [typed, setTyped] = useState('');
   const [filtersOpen, setFiltersOpen] = useState(true);
+  const [promptOpen, setPromptOpen] = useState(true);
   const [titleInset, setTitleInset] = useState(0);
   const track = data.activeScreen;
   if (track !== 'Aesthetic' && track !== 'Commonalities' && track !== 'Activities') {
@@ -76,31 +77,36 @@ export function TrackScreen() {
         inset={titleInset}
       />
       {filtersOpen ? (
-        <>
-          <ChoiceSquares
-            options={chipsFor(track)}
-            selected={selected}
-            tones={circleTones}
-            maxSelected={MAX_CIRCLES}
-            onToggle={(chip) => {
-              if (selected.includes(chip)) {
-                const next = selected.filter((item) => item !== chip);
-                setSelected(next);
-                if (next.length === 0) {
-                  setFiltersOpen(true);
-                }
-                return;
+        <ChoiceSquares
+          options={chipsFor(track)}
+          selected={selected}
+          tones={circleTones}
+          maxSelected={MAX_CIRCLES}
+          onToggle={(chip) => {
+            if (selected.includes(chip)) {
+              const next = selected.filter((item) => item !== chip);
+              setSelected(next);
+              if (next.length === 0) {
+                setPromptOpen(true);
               }
-              if (selected.length >= MAX_CIRCLES) {
-                return;
-              }
-              setSelected([...selected, chip]);
-              setFiltersOpen(false);
-            }}
-          />
-          <SketchField value={typed} onChangeText={setTyped} align="start" labelInset={titleInset} />
-        </>
+              return;
+            }
+            if (selected.length >= MAX_CIRCLES) {
+              return;
+            }
+            setSelected([...selected, chip]);
+            setPromptOpen(false);
+          }}
+        />
       ) : null}
+      <SketchField
+        value={typed}
+        onChangeText={setTyped}
+        align="start"
+        labelInset={titleInset}
+        open={promptOpen}
+        onToggle={() => setPromptOpen((value) => !value)}
+      />
       {selected.length === 0 ? null : pool.length === 0 ? (
         <Text style={styles.help}>Nobody in this track fits those filters and the mutual age and identity rules.</Text>
       ) : (

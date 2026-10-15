@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { colors, spacing } from '../theme';
 import { SketchArrow } from './SketchArrow';
 import { SketchFrame } from './SketchFrame';
@@ -8,35 +8,59 @@ type Props = {
   onChangeText: (value: string) => void;
   align?: 'center' | 'start';
   labelInset?: number;
+  open?: boolean;
+  onToggle?: () => void;
 };
 
-export function SketchField({ value, onChangeText, align = 'center', labelInset = 0 }: Props) {
+export function SketchField({ value, onChangeText, align = 'center', labelInset = 0, open = true, onToggle }: Props) {
+  const label = (
+    <>
+      <Text style={styles.or}>or type it out</Text>
+      <SketchArrow direction={open ? 'down' : 'right'} size={20} />
+    </>
+  );
   return (
     <View style={styles.wrap}>
-      <View
-        style={[
-          styles.promptRow,
-          align === 'start' ? styles.promptStart : null,
-          align === 'start' ? { marginLeft: labelInset } : null,
-        ]}
-      >
-        <Text style={styles.or}>or type it out</Text>
-        <SketchArrow direction="down" size={20} />
-      </View>
-      <SketchFrame fill={colors.card} seed={6} style={styles.stretch} contentStyle={styles.inputPad}>
-        <View style={styles.fieldRow}>
-          <TextInput
-            value={value}
-            onChangeText={onChangeText}
-            placeholder="illustrative AI prompt for display only"
-            placeholderTextColor={colors.muted}
-            style={styles.input}
-          />
-          <View accessible={false} style={styles.send}>
-            <SketchArrow direction="right" size={26} />
-          </View>
+      {onToggle ? (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityState={{ expanded: open }}
+          onPress={onToggle}
+          style={[
+            styles.promptRow,
+            align === 'start' ? styles.promptStart : null,
+            align === 'start' ? { marginLeft: labelInset } : null,
+          ]}
+        >
+          {label}
+        </Pressable>
+      ) : (
+        <View
+          style={[
+            styles.promptRow,
+            align === 'start' ? styles.promptStart : null,
+            align === 'start' ? { marginLeft: labelInset } : null,
+          ]}
+        >
+          {label}
         </View>
-      </SketchFrame>
+      )}
+      {open ? (
+        <SketchFrame fill={colors.card} seed={6} style={styles.stretch} contentStyle={styles.inputPad}>
+          <View style={styles.fieldRow}>
+            <TextInput
+              value={value}
+              onChangeText={onChangeText}
+              placeholder="illustrative AI prompt for display only"
+              placeholderTextColor={colors.muted}
+              style={styles.input}
+            />
+            <View accessible={false} style={styles.send}>
+              <SketchArrow direction="right" size={26} />
+            </View>
+          </View>
+        </SketchFrame>
+      ) : null}
     </View>
   );
 }
