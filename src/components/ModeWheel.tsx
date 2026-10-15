@@ -6,6 +6,7 @@ import { sketchCirclePath } from '../sketch';
 import type { SearchTrack } from '../types/demo';
 import { colors, spacing } from '../theme';
 import { SketchFrame } from './SketchFrame';
+import { WheelIcon } from './WheelIcon';
 
 const STAGE_W = 340;
 const STAGE_H = 304;
@@ -159,7 +160,9 @@ export function ModeWheel({ index, onChange, onOpen }: Props) {
                 strokeWidth={1.75}
               />
             </Svg>
-            <Text style={styles.icon}>{item.icon}</Text>
+            <View style={styles.iconSlot} pointerEvents="none">
+              <WheelIcon track={item.id} />
+            </View>
           </Pressable>
         );
       })}
@@ -204,8 +207,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  icon: {
-    position: 'absolute',
-    fontSize: 34,
+  iconSlot: {
+    zIndex: 2,
   },
 });
