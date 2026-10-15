@@ -1,7 +1,7 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { demoUser } from '../data/mockData';
 import { useAppStore } from '../store/useAppStore';
-import { colors, drawn, fonts, radii, shadow, spacing } from '../theme';
+import { colors, radii, spacing } from '../theme';
 
 const included = [
   'Five ways to look: Aesthetic, Commonalities, Activities, Adventure, and Location.',
@@ -60,54 +60,47 @@ const styles = StyleSheet.create({
   },
   kicker: {
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 40,
+    fontSize: 28,
+    fontWeight: '800',
     textAlign: 'center',
-    marginTop: spacing.sm,
   },
   card: {
     backgroundColor: colors.card,
     borderRadius: radii.card,
+    borderWidth: 1,
+    borderColor: colors.line,
     padding: spacing.lg,
     gap: spacing.sm,
-    ...drawn,
-    ...shadow,
   },
   title: {
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 28,
-    lineHeight: 34,
+    fontSize: 22,
+    fontWeight: '800',
+    lineHeight: 28,
   },
   heading: {
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 20,
+    fontWeight: '800',
     marginTop: spacing.sm,
   },
   body: {
     color: colors.muted,
-    fontFamily: fonts.body,
-    fontSize: 16,
-    lineHeight: 22,
+    lineHeight: 20,
   },
   item: {
     color: colors.ink,
-    fontFamily: fonts.body,
-    fontSize: 16,
-    lineHeight: 24,
+    lineHeight: 20,
   },
   button: {
     alignSelf: 'center',
-    backgroundColor: colors.coral,
+    backgroundColor: colors.likeStamp,
     borderRadius: radii.button,
     paddingHorizontal: spacing.xl,
     paddingVertical: spacing.md,
-    ...shadow,
   },
   buttonText: {
-    color: colors.card,
-    fontFamily: fonts.bodyBold,
+    color: colors.white,
+    fontWeight: '800',
     fontSize: 18,
   },
 });

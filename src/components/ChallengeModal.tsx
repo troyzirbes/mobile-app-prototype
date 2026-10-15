@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors, fonts, radii, spacing } from '../theme';
+import { colors, radii, spacing } from '../theme';
 
 const SEQUENCE = ['Palm', 'Two fingers', 'Wave'] as const;
 const LIMIT_SECONDS = 60;
@@ -103,19 +103,16 @@ const styles = StyleSheet.create({
   },
   kicker: {
     color: colors.muted,
-    fontFamily: fonts.bodyBold,
-    fontSize: 13,
+    fontWeight: '700',
   },
   title: {
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 28,
+    fontSize: 24,
+    fontWeight: '800',
   },
   body: {
     color: colors.ink,
-    fontFamily: fonts.body,
-    fontSize: 16,
-    lineHeight: 22,
+    lineHeight: 21,
   },
   row: {
     gap: spacing.sm,
@@ -128,13 +125,11 @@ const styles = StyleSheet.create({
   },
   gestureText: {
     color: colors.white,
-    fontFamily: fonts.bodyBold,
-    fontSize: 16,
+    fontWeight: '800',
   },
   hint: {
     color: colors.coralDeep,
-    fontFamily: fonts.bodyBold,
-    fontSize: 15,
+    fontWeight: '700',
   },
   close: {
     alignItems: 'center',
@@ -142,7 +137,6 @@ const styles = StyleSheet.create({
   },
   closeText: {
     color: colors.muted,
-    fontFamily: fonts.bodyBold,
-    fontSize: 15,
+    fontWeight: '700',
   },
 });

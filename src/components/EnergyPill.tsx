@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { maxEnergy, nextRegenLabel } from '../store/energy';
 import { useAppStore } from '../store/useAppStore';
-import { colors, fonts, spacing } from '../theme';
+import { colors, spacing } from '../theme';
 
 export function EnergyPill() {
   const energyTokens = useAppStore((state) => state.energyTokens);
@@ -25,12 +25,10 @@ const styles = StyleSheet.create({
   },
   energy: {
     color: colors.coralDeep,
-    fontFamily: fonts.bodyBold,
-    fontSize: 16,
+    fontWeight: '800',
   },
   regen: {
     color: colors.muted,
-    fontFamily: fonts.body,
     fontSize: 12,
   },
 });

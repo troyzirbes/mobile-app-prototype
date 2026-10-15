@@ -1,6 +1,6 @@
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import type { AudioPrompt } from '../types/demo';
-import { colors, fonts, radii, spacing } from '../theme';
+import { colors, radii, spacing } from '../theme';
 
 type Props = {
   prompts: AudioPrompt[];
@@ -52,13 +52,12 @@ const styles = StyleSheet.create({
   },
   play: {
     color: colors.coralDeep,
-    fontFamily: fonts.bodyBold,
+    fontWeight: '800',
     fontSize: 13,
   },
   prompt: {
     flex: 1,
     color: colors.ink,
-    fontFamily: fonts.body,
-    fontSize: 15,
+    fontSize: 14,
   },
 });

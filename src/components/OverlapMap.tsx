@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { MockProfile } from '../types/demo';
-import { colors, drawn, fonts, radii, spacing } from '../theme';
+import { colors, spacing } from '../theme';
 import { Avatar } from './Avatar';
 
 type Props = {
@@ -40,7 +40,13 @@ export function OverlapMap({ tags, profiles, matches, hidden, onOpen }: Props) {
             onPress={() => onOpen(profile.id)}
             style={[styles.person, { left: 40 + (index % 4) * 72, top: 70 + Math.floor(index / 4) * 78 }]}
           >
-            <Avatar name={profile.name} profileId={profile.id} color={profile.photos[0] ?? colors.pass} hidden={hidden(profile)} size={56} />
+            <Avatar
+              name={profile.name}
+              profileId={profile.id}
+              color={profile.photos[0] ?? colors.pass}
+              hidden={hidden(profile)}
+              size={48}
+            />
             <Text style={styles.name}>{profile.name.split(' ')[0]}</Text>
             <Text style={styles.meta}>
               {shown.filter((tag) => matches(profile, tag)).join(' · ')}
@@ -55,10 +61,9 @@ export function OverlapMap({ tags, profiles, matches, hidden, onOpen }: Props) {
 const styles = StyleSheet.create({
   board: {
     height: 280,
-    borderRadius: radii.card,
+    borderRadius: 28,
     backgroundColor: colors.chip,
     overflow: 'hidden',
-    ...drawn,
   },
   circle: {
     position: 'absolute',
@@ -73,7 +78,7 @@ const styles = StyleSheet.create({
   },
   tag: {
     color: colors.ink,
-    fontFamily: fonts.bodyBold,
+    fontWeight: '800',
     fontSize: 12,
   },
   people: {
@@ -86,13 +91,12 @@ const styles = StyleSheet.create({
   },
   name: {
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 13,
+    fontSize: 11,
+    fontWeight: '700',
   },
   meta: {
     color: colors.muted,
-    fontFamily: fonts.body,
-    fontSize: 10,
+    fontSize: 9,
     textAlign: 'center',
   },
 });

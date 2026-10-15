@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { demoUser, getProfileById } from '../data/mockData';
 import { ENERGY_LIKE, ENERGY_NOTE } from '../store/energy';
 import { photosRevealed } from '../store/demoState';
 import { overlapScore } from '../store/matching';
 import { useAppStore } from '../store/useAppStore';
 import type { MockProfile } from '../types/demo';
-import { portraits } from '../data/portraits';
-import { colors, drawn, fonts, radii, shadow, spacing } from '../theme';
+import { colors, radii, spacing } from '../theme';
 import { Avatar } from './Avatar';
 import { ChallengeModal } from './ChallengeModal';
 import { CoOpModal } from './CoOpModal';
@@ -35,13 +34,13 @@ export function PersonScreen() {
         <EnergyPill />
       </View>
       <View style={styles.hero}>
-        {hidden || portraits[profile.id] === undefined ? (
-          <Avatar name={profile.name} profileId={profile.id} color={profile.photos[0] ?? colors.pass} hidden={hidden} size={220} />
-        ) : (
-          <View style={styles.heroFrame}>
-            <Image source={portraits[profile.id]} style={styles.heroImage} resizeMode="cover" />
-          </View>
-        )}
+        <Avatar
+          name={profile.name}
+          profileId={profile.id}
+          color={profile.photos[0] ?? colors.pass}
+          hidden={hidden}
+          size={220}
+        />
       </View>
       <Text style={styles.name}>
         {profile.name}, {profile.age}
@@ -136,44 +135,27 @@ const styles = StyleSheet.create({
   },
   close: {
     color: colors.ink,
-    fontFamily: fonts.bodyBold,
-    fontSize: 16,
+    fontWeight: '800',
   },
   hero: {
     alignItems: 'center',
   },
-  heroFrame: {
-    width: '100%',
-    borderRadius: radii.card,
-    overflow: 'hidden',
-    borderWidth: 3,
-    borderColor: colors.inkLine,
-    ...shadow,
-  },
-  heroImage: {
-    width: '100%',
-    height: 420,
-  },
   name: {
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 34,
+    fontSize: 24,
+    fontWeight: '800',
   },
   rate: {
     color: colors.coralDeep,
-    fontFamily: fonts.bodyBold,
-    fontSize: 15,
+    fontWeight: '700',
   },
   body: {
     color: colors.ink,
-    fontFamily: fonts.body,
-    fontSize: 16,
-    lineHeight: 24,
+    lineHeight: 20,
   },
   verified: {
     color: colors.likeStamp,
-    fontFamily: fonts.bodyBold,
-    fontSize: 15,
+    fontWeight: '800',
   },
   actions: {
     flexDirection: 'row',
@@ -181,27 +163,27 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   action: {
+    borderWidth: 1,
+    borderColor: colors.line,
     backgroundColor: colors.card,
     borderRadius: radii.button,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    ...shadow,
   },
   actionText: {
     color: colors.ink,
-    fontFamily: fonts.bodyBold,
-    fontSize: 13,
+    fontWeight: '800',
+    fontSize: 12,
   },
   secondary: {
-    ...drawn,
-    backgroundColor: colors.card,
+    borderWidth: 1,
+    borderColor: colors.line,
     borderRadius: radii.button,
     alignItems: 'center',
     padding: spacing.md,
   },
   secondaryText: {
     color: colors.ink,
-    fontFamily: fonts.bodyBold,
-    fontSize: 15,
+    fontWeight: '700',
   },
 });

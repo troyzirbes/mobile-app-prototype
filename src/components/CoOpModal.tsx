@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import type { MockProfile } from '../types/demo';
 import { partnerChoice } from '../store/matching';
-import { colors, drawn, fonts, radii, spacing } from '../theme';
+import { colors, radii, spacing } from '../theme';
 
 const THINKING_MS = 2000;
 
@@ -128,24 +128,21 @@ const styles = StyleSheet.create({
   },
   kicker: {
     color: colors.muted,
-    fontFamily: fonts.bodyBold,
-    fontSize: 13,
+    fontWeight: '700',
   },
   question: {
     color: colors.ink,
-    fontFamily: fonts.display,
-    fontSize: 26,
+    fontSize: 22,
+    fontWeight: '800',
   },
   count: {
     color: colors.muted,
-    fontFamily: fonts.body,
-    fontSize: 14,
   },
   option: {
-    ...drawn,
+    borderWidth: 1,
+    borderColor: colors.line,
     borderRadius: radii.stamp,
     padding: spacing.md,
-    backgroundColor: colors.card,
   },
   optionSelected: {
     borderColor: colors.ink,
@@ -155,13 +152,10 @@ const styles = StyleSheet.create({
   },
   optionText: {
     color: colors.ink,
-    fontFamily: fonts.bodyBold,
-    fontSize: 15,
+    fontWeight: '700',
   },
   wait: {
     color: colors.muted,
-    fontFamily: fonts.body,
-    fontSize: 14,
     minHeight: 20,
   },
   row: {
@@ -174,13 +168,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: spacing.md,
     borderRadius: radii.button,
-    backgroundColor: colors.card,
-    ...drawn,
+    borderWidth: 1,
+    borderColor: colors.line,
   },
   secondaryText: {
     color: colors.ink,
-    fontFamily: fonts.bodyBold,
-    fontSize: 15,
+    fontWeight: '700',
   },
   primary: {
     flex: 1,
@@ -191,7 +184,6 @@ const styles = StyleSheet.create({
   },
   primaryText: {
     color: colors.white,
-    fontFamily: fonts.bodyBold,
-    fontSize: 15,
+    fontWeight: '800',
   },
 });

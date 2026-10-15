@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useAppStore } from '../store/useAppStore';
-import { colors, fonts, spacing } from '../theme';
+import { colors, spacing } from '../theme';
 import { AdventureScreen } from './AdventureScreen';
 import { AppInfoScreen } from './AppInfoScreen';
 import { ContextualNav } from './ContextualNav';
@@ -84,15 +84,15 @@ const styles = StyleSheet.create({
   notice: {
     marginHorizontal: spacing.lg,
     marginTop: spacing.sm,
-    backgroundColor: colors.night,
+    backgroundColor: colors.ink,
     borderRadius: 999,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
   },
   noticeText: {
-    color: colors.card,
-    fontFamily: fonts.body,
-    fontSize: 14,
+    color: colors.white,
+    fontWeight: '700',
+    fontSize: 13,
   },
   body: {
     flex: 1,
