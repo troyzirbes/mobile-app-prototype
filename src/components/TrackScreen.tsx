@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { demoUser } from '../data/mockData';
 import { searchTrackMeta } from '../navigation/tracks';
 import { discoverProfiles, photosRevealed } from '../store/demoState';
+import { profileStyles } from '../store/matching';
 import { useAppStore } from '../store/useAppStore';
 import type { MockProfile, SearchTrack, StyleCategory } from '../types/demo';
 import { colors, spacing } from '../theme';
@@ -25,7 +26,7 @@ function chipsFor(track: SearchTrack): string[] {
 
 function matchesTag(profile: MockProfile, tag: string, track: SearchTrack): boolean {
   if (track === 'Aesthetic') {
-    return profile.styleCategory === tag;
+    return profileStyles(profile).some((style) => style === tag);
   }
   if (track === 'Activities') {
     return profile.interests.includes(tag) || profile.bounty.toLowerCase().includes(tag);
@@ -41,6 +42,12 @@ export function TrackScreen() {
   const [promptOpen, setPromptOpen] = useState(true);
   const [titleInset, setTitleInset] = useState(0);
   const track = data.activeScreen;
+  useEffect(() => {
+    setSelected([]);
+    setTyped('');
+    setPromptOpen(true);
+    setFiltersOpen(true);
+  }, [track]);
   if (track !== 'Aesthetic' && track !== 'Commonalities' && track !== 'Activities') {
     return null;
   }

@@ -56,6 +56,11 @@ export function partnerChoice(profileId: string, questionIndex: number, optionCo
   return hashString(`${profileId}:${questionIndex}`) % optionCount;
 }
 
+export function profileStyles(profile: MockProfile): StyleCategory[] {
+  const styles = profile.styleCategories ?? [profile.styleCategory];
+  return styles.includes(profile.styleCategory) ? styles : [profile.styleCategory, ...styles];
+}
+
 export function filterProfilesForTrack(
   profiles: MockProfile[],
   user: DemoUser,
@@ -77,7 +82,7 @@ export function filterProfilesForTrack(
     pool = pool.filter((profile) => !profile.isExplorer);
   }
   if (track === 'Aesthetic' && aestheticStyle !== 'All') {
-    pool = pool.filter((profile) => profile.styleCategory === aestheticStyle);
+    pool = pool.filter((profile) => profileStyles(profile).includes(aestheticStyle));
   }
   if (track === 'Adventure') {
     return seededOrder(pool, randomSalt);

@@ -8,4 +8,13 @@ export const portraits: Record<string, number> = {
   'miles-grant': require('../../assets/portraits/miles.jpg'),
   'ben-okonkwo': require('../../assets/portraits/ben.jpg'),
   'noa-kealoha': require('../../assets/portraits/noa.jpg'),
+  'elliot-ward': require('../../assets/portraits/jordan.jpg'),
+  'jonah-reed': require('../../assets/portraits/andre.jpg'),
+  'caleb-moss': require('../../assets/portraits/sam.jpg'),
+  'felix-navarro': require('../../assets/portraits/chris.jpg'),
+  'omar-shah': require('../../assets/portraits/nico.jpg'),
+  'wesley-cho': require('../../assets/portraits/theo.jpg'),
+  'patrick-nguyen': require('../../assets/portraits/miles.jpg'),
+  'adrian-cole': require('../../assets/portraits/ben.jpg'),
+  'kai-mendes': require('../../assets/portraits/noa.jpg'),
 };

@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
+import { demoUser, mockProfiles, seededIncomingIds } from './data/mockData.ts';
 import { MARKER, PORTRAIT, inRegion, layoutVenn, type CircleLayout, type Membership } from './overlapLayout.ts';
+import { isMutualMatch, profileStyles } from './store/matching.ts';
+import type { MockProfile } from './types/demo.ts';
 
 function separated(markers: { x: number; y: number }[]): boolean {
   return markers.every((marker, index) =>
@@ -91,5 +94,41 @@ describe('layoutVenn', () => {
     const layout = layoutVenn(2, members);
     assert.ok(placedCorrectly(layout.markers, members, layout.circles));
     assert.ok(separated(layout.markers));
+  });
+
+  it('places a person in every region for the doubled multi-select decks', () => {
+    const deck = mockProfiles.filter(
+      (profile) => isMutualMatch(demoUser, profile) && !profile.isExplorer && !seededIncomingIds.includes(profile.id),
+    );
+    const selections: { tags: string[]; memberOf: (profile: MockProfile, tag: string) => boolean }[] = [
+      {
+        tags: ['Athletic', 'Outdoorsy', 'Alternative'],
+        memberOf: (profile, tag) => profileStyles(profile).some((style) => style === tag),
+      },
+      {
+        tags: ['climbing', 'cooking', 'live music'],
+        memberOf: (profile, tag) => profile.interests.includes(tag),
+      },
+      {
+        tags: ['climbing', 'cooking', 'live music'],
+        memberOf: (profile, tag) => profile.interests.includes(tag) || profile.bounty.toLowerCase().includes(tag),
+      },
+    ];
+    for (const selection of selections) {
+      const members = deck.flatMap((profile) => {
+        const mask = selection.tags.reduce(
+          (bits, tag, index) => (selection.memberOf(profile, tag) ? bits | (1 << index) : bits),
+          0,
+        );
+        return mask > 0 ? [{ id: profile.id, mask }] : [];
+      });
+      for (const region of [0b001, 0b010, 0b100, 0b011, 0b101, 0b110, 0b111]) {
+        assert.ok(members.some((member) => member.mask === region), `missing region ${region}`);
+      }
+      const layout = layoutVenn(3, members);
+      assert.equal(layout.markers.length, members.length);
+      assert.ok(placedCorrectly(layout.markers, members, layout.circles));
+      assert.ok(separated(layout.markers));
+    }
   });
 });

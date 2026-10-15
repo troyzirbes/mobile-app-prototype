@@ -95,7 +95,8 @@ export function OverlapMap({ tags, profiles, matches, hidden, onOpen }: Props) {
                     cy={circle.cy * fit}
                     r={circle.r * fit}
                     fill={circleColors[circle.index] ?? colors.info}
-                    fillOpacity={0.82}
+                    fillOpacity={0.41}
+                    strokeOpacity={0.41}
                     stroke={circleColors[circle.index] ?? colors.info}
                     strokeWidth={3}
                   />

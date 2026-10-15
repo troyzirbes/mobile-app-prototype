@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { demoUser, mockProfiles } from '../data/mockData.ts';
-import { filterProfilesForTrack, isMutualMatch, overlapScore, partnerChoice } from './matching.ts';
+import { filterProfilesForTrack, isMutualMatch, overlapScore, partnerChoice, profileStyles } from './matching.ts';
 
 describe('isMutualMatch', () => {
   it('requires both ages and both identities to fit', () => {
@@ -9,15 +9,24 @@ describe('isMutualMatch', () => {
     assert.deepEqual(
       visible.map((profile) => profile.id).sort(),
       [
+        'adrian-cole',
         'andre-brooks',
         'ben-okonkwo',
+        'caleb-moss',
         'chris-lang',
+        'elliot-ward',
+        'felix-navarro',
+        'jonah-reed',
         'jordan-hale',
+        'kai-mendes',
         'miles-grant',
         'nico-alvarez',
         'noa-kealoha',
+        'omar-shah',
+        'patrick-nguyen',
         'sam-ellis',
         'theo-park',
+        'wesley-cho',
       ],
     );
     assert.ok(mockProfiles.every((profile) => profile.age >= 21));
@@ -68,7 +77,7 @@ describe('filterProfilesForTrack', () => {
       1,
       [],
     );
-    assert.ok(athletic.every((profile) => profile.styleCategory === 'Athletic'));
+    assert.ok(athletic.every((profile) => profileStyles(profile).includes('Athletic')));
     assert.ok(overlapScore(demoUser.interests, ['climbing', 'cooking']) > 0);
   });
 });
