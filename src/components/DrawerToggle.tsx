@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
 import { colors, spacing } from '../theme';
+import { SketchArrow } from './SketchArrow';
 
 type Props = {
   label: string;
@@ -9,7 +9,6 @@ type Props = {
 };
 
 export function DrawerToggle({ label, open, onPress }: Props) {
-  const direction = open ? 'M 3 7 Q 9 14 15 7' : 'M 6 3 Q 13 9 6 15';
   return (
     <Pressable
       accessibilityRole="button"
@@ -17,9 +16,7 @@ export function DrawerToggle({ label, open, onPress }: Props) {
       onPress={onPress}
       style={styles.row}
     >
-      <Svg width={18} height={18} viewBox="0 0 18 18">
-        <Path d={direction} stroke={colors.ink} strokeWidth={2.4} fill="none" strokeLinecap="round" />
-      </Svg>
+      <SketchArrow direction={open ? 'down' : 'right'} />
       <Text style={styles.label}>{label}</Text>
     </Pressable>
   );

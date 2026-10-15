@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
 import { colors, spacing } from '../theme';
+import { SketchArrow } from './SketchArrow';
 import { SketchFrame } from './SketchFrame';
 
 type Props = {
@@ -15,9 +15,7 @@ export function SketchField({ value, onChangeText, onSubmit, hint }: Props) {
     <View style={styles.wrap}>
       <View style={styles.promptRow}>
         <Text style={styles.or}>or type it out</Text>
-        <Svg width={16} height={16} viewBox="0 0 16 16">
-          <Path d="M 3 5 Q 8 12 13 5" stroke={colors.ink} strokeWidth={2.2} fill="none" strokeLinecap="round" />
-        </Svg>
+        <SketchArrow direction="down" size={20} />
       </View>
       <SketchFrame fill={colors.card} seed={6} style={styles.stretch} contentStyle={styles.inputPad}>
         <View style={styles.fieldRow}>
@@ -30,9 +28,7 @@ export function SketchField({ value, onChangeText, onSubmit, hint }: Props) {
             style={styles.input}
           />
           <Pressable accessibilityRole="button" accessibilityLabel="Send" onPress={onSubmit} style={styles.send}>
-            <Svg width={18} height={18} viewBox="0 0 18 18">
-              <Path d="M 3 9 L 15 9 M 10 4 L 15 9 L 10 14" stroke={colors.white} strokeWidth={2.2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-            </Svg>
+            <SketchArrow direction="right" size={26} />
           </Pressable>
         </View>
       </SketchFrame>
