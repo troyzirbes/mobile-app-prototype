@@ -7,10 +7,19 @@ import type { SearchTrack } from '../types/demo';
 import { colors } from '../theme';
 import { SketchFrame } from './SketchFrame';
 
-const WHEEL = 300;
-const DISC = 76;
-const RADIUS = 96;
+const STAGE_W = 320;
+const STAGE_H = 272;
+const DISC = 78;
+const RADIUS_X = 104;
+const RADIUS_Y = 56;
+const CENTER_X = STAGE_W / 2;
+const CENTER_Y = 162;
 const STEP = (Math.PI * 2) / searchTrackMeta.length;
+
+function railPath(x: number, seed: number): string {
+  const shift = (y: number, index: number) => x + Math.sin(y * 0.05 + seed + index) * 1.6;
+  return `M ${shift(6, 1)} 6 Q ${shift(90, 2)} 90 ${shift(160, 3)} 160 T ${shift(STAGE_H - 8, 4)} ${STAGE_H - 8}`;
+}
 
 type Props = {
   index: number;
@@ -77,53 +86,92 @@ export function ModeWheel({ index, onChange, onOpen }: Props) {
 
   const spin = angle + (drag / 80) * STEP;
 
+  const placed = searchTrackMeta
+    .map((item, itemIndex) => {
+      const theta = spin + itemIndex * STEP;
+      const depth = Math.cos(theta);
+      return {
+        item,
+        itemIndex,
+        depth,
+        x: CENTER_X + Math.sin(theta) * RADIUS_X,
+        y: CENTER_Y + depth * RADIUS_Y,
+        scale: 0.58 + ((depth + 1) / 2) * 0.58,
+      };
+    })
+    .sort((left, right) => left.depth - right.depth);
+
   return (
-    <View style={styles.wrap}>
-      <Pressable accessibilityRole="button" accessibilityLabel={`Open ${current.id}`} onPress={() => onOpen(current.id)}>
-        <SketchFrame fill={colors.card} seed={11} contentStyle={styles.namePad}>
-          <Text style={styles.name}>{current.id}</Text>
-        </SketchFrame>
-      </Pressable>
-      <View style={styles.wheel} {...pan.panHandlers}>
-        {searchTrackMeta.map((item, itemIndex) => {
-          const theta = spin + itemIndex * STEP + Math.PI / 2;
-          const left = WHEEL / 2 + Math.cos(theta) * RADIUS - DISC / 2;
-          const top = WHEEL / 2 + Math.sin(theta) * RADIUS - DISC / 2;
-          const selected = itemIndex === index;
-          return (
-            <Pressable
-              key={item.id}
-              accessibilityRole="button"
-              accessibilityLabel={item.id}
-              accessibilityState={{ selected }}
-              onPress={() => {
-                if (selected) {
-                  onOpen(item.id);
-                  return;
-                }
-                onChange(itemIndex);
-              }}
-              style={[styles.disc, { left, top, transform: [{ scale: selected ? 1.08 : 0.94 }] }]}
-            >
-              <Svg width={DISC} height={DISC} pointerEvents="none">
-                <Path
-                  d={sketchCirclePath(DISC, itemIndex + 3)}
-                  fill={colors.olive}
-                  stroke={colors.background}
-                  strokeWidth={2.5}
-                />
-              </Svg>
-              <Text style={styles.icon}>{item.icon}</Text>
-            </Pressable>
-          );
-        })}
+    <View style={styles.stage} {...pan.panHandlers}>
+      <Svg width={STAGE_W} height={STAGE_H} style={styles.rails} pointerEvents="none">
+        <Path d={railPath(16, 1)} stroke={colors.ink} strokeWidth={2} fill="none" />
+        <Path d={railPath(STAGE_W - 16, 4)} stroke={colors.ink} strokeWidth={2} fill="none" />
+      </Svg>
+      <View style={styles.nameSlot}>
+        <Pressable accessibilityRole="button" accessibilityLabel={`Open ${current.id}`} onPress={() => onOpen(current.id)}>
+          <SketchFrame fill={colors.card} seed={11} contentStyle={styles.namePad}>
+            <Text style={styles.name}>{current.id}</Text>
+          </SketchFrame>
+        </Pressable>
       </View>
+      {placed.map(({ item, itemIndex, depth, x, y, scale }) => {
+        const selected = itemIndex === index;
+        return (
+          <Pressable
+            key={item.id}
+            accessibilityRole="button"
+            accessibilityLabel={item.id}
+            accessibilityState={{ selected }}
+            onPress={() => {
+              if (selected) {
+                onOpen(item.id);
+                return;
+              }
+              onChange(itemIndex);
+            }}
+            style={[
+              styles.disc,
+              {
+                left: x - DISC / 2,
+                top: y - DISC / 2,
+                zIndex: Math.round((depth + 1) * 20) + 1,
+                transform: [{ scale }],
+              },
+            ]}
+          >
+            <Svg width={DISC} height={DISC} pointerEvents="none">
+              <Path
+                d={sketchCirclePath(DISC, itemIndex + 3)}
+                fill={colors.olive}
+                stroke={colors.background}
+                strokeWidth={2.5}
+              />
+            </Svg>
+            <Text style={styles.icon}>{item.icon}</Text>
+          </Pressable>
+        );
+      })}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  wrap: {
+  stage: {
+    width: STAGE_W,
+    height: STAGE_H,
+    alignSelf: 'center',
+  },
+  rails: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+  },
+  nameSlot: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 40,
     alignItems: 'center',
   },
   namePad: {
@@ -134,11 +182,6 @@ const styles = StyleSheet.create({
     color: colors.ink,
     fontWeight: '800',
     fontSize: 16,
-  },
-  wheel: {
-    width: WHEEL,
-    height: WHEEL,
-    marginTop: -8,
   },
   disc: {
     position: 'absolute',
