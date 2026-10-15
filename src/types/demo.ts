@@ -38,6 +38,7 @@ export type MockProfile = {
   seeking: Identity[];
   ageRange: { min: number; max: number };
   styleCategory: StyleCategory;
+  styleCategories?: StyleCategory[];
   responseRate: string;
   interests: string[];
   bounty: string;

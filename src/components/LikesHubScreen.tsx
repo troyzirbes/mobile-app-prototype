@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     borderRadius: radii.card,
     borderWidth: 1,
     borderColor: colors.line,
-    padding: spacing.md,
+    padding: spacing.lg,
   },
   meta: {
     flex: 1,

@@ -5,7 +5,8 @@ import { discoverProfiles, photosRevealed } from '../store/demoState';
 import { useAppStore } from '../store/useAppStore';
 import { colors, radii, spacing } from '../theme';
 import { Avatar } from './Avatar';
-import { EnergyPill } from './EnergyPill';
+import { DrawerToggle } from './DrawerToggle';
+import { ScreenHeading } from './ScreenHeading';
 
 const datePresets = [
   { label: 'Oct 17–20', startDate: '2026-10-17', endDate: '2026-10-20' },
@@ -17,30 +18,27 @@ export function LocationScreen() {
   const data = useAppStore();
   const [panel, setPanel] = useState<'none' | 'status' | 'filters'>('none');
   const [draft, setDraft] = useState(data.locationStatus);
-  const [info, setInfo] = useState(false);
   const locals = discoverProfiles({ ...data, activeTrack: 'Commonalities' }).filter((profile) => !profile.isExplorer);
   const travelers = discoverProfiles({ ...data, activeTrack: 'Location' });
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
-      <View style={styles.top}>
-        <Text style={styles.prompt}>🌍 Looking for now or later, {demoUser.name}?</Text>
-        <Pressable accessibilityRole="button" onPress={() => setInfo((value) => !value)}>
-          <Text style={styles.info}>i</Text>
-        </Pressable>
-        <EnergyPill />
-      </View>
-      {info ? (
-        <Text style={styles.help}>Residents stay on the map. Visitors appear only in the explorer row, and only inside a date window.</Text>
-      ) : null}
+      <ScreenHeading
+        title={`Looking for now or later, ${demoUser.name}?`}
+        detail="Residents stay on the map. Visitors appear only in the explorer row, and only inside a date window."
+      />
       {data.locationStatus ? <Text style={styles.status}>{data.locationStatus}</Text> : null}
       <View style={styles.actions}>
-        <Pressable accessibilityRole="button" onPress={() => setPanel(panel === 'status' ? 'none' : 'status')}>
-          <Text style={styles.link}>Add a status</Text>
-        </Pressable>
-        <Pressable accessibilityRole="button" onPress={() => setPanel(panel === 'filters' ? 'none' : 'filters')}>
-          <Text style={styles.link}>Filters</Text>
-        </Pressable>
+        <DrawerToggle
+          label="Add a status"
+          open={panel === 'status'}
+          onPress={() => setPanel(panel === 'status' ? 'none' : 'status')}
+        />
+        <DrawerToggle
+          label="Filters"
+          open={panel === 'filters'}
+          onPress={() => setPanel(panel === 'filters' ? 'none' : 'filters')}
+        />
       </View>
       {panel === 'status' ? (
         <View style={styles.card}>
@@ -194,7 +192,7 @@ const styles = StyleSheet.create({
     borderRadius: radii.card,
     borderWidth: 1,
     borderColor: colors.line,
-    padding: spacing.md,
+    padding: spacing.lg,
     gap: spacing.sm,
   },
   item: {
@@ -205,8 +203,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.line,
     borderRadius: radii.stamp,
-    padding: spacing.md,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
     color: colors.ink,
+    fontSize: 16,
+    lineHeight: 22,
     userSelect: 'text',
   },
   button: {
@@ -240,8 +241,8 @@ const styles = StyleSheet.create({
     height: 220,
     borderRadius: radii.card,
     backgroundColor: colors.chip,
-    borderWidth: 1,
-    borderColor: colors.line,
+    borderWidth: 2,
+    borderColor: colors.ink,
     overflow: 'hidden',
   },
   pin: {

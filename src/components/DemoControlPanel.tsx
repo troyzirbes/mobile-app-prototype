@@ -1,6 +1,9 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { useAppStore } from '../store/useAppStore';
-import { colors, radii, spacing } from '../theme';
+import { colors, spacing } from '../theme';
+import { DrawerToggle } from './DrawerToggle';
+import { SketchButton } from './SketchButton';
 
 const controls = [
   { label: '+20 Energy', run: (store: ReturnType<typeof useAppStore.getState>) => store.addEnergy(20) },
@@ -11,52 +14,59 @@ const controls = [
 
 export function DemoControlPanel() {
   const energyTokens = useAppStore((state) => state.energyTokens);
+  const screen = useAppStore((state) => state.activeScreen);
+  const likesTab = useAppStore((state) => state.activeLikesTab);
+  const viewingProfileId = useAppStore((state) => state.viewingProfileId);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [screen, likesTab, viewingProfileId]);
+
   return (
     <View style={styles.panel}>
-      <Text style={styles.title}>Demo controls · {energyTokens} energy</Text>
-      <View style={styles.row}>
-        {controls.map((control) => (
-          <Pressable
-            key={control.label}
-            accessibilityRole="button"
-            accessibilityLabel={control.label}
-            onPress={() => control.run(useAppStore.getState())}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>{control.label}</Text>
-          </Pressable>
-        ))}
-      </View>
+      <DrawerToggle label="Demo Controls" open={open} onPress={() => setOpen((value) => !value)} />
+      {open ? (
+        <View style={styles.body}>
+          <Text style={styles.energy}>{energyTokens} energy</Text>
+          <View style={styles.row}>
+            {controls.map((control, index) => (
+              <SketchButton
+                key={control.label}
+                label={control.label}
+                seed={index + 2}
+                fill={colors.card}
+                textColor={colors.ink}
+                onPress={() => control.run(useAppStore.getState())}
+              />
+            ))}
+          </View>
+        </View>
+      ) : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   panel: {
-    backgroundColor: colors.ink,
+    borderTopWidth: 2,
+    borderTopColor: colors.ink,
+    backgroundColor: colors.background,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    gap: spacing.sm,
   },
-  title: {
-    color: colors.white,
+  body: {
+    gap: spacing.sm,
+    paddingTop: spacing.sm,
+  },
+  energy: {
+    color: colors.muted,
+    fontWeight: '700',
     fontSize: 12,
-    fontWeight: '800',
   },
   row: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: spacing.sm,
-  },
-  button: {
-    backgroundColor: colors.white,
-    borderRadius: radii.chip,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-  },
-  buttonText: {
-    color: colors.ink,
-    fontSize: 12,
-    fontWeight: '800',
   },
 });

@@ -1,15 +1,34 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { demoUser, mockProfiles } from '../data/mockData.ts';
-import { filterProfilesForTrack, isMutualMatch, overlapScore, partnerChoice } from './matching.ts';
+import { filterProfilesForTrack, isMutualMatch, overlapScore, partnerChoice, profileStyles } from './matching.ts';
 
 describe('isMutualMatch', () => {
   it('requires both ages and both identities to fit', () => {
     const visible = mockProfiles.filter((profile) => isMutualMatch(demoUser, profile));
-    assert.ok(visible.length >= 10);
-    assert.equal(visible.some((profile) => profile.id === 'mina-shah'), false);
-    assert.equal(visible.some((profile) => profile.id === 'robert-hale'), false);
-    assert.equal(visible.some((profile) => profile.id === 'casey-ng'), false);
+    assert.deepEqual(
+      visible.map((profile) => profile.id).sort(),
+      [
+        'adrian-cole',
+        'andre-brooks',
+        'ben-okonkwo',
+        'caleb-moss',
+        'chris-lang',
+        'elliot-ward',
+        'felix-navarro',
+        'jonah-reed',
+        'jordan-hale',
+        'kai-mendes',
+        'miles-grant',
+        'nico-alvarez',
+        'noa-kealoha',
+        'omar-shah',
+        'patrick-nguyen',
+        'sam-ellis',
+        'theo-park',
+        'wesley-cho',
+      ],
+    );
     assert.ok(mockProfiles.every((profile) => profile.age >= 21));
   });
 });
@@ -31,11 +50,11 @@ describe('filterProfilesForTrack', () => {
       demoUser,
       'Location',
       'All',
-      { startDate: '2026-10-18', endDate: '2026-10-20' },
+      { startDate: '2027-05-02', endDate: '2027-05-10' },
       1,
       [],
     );
-    assert.deepEqual(away.map((profile) => profile.id), ['omar-haddad']);
+    assert.deepEqual(away.map((profile) => profile.id), ['ben-okonkwo']);
     const unset = filterProfilesForTrack(
       mockProfiles,
       demoUser,
@@ -58,7 +77,7 @@ describe('filterProfilesForTrack', () => {
       1,
       [],
     );
-    assert.ok(athletic.every((profile) => profile.styleCategory === 'Athletic'));
+    assert.ok(athletic.every((profile) => profileStyles(profile).includes('Athletic')));
     assert.ok(overlapScore(demoUser.interests, ['climbing', 'cooking']) > 0);
   });
 });

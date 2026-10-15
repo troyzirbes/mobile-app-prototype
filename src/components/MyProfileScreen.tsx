@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { demoUser } from '../data/mockData';
 import { useAppStore } from '../store/useAppStore';
 import { colors, radii, spacing } from '../theme';
 import { Avatar } from './Avatar';
+import { ChoiceSquares } from './ChoiceSquares';
 
 export function MyProfileScreen() {
   const data = useAppStore();
+  const [interests, setInterests] = useState<string[]>([...demoUser.interests]);
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <Text style={styles.title}>My Profile</Text>
@@ -16,6 +19,16 @@ export function MyProfileScreen() {
         <Avatar name={demoUser.name} color={colors.coralDeep} hidden={false} size={72} />
         <Avatar name={`${demoUser.name} 2`} color={colors.pass} hidden={false} size={72} />
       </View>
+      <Text style={styles.label}>Interests</Text>
+      <ChoiceSquares
+        options={[...demoUser.interests]}
+        selected={interests}
+        onToggle={(interest) =>
+          setInterests((current) =>
+            current.includes(interest) ? current.filter((item) => item !== interest) : [...current, interest],
+          )
+        }
+      />
       <Text style={styles.label}>Profile details</Text>
       <TextInput
         value={data.profileBio}
@@ -107,13 +120,15 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   input: {
-    minHeight: 80,
+    minHeight: 96,
     borderWidth: 1,
     borderColor: colors.line,
     backgroundColor: colors.card,
     borderRadius: radii.stamp,
-    padding: spacing.md,
+    padding: spacing.lg,
     color: colors.ink,
+    fontSize: 16,
+    lineHeight: 22,
     userSelect: 'text',
   },
   secondary: {
@@ -121,7 +136,8 @@ const styles = StyleSheet.create({
     borderColor: colors.line,
     backgroundColor: colors.card,
     borderRadius: radii.button,
-    padding: spacing.md,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
   },
   secondaryText: {
     color: colors.ink,

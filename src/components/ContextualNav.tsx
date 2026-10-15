@@ -38,8 +38,8 @@ export function ContextualNav() {
 const styles = StyleSheet.create({
   bar: {
     flexDirection: 'row',
-    borderTopWidth: 1,
-    borderTopColor: colors.line,
+    borderTopWidth: 2,
+    borderTopColor: colors.ink,
     backgroundColor: colors.card,
     paddingVertical: spacing.sm,
   },

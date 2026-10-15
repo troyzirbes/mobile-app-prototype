@@ -32,7 +32,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-transform-types --import ./scripts/register-ts.mjs --test src/swipe.test.ts src/data/mockDiscoveryData.test.ts src/store/energy.test.ts src/store/matching.test.ts src/store/demoState.test.ts src/navigation/contextualNav.test.ts"
+    "test": "node --experimental-transform-types --import ./scripts/register-ts.mjs --test src/swipe.test.ts src/data/mockDiscoveryData.test.ts src/store/energy.test.ts src/store/matching.test.ts src/store/demoState.test.ts src/navigation/contextualNav.test.ts src/overlapLayout.test.ts"
   },
   "private": true
 }

@@ -34,7 +34,7 @@ export function ProfileSummary({
         <View style={styles.meta}>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.rate}>{profile.responseRate}</Text>
-          <Text style={styles.style}>{profile.styleCategory}</Text>
+          <Text style={styles.style}>{(profile.styleCategories ?? [profile.styleCategory]).join(' · ')}</Text>
           {verified ? <Text style={styles.verified}>Recently Verified</Text> : null}
           {profile.vibe ? <Text style={styles.vibe}>{profile.vibe}</Text> : null}
         </View>
