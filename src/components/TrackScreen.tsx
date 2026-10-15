@@ -44,6 +44,7 @@ export function TrackScreen() {
   if (track !== 'Aesthetic' && track !== 'Commonalities' && track !== 'Activities') {
     return null;
   }
+  const chipsEngaged = selected.length > 0;
   const meta = searchTrackMeta.find((item) => item.id === track);
   const pool =
     selected.length === 0
@@ -104,8 +105,13 @@ export function TrackScreen() {
         onChangeText={setTyped}
         align="start"
         labelInset={titleInset}
-        open={promptOpen}
-        onToggle={() => setPromptOpen((value) => !value)}
+        open={!chipsEngaged && promptOpen}
+        onToggle={() => {
+          if (chipsEngaged) {
+            return;
+          }
+          setPromptOpen((value) => !value);
+        }}
       />
       {selected.length === 0 ? null : pool.length === 0 ? (
         <Text style={styles.help}>Nobody in this track fits those filters and the mutual age and identity rules.</Text>

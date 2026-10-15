@@ -83,14 +83,6 @@ export function OverlapMap({ tags, profiles, matches, hidden, onOpen }: Props) {
         setWidth((current) => (current === next ? current : next));
       }}
     >
-      <View style={styles.legend}>
-        {shown.map((tag, index) => (
-          <View key={tag} style={styles.legendItem}>
-            <View style={[styles.swatch, { backgroundColor: circleColors[index] ?? colors.info }]} />
-            <Text style={styles.legendText}>{tag}</Text>
-          </View>
-        ))}
-      </View>
       {width > 0 ? (
         <View style={[styles.viewport, { height: viewportHeight }]}>
           <GestureDetector gesture={Gesture.Simultaneous(pan, pinch)} touchAction="none">
@@ -144,28 +136,6 @@ export function OverlapMap({ tags, profiles, matches, hidden, onOpen }: Props) {
 const styles = StyleSheet.create({
   bleed: {
     marginHorizontal: -spacing.lg,
-  },
-  legend: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.sm,
-    paddingHorizontal: spacing.lg,
-    marginBottom: spacing.sm,
-  },
-  legendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.xs,
-  },
-  swatch: {
-    width: 14,
-    height: 14,
-    borderRadius: 7,
-  },
-  legendText: {
-    color: colors.ink,
-    fontWeight: '800',
-    fontSize: 13,
   },
   viewport: {
     overflow: 'hidden',
