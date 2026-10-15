@@ -4,16 +4,16 @@ import Svg, { Path } from 'react-native-svg';
 import { searchTrackMeta } from '../navigation/tracks';
 import { sketchCirclePath } from '../sketch';
 import type { SearchTrack } from '../types/demo';
-import { colors } from '../theme';
+import { colors, spacing } from '../theme';
 import { SketchFrame } from './SketchFrame';
 
 const STAGE_W = 340;
-const STAGE_H = 268;
+const STAGE_H = 304;
 const DISC = 136;
-const RADIUS_X = 92;
-const RADIUS_Y = 48;
+const RADIUS_X = 108;
+const RADIUS_Y = 60;
 const CENTER_X = STAGE_W / 2;
-const CENTER_Y = 128;
+const CENTER_Y = 150;
 const STEP = (Math.PI * 2) / searchTrackMeta.length;
 
 type Props = {
@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
     width: STAGE_W,
     height: STAGE_H,
     alignSelf: 'center',
+    marginTop: spacing.xxl,
   },
   nameSlot: {
     position: 'absolute',

@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   inputPad: {
-    paddingLeft: spacing.lg,
-    paddingRight: spacing.sm,
+    paddingLeft: spacing.xxl,
+    paddingRight: spacing.xl,
     paddingVertical: spacing.sm,
   },
   fieldRow: {
@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     color: colors.ink,
-    fontSize: 16,
-    lineHeight: 22,
+    fontSize: 14,
+    lineHeight: 20,
     paddingVertical: spacing.sm,
     userSelect: 'text',
   },
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: colors.likeStamp,
+    backgroundColor: colors.muted,
     alignItems: 'center',
     justifyContent: 'center',
   },
