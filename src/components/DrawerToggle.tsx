@@ -10,7 +10,7 @@ type Props = {
   inset?: number;
 };
 
-export function DrawerToggle({ label, open, onPress, arrowSide = 'start', inset = 0 }: Props) {
+export function DrawerToggle({ label, open, onPress, arrowSide = 'end', inset = 0 }: Props) {
   const arrow = <SketchArrow direction={open ? 'down' : 'right'} />;
   return (
     <Pressable

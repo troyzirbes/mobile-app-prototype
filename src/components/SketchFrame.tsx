@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { StyleSheet, View, type LayoutChangeEvent, type StyleProp, type ViewStyle } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { sketchRoundRectPath } from '../sketch';
-import { colors } from '../theme';
+import { colors, spacing } from '../theme';
 
 type Props = {
   children: ReactNode;
@@ -37,6 +37,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   content: {
-    padding: 18,
+    paddingLeft: spacing.xxl,
+    paddingRight: spacing.xl,
+    paddingVertical: spacing.lg,
   },
 });

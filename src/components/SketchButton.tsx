@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, type StyleProp, type ViewStyle } from 'react-native';
-import { colors } from '../theme';
+import { colors, spacing } from '../theme';
 import { SketchFrame } from './SketchFrame';
 
 type Props = {
@@ -34,8 +34,10 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   pad: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingLeft: spacing.lg,
+    paddingRight: spacing.lg,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.sm,
   },
   label: {
     fontWeight: '800',
