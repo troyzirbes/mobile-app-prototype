@@ -191,8 +191,10 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
   namePad: {
-    paddingHorizontal: 18,
-    paddingVertical: 12,
+    paddingLeft: spacing.xl,
+    paddingRight: spacing.xl,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.md,
   },
   name: {
     color: colors.ink,
